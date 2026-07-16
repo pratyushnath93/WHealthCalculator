@@ -1,0 +1,484 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Portfolio Asset Allocation Calculator - Asset Allocation by Age" 
+  description="Design your investment strategies with our asset allocation calculator by age. Optimize your portfolio's equities, gold, and debt ratios for maximum growth."
+  activeTab="risk"
+>
+  <div class="mb-12">
+    <div class="font-mono text-xs uppercase tracking-wider text-mute mb-2">02. Asset Allocation</div>
+    <h1 class="font-sans text-3xl md:text-5xl font-semibold tracking-tight text-ink leading-none">
+      Financial Portfolio Planner
+    </h1>
+    <p class="text-body text-sm mt-3 max-w-[600px]">
+      Optimize your investment portfolio. Evaluates target asset allocation percentages for equities, gold, and debt instruments based on your age and investment timeline.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <!-- Left Column: Inputs Form -->
+    <div class="lg:col-span-5 bg-canvas border border-hairline rounded-lg p-6 shadow-vercel-sm space-y-6">
+      <h2 class="font-sans text-lg font-semibold tracking-tight border-b border-hairline pb-3">Investor Profile</h2>
+
+      <!-- Age Input -->
+      <div>
+        <div class="flex justify-between items-center mb-1">
+          <label for="investor-age" class="font-mono text-xs uppercase tracking-wider text-body">Your Age</label>
+          <input type="number" id="investor-age-num" min="18" max="75" value="30" class="w-16 h-7 border border-hairline bg-canvas text-ink rounded-sm px-2 text-xs font-mono text-right focus:border-hairline-strong outline-none" />
+        </div>
+        <input type="range" id="investor-age" min="18" max="75" value="30" class="w-full mt-1" />
+        <div class="flex justify-between text-[10px] text-mute font-mono mt-1">
+          <span>18 yrs</span>
+          <span>75 yrs</span>
+        </div>
+      </div>
+
+      <!-- Tenure of Investment -->
+      <div>
+        <label for="investment-tenure" class="block font-mono text-xs uppercase tracking-wider text-body mb-2">Investment Horizon</label>
+        <select id="investment-tenure" class="w-full h-10 bg-canvas border border-hairline rounded-sm px-3 text-sm outline-none focus:border-hairline-strong transition-colors">
+          <option value="1y">Very Short Term (1 Year)</option>
+          <option value="1-5y">Short Term (1 to 5 Years)</option>
+          <option value="5-10y">Medium Term (5 to 10 Years)</option>
+          <option value="10y">Long Term (10+ Years)</option>
+        </select>
+      </div>
+
+      <div class="p-4 border border-hairline rounded-md bg-canvas-soft-2 font-mono text-[10px] text-body leading-relaxed">
+        <strong>Risk Profile Index:</strong>
+        <p id="risk-index-label" class="mt-1 font-sans text-sm font-semibold text-link uppercase">Aggressive Portfolio</p>
+        <p class="mt-2">Asset allocations rebalance automatically as tenure decreases or age increases to prioritize capital preservation over speculative returns.</p>
+      </div>
+    </div>
+
+    <!-- Right Column: Outputs -->
+    <div class="lg:col-span-7 space-y-6">
+      
+      <!-- Split Card: Asset Allocation -->
+      <div class="bg-canvas border border-hairline rounded-lg p-6 shadow-vercel-md">
+        <h3 class="font-sans text-base font-semibold tracking-tight border-b border-hairline pb-3 mb-6 font-medium">Core Asset Class Allocation</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+          <!-- Chart Donut -->
+          <div class="md:col-span-5 flex justify-center">
+            <div class="relative w-40 h-40">
+              <svg class="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" stroke="var(--color-canvas-soft-2)" stroke-width="12" fill="transparent" />
+                <!-- Equity Circle (Blue) -->
+                <circle id="donut-equity" cx="60" cy="60" r="50" stroke="var(--color-link)" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+                <!-- Gold Circle (Yellow) -->
+                <circle id="donut-gold" cx="60" cy="60" r="50" stroke="#f9cb28" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+                <!-- Stable Income Circle (Grey) -->
+                <circle id="donut-debt" cx="60" cy="60" r="50" stroke="var(--color-hairline-strong)" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+              </svg>
+              
+              <div class="absolute inset-0 flex flex-col justify-center items-center">
+                <span class="text-[10px] text-mute font-mono uppercase">Portfolio</span>
+                <span class="text-sm font-semibold mt-1">100%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Legend details -->
+          <div class="md:col-span-7 space-y-3 font-mono text-xs">
+            <div class="flex items-center justify-between border-b border-hairline pb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-[var(--color-link)]"></span>
+                <span class="font-sans text-sm font-medium">Equities / Stocks</span>
+              </div>
+              <span id="legend-equity-pct" class="font-semibold text-sm">--%</span>
+            </div>
+            
+            <div class="flex items-center justify-between border-b border-hairline pb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-[#f9cb28]"></span>
+                <span class="font-sans text-sm font-medium">Gold & Commodities</span>
+              </div>
+              <span id="legend-gold-pct" class="font-semibold text-sm">--%</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-[var(--color-hairline-strong)]"></span>
+                <span class="font-sans text-sm font-medium">Fixed Income / Stable Debt</span>
+              </div>
+              <span id="legend-debt-pct" class="font-semibold text-sm">--%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Split Card: Secondary Equity Breakdown -->
+      <div id="equity-breakdown-card" class="bg-canvas border border-hairline rounded-lg p-6 shadow-vercel-md">
+        <h3 class="font-sans text-base font-semibold tracking-tight border-b border-hairline pb-3 mb-6 font-medium">Equities Sub-Allocation Breakdown</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+          <!-- Chart Donut -->
+          <div class="md:col-span-5 flex justify-center">
+            <div class="relative w-40 h-40">
+              <svg class="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" stroke="var(--color-canvas-soft-2)" stroke-width="12" fill="transparent" />
+                <!-- Direct Stocks (Magenta) -->
+                <circle id="donut-stocks" cx="60" cy="60" r="50" stroke="#ff0080" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+                <!-- Large Cap (Cyan) -->
+                <circle id="donut-largecap" cx="60" cy="60" r="50" stroke="#00dfd8" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+                <!-- Mid Cap (Violet) -->
+                <circle id="donut-midcap" cx="60" cy="60" r="50" stroke="#7928ca" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+                <!-- Small Cap (Yellow) -->
+                <circle id="donut-smallcap" cx="60" cy="60" r="50" stroke="#f9cb28" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+                <!-- Debt / Liquid MFs (Green) -->
+                <circle id="donut-liquid" cx="60" cy="60" r="50" stroke="#29bc9b" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+              </svg>
+              
+              <div class="absolute inset-0 flex flex-col justify-center items-center">
+                <span class="text-[10px] text-mute font-mono uppercase">Equity Split</span>
+                <span id="center-equity-total" class="text-sm font-semibold mt-1">--%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Legend details -->
+          <div class="md:col-span-7 space-y-3 font-mono text-xs">
+            <div class="flex items-center justify-between border-b border-hairline pb-1.5">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-[#ff0080]"></span>
+                <span class="font-sans text-sm font-medium">Direct Stocks</span>
+              </div>
+              <span id="legend-stocks-pct" class="font-semibold">--%</span>
+            </div>
+
+            <div class="flex items-center justify-between border-b border-hairline pb-1.5">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-[#00dfd8]"></span>
+                <span class="font-sans text-sm font-medium">Large Cap Mutual Funds</span>
+              </div>
+              <span id="legend-largecap-pct" class="font-semibold">--%</span>
+            </div>
+
+            <div class="flex items-center justify-between border-b border-hairline pb-1.5">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-[#7928ca]"></span>
+                <span class="font-sans text-sm font-medium">Mid Cap Mutual Funds</span>
+              </div>
+              <span id="legend-midcap-pct" class="font-semibold">--%</span>
+            </div>
+
+            <div class="flex items-center justify-between border-b border-hairline pb-1.5">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-[#f9cb28]"></span>
+                <span class="font-sans text-sm font-medium">Small Cap Mutual Funds</span>
+              </div>
+              <span id="legend-smallcap-pct" class="font-semibold">--%</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-[#29bc9b]"></span>
+                <span class="font-sans text-sm font-medium">Debt & Liquid Mutual Funds</span>
+              </div>
+              <span id="legend-liquid-pct" class="font-semibold">--%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Safe withdrawal rate alert -->
+      <div id="no-equity-message" class="hidden p-4 border border-hairline rounded-md bg-canvas-soft-2 font-mono text-xs text-body leading-relaxed flex gap-3">
+        <span class="text-warning">⚠</span>
+        <span>
+          For horizons of 1 year, equity market exposure is not recommended due to short-term volatility. Assets are conserved primarily in stable fixed income instruments (FDs, liquid accounts, or capital preservation debt funds) to protect initial capital.
+        </span>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  function setupRiskAdvisor() {
+    const ageInput = document.getElementById('investor-age') as HTMLInputElement;
+    const ageNum = document.getElementById('investor-age-num') as HTMLInputElement;
+    const tenureSelect = document.getElementById('investment-tenure') as HTMLSelectElement;
+    const riskIndexLabel = document.getElementById('risk-index-label') as HTMLParagraphElement;
+
+    // Display elements
+    const legendEquityPct = document.getElementById('legend-equity-pct') as HTMLSpanElement;
+    const legendGoldPct = document.getElementById('legend-gold-pct') as HTMLSpanElement;
+    const legendDebtPct = document.getElementById('legend-debt-pct') as HTMLSpanElement;
+
+    const donutEquity = document.getElementById('donut-equity') as unknown as SVGCircleElement;
+    const donutGold = document.getElementById('donut-gold') as unknown as SVGCircleElement;
+    const donutDebt = document.getElementById('donut-debt') as unknown as SVGCircleElement;
+
+    const equityBreakdownCard = document.getElementById('equity-breakdown-card') as HTMLDivElement;
+    const noEquityMessage = document.getElementById('no-equity-message') as HTMLDivElement;
+
+    // Equity breakdowns
+    const donutStocks = document.getElementById('donut-stocks') as unknown as SVGCircleElement;
+    const donutLargecap = document.getElementById('donut-largecap') as unknown as SVGCircleElement;
+    const donutMidcap = document.getElementById('donut-midcap') as unknown as SVGCircleElement;
+    const donutSmallcap = document.getElementById('donut-smallcap') as unknown as SVGCircleElement;
+    const donutLiquid = document.getElementById('donut-liquid') as unknown as SVGCircleElement;
+    const centerEquityTotal = document.getElementById('center-equity-total') as HTMLSpanElement;
+
+    const legendStocksPct = document.getElementById('legend-stocks-pct') as HTMLSpanElement;
+    const legendLargecapPct = document.getElementById('legend-largecap-pct') as HTMLSpanElement;
+    const legendMidcapPct = document.getElementById('legend-midcap-pct') as HTMLSpanElement;
+    const legendSmallcapPct = document.getElementById('legend-smallcap-pct') as HTMLSpanElement;
+    const legendLiquidPct = document.getElementById('legend-liquid-pct') as HTMLSpanElement;
+
+    const CIRCUMFERENCE = 314.16;
+
+    // Listeners
+    ageInput.addEventListener('input', () => {
+      ageNum.value = ageInput.value;
+      calculate();
+    });
+
+    ageNum.addEventListener('input', () => {
+      let val = parseInt(ageNum.value) || 0;
+      ageInput.value = Math.max(18, Math.min(75, val)).toString();
+      calculate();
+    });
+
+    const clampAgeInput = () => {
+      let val = parseInt(ageNum.value) || 30;
+      if (val < 18) val = 18;
+      if (val > 75) val = 75;
+      ageNum.value = val.toString();
+      ageInput.value = val.toString();
+      calculate();
+    };
+    ageNum.addEventListener('blur', clampAgeInput);
+    ageNum.addEventListener('change', clampAgeInput);
+
+    tenureSelect.addEventListener('change', calculate);
+
+    function calculate() {
+      // Read the manual numeric input value directly and clamp to [18, 75]
+      const rawAge = parseInt(ageNum.value) || parseInt(ageInput.value) || 30;
+      const age = Math.max(18, Math.min(75, rawAge));
+      const tenure = tenureSelect.value;
+
+      let equity = 0;
+      let gold = 0;
+      let debt = 0;
+
+      // 1. Core Asset Splits using continuous age-based logic
+      if (tenure === '1y') {
+        equity = 0;
+        gold = 10;
+        debt = 90;
+      } else {
+        // Base Equity allocation by tenure
+        let baseEquity = 0;
+        if (tenure === '1-5y') {
+          baseEquity = 35;
+        } else if (tenure === '5-10y') {
+          baseEquity = 70;
+        } else { // 10y+
+          baseEquity = 90;
+        }
+
+        // Continuous age-based modifier from a professional investment perspective
+        let multiplier = 1.0;
+        if (age <= 30) {
+          multiplier = 1.0;
+        } else if (age <= 50) {
+          multiplier = 1.0 - (age - 30) * 0.015; // 1.5% drop per year (reflects progressive career stage)
+        } else if (age <= 60) {
+          multiplier = 0.70 - (age - 50) * 0.02;  // 2.0% drop per year (reflects pre-retirement consolidation)
+        } else {
+          multiplier = Math.max(0.15, 0.50 - (age - 60) * 0.01); // 1.0% drop per year (post-retirement security, 15% floor)
+        }
+
+        equity = Math.round(baseEquity * multiplier);
+        
+        // Gold allocation for hedging (stabilizer class)
+        if (equity > 50) {
+          gold = 10;
+        } else if (equity > 20) {
+          gold = 15;
+        } else {
+          gold = 10;
+        }
+
+        debt = 100 - equity - gold;
+      }
+
+      // Risk labeling
+      let riskProfile = 'Moderate';
+      if (tenure === '1y') {
+        riskProfile = 'Capital Preservation Portfolio';
+        riskIndexLabel.className = 'mt-1 font-sans text-sm font-semibold text-mute uppercase';
+      } else if (equity >= 70) {
+        riskProfile = 'Aggressive Growth Portfolio';
+        riskIndexLabel.className = 'mt-1 font-sans text-sm font-semibold text-error uppercase';
+      } else if (equity >= 40) {
+        riskProfile = 'Balanced Growth Portfolio';
+        riskIndexLabel.className = 'mt-1 font-sans text-sm font-semibold text-link uppercase';
+      } else {
+        riskProfile = 'Conservative Income Portfolio';
+        riskIndexLabel.className = 'mt-1 font-sans text-sm font-semibold text-warning-deep uppercase';
+      }
+      riskIndexLabel.textContent = riskProfile;
+
+      // Update core card displays
+      legendEquityPct.textContent = `${equity}%`;
+      legendGoldPct.textContent = `${gold}%`;
+      legendDebtPct.textContent = `${debt}%`;
+
+      // Update primary donut SVG
+      const eqStroke = CIRCUMFERENCE * (equity / 100);
+      const goldStroke = CIRCUMFERENCE * (gold / 100);
+      const debtStroke = CIRCUMFERENCE * (debt / 100);
+
+      donutEquity.style.strokeDasharray = `${eqStroke} ${CIRCUMFERENCE}`;
+      donutGold.style.strokeDasharray = `${goldStroke} ${CIRCUMFERENCE}`;
+      donutDebt.style.strokeDasharray = `${debtStroke} ${CIRCUMFERENCE}`;
+
+      donutEquity.style.strokeDashoffset = '0';
+      donutGold.style.strokeDashoffset = (-eqStroke).toString();
+      donutDebt.style.strokeDashoffset = (-(eqStroke + goldStroke)).toString();
+
+      // Show/Hide equity sub-allocations
+      if (equity === 0) {
+        equityBreakdownCard.classList.add('hidden');
+        noEquityMessage.classList.remove('hidden');
+      } else {
+        equityBreakdownCard.classList.remove('hidden');
+        noEquityMessage.classList.add('hidden');
+
+        // Calculate Equity sub-allocations based on age
+        let stocksPctOfEq = 0;
+        let midcapPctOfEq = 0;
+        let smallcapPctOfEq = 0;
+
+        // Direct Stocks % of Equity: declines from 40% (age <= 25) to 0% (age >= 65)
+        if (age <= 25) {
+          stocksPctOfEq = 40;
+        } else if (age < 65) {
+          stocksPctOfEq = Math.round(40 - (age - 25) * 1.0);
+        } else {
+          stocksPctOfEq = 0;
+        }
+
+        const mfPctOfEq = 100 - stocksPctOfEq;
+
+        // Inside Mutual Funds:
+        // 1. Small Cap %: declines from 30% (age <= 25) to 0% (age >= 55)
+        if (age <= 25) {
+          smallcapPctOfEq = 30;
+        } else if (age < 55) {
+          smallcapPctOfEq = Math.round(30 - (age - 25) * 1.0);
+        } else {
+          smallcapPctOfEq = 0;
+        }
+
+        // 2. Mid Cap %: declines from 30% (age <= 25) to 5% (age >= 75)
+        if (age <= 25) {
+          midcapPctOfEq = 30;
+        } else if (age < 75) {
+          midcapPctOfEq = Math.round(30 - (age - 25) * 0.5);
+        } else {
+          midcapPctOfEq = 5;
+        }
+
+        // 3. Debt & Liquid Funds: buffers that grow as retirement approaches
+        let debtMF = 0;
+        let liquidMF = 0;
+        if (age < 35) {
+          debtMF = 0;
+          liquidMF = 0;
+        } else if (age <= 50) {
+          debtMF = 5;
+          liquidMF = 5;
+        } else if (age <= 65) {
+          debtMF = 15;
+          liquidMF = 10;
+        } else {
+          debtMF = 25;
+          liquidMF = 15;
+        }
+
+        // 4. Large Cap is the balancer within Mutual Funds
+        const largecapMF = Math.max(0, 100 - smallcapPctOfEq - midcapPctOfEq - debtMF - liquidMF);
+
+        // Convert MF sub-allocations into overall percentages of the EQUITY allocation
+        const largecapOverallPct = Math.round((largecapMF / 100) * mfPctOfEq);
+        const midcapOverallPct = Math.round((midcapPctOfEq / 100) * mfPctOfEq);
+        const smallcapOverallPct = Math.round((smallcapPctOfEq / 100) * mfPctOfEq);
+        const liquidOverallPct = Math.round(((debtMF + liquidMF) / 100) * mfPctOfEq);
+
+        // Balance check to ensure they sum to exactly 100% of Equity
+        const currentSum = stocksPctOfEq + largecapOverallPct + midcapOverallPct + smallcapOverallPct + liquidOverallPct;
+        const diff = 100 - currentSum;
+        const finalLargecapPct = Math.max(0, largecapOverallPct + diff);
+
+        // Convert to overall portfolio percentages using a rounding-error distributor
+        function distributeValues(total: number, percentages: number[]) {
+          let values = percentages.map(p => Math.round((p / 100) * total));
+          let sum = values.reduce((a, b) => a + b, 0);
+          let diff = total - sum;
+          if (diff !== 0) {
+            let sortedIndices = [...percentages.keys()].sort((a, b) => percentages[b] - percentages[a]);
+            for (let idx of sortedIndices) {
+              if (values[idx] + diff >= 0) {
+                values[idx] += diff;
+                break;
+              }
+            }
+          }
+          return values;
+        }
+
+        const subAllocations = distributeValues(equity, [
+          stocksPctOfEq,
+          finalLargecapPct,
+          midcapOverallPct,
+          smallcapOverallPct,
+          liquidOverallPct
+        ]);
+
+        const stocksOverall = subAllocations[0];
+        const largecapOverall = subAllocations[1];
+        const midcapOverall = subAllocations[2];
+        const smallcapOverall = subAllocations[3];
+        const liquidOverall = subAllocations[4];
+
+        legendStocksPct.textContent = `${stocksOverall}% (${stocksPctOfEq}% of Equity)`;
+        legendLargecapPct.textContent = `${largecapOverall}% (${finalLargecapPct}% of Equity)`;
+        legendMidcapPct.textContent = `${midcapOverall}% (${midcapOverallPct}% of Equity)`;
+        legendSmallcapPct.textContent = `${smallcapOverall}% (${smallcapOverallPct}% of Equity)`;
+        legendLiquidPct.textContent = `${liquidOverall}% (${Math.round((liquidMF + debtMF) / 100 * mfPctOfEq)}% of Equity)`;
+
+        centerEquityTotal.textContent = `${equity}%`;
+
+        // Update secondary donut SVG
+        const stStroke = CIRCUMFERENCE * (stocksOverall / 100);
+        const lgStroke = CIRCUMFERENCE * (largecapOverall / 100);
+        const mdStroke = CIRCUMFERENCE * (midcapOverall / 100);
+        const smStroke = CIRCUMFERENCE * (smallcapOverall / 100);
+        const liqStroke = CIRCUMFERENCE * (liquidOverall / 100);
+
+        donutStocks.style.strokeDasharray = `${stStroke} ${CIRCUMFERENCE}`;
+        donutLargecap.style.strokeDasharray = `${lgStroke} ${CIRCUMFERENCE}`;
+        donutMidcap.style.strokeDasharray = `${mdStroke} ${CIRCUMFERENCE}`;
+        donutSmallcap.style.strokeDasharray = `${smStroke} ${CIRCUMFERENCE}`;
+        donutLiquid.style.strokeDasharray = `${liqStroke} ${CIRCUMFERENCE}`;
+
+        donutStocks.style.strokeDashoffset = '0';
+        donutLargecap.style.strokeDashoffset = (-stStroke).toString();
+        donutMidcap.style.strokeDashoffset = (-(stStroke + lgStroke)).toString();
+        donutSmallcap.style.strokeDashoffset = (-(stStroke + lgStroke + mdStroke)).toString();
+        donutLiquid.style.strokeDashoffset = (-(stStroke + lgStroke + mdStroke + smStroke)).toString();
+      }
+    }
+
+    calculate();
+  }
+
+  setupRiskAdvisor();
+  document.addEventListener('astro:page-load', setupRiskAdvisor);
+</script>

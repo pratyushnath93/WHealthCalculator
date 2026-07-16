@@ -1,0 +1,234 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MeshGradient from '../components/MeshGradient.astro';
+---
+
+<Layout 
+  title="Free BMI Calculator Online & Wealth Tracker" 
+  description="Use the best free online BMI calculator, calorie tracker, SIP & EMI calculators, and retirement planners to manage your physical health and financial wealth in one place."
+  activeTab="home"
+>
+  <!-- Mesh Gradient Background at Hero scale -->
+  <MeshGradient />
+
+  <!-- Hero Section -->
+  <div class="max-w-[800px] mt-12 mb-20">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-canvas border border-hairline font-mono text-[10px] text-body uppercase tracking-wider mb-6 shadow-vercel-sm animate-fade-in">
+      <span class="w-1.5 h-1.5 rounded-full bg-success"></span>
+      All calculators online.
+    </div>
+    
+    <h1 class="font-sans text-4xl md:text-6xl font-semibold tracking-tight text-ink mb-6 leading-none select-none">
+      Calculate parameters.<br />Make informed decisions.
+    </h1>
+    
+    <p class="text-body text-base md:text-lg max-w-[600px] mb-8 font-sans">
+      A collection of clean, precise calculators designed for developer-centric health parameters and structured financial planning.
+    </p>
+
+    <div class="flex flex-wrap gap-3">
+      <a 
+        href="#health" 
+        class="px-6 py-3 rounded-full bg-primary text-on-primary font-medium text-sm hover:opacity-90 shadow-vercel-md hover:scale-[1.01] transition-all"
+      >
+        Explore health.
+      </a>
+      <a 
+        href="#finance" 
+        class="px-6 py-3 rounded-full bg-canvas text-ink border border-hairline font-medium text-sm hover:bg-canvas-soft-2 shadow-vercel-sm hover:scale-[1.01] transition-all"
+      >
+        Explore finance.
+      </a>
+    </div>
+  </div>
+
+  <!-- Health Section -->
+  <section id="health" class="mb-20 scroll-mt-24">
+    <div class="border-b border-hairline pb-4 mb-8">
+      <div class="font-mono text-xs uppercase tracking-wider text-mute mb-2">01. Fitness & Health</div>
+      <h2 class="font-sans text-2xl md:text-3xl font-semibold tracking-tight text-ink">Body Metrics</h2>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 bg-canvas border border-hairline rounded-lg p-6 md:p-8 flex flex-col justify-between shadow-vercel-md hover:border-hairline-strong transition-all group">
+        <div>
+          <div class="font-mono text-xs uppercase tracking-wider text-link mb-4">Core Calculator</div>
+          <h3 class="font-sans text-xl md:text-2xl font-semibold tracking-tight text-ink mb-3 group-hover:text-link transition-colors">
+            Health Parameters Calculator
+          </h3>
+          <p class="text-body text-sm leading-relaxed max-w-[500px]">
+            Compute your Basal Metabolic Rate (BMR) and Total Daily Energy Expenditure (TDEE) with mixed unit support (kg/lbs, ft/in/cm). Break down exact daily calorie targets and macronutrient weight targets (Protein, Fat, Carbohydrates) specifically adjusted for weight loss, weight gain, bodybuilding, fat loss, and lean mass building.
+          </p>
+        </div>
+        <div class="mt-8 flex items-center justify-between">
+          <span class="font-mono text-xs text-mute uppercase">age height weight activity</span>
+          <a href="/health" class="px-4 py-2 rounded-md bg-canvas border border-hairline font-mono text-xs font-semibold hover:bg-link hover:text-white hover:border-link active:bg-link-deep active:text-white shadow-vercel-sm flex items-center gap-2 group-hover:bg-primary group-hover:text-on-primary transition-all">
+            Open Calculator <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Side Info Box -->
+      <div class="bg-canvas-soft-2 border border-hairline rounded-lg p-6 md:p-8 flex flex-col justify-between shadow-vercel-sm">
+        <div>
+          <h4 class="font-mono text-xs uppercase tracking-wider text-body mb-4">Supported Targets</h4>
+          <ul class="space-y-3 font-sans text-sm text-body">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              Weight loss / Fat loss
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              Weight gain / Body building
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              Lean mass building
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              Healthy lifestyle maintenance
+            </li>
+          </ul>
+        </div>
+        <div class="text-xs text-mute font-mono leading-relaxed mt-6">
+          Formulas based on the Mifflin-St Jeor equation and standard exercise multipliers for TDEE estimations.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Finance Section -->
+  <section id="finance" class="mb-20 scroll-mt-24">
+    <div class="border-b border-hairline pb-4 mb-8">
+      <div class="font-mono text-xs uppercase tracking-wider text-mute mb-2">02. Financial Planning</div>
+      <h2 class="font-sans text-2xl md:text-3xl font-semibold tracking-tight text-ink">Compounding & Growth</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <!-- SIP Calculator -->
+      <div class="bg-canvas border border-hairline rounded-lg p-6 md:p-8 flex flex-col justify-between shadow-vercel-sm hover:border-hairline-strong transition-all group">
+        <div>
+          <div class="font-mono text-xs uppercase tracking-wider text-mute mb-4">Systematic Investment Plan</div>
+          <h3 class="font-sans text-lg md:text-xl font-semibold tracking-tight text-ink mb-2 group-hover:text-link transition-colors">
+            SIP Calculator
+          </h3>
+          <p class="text-body text-sm leading-relaxed">
+            Project your mutual fund and stock market investments. Features optional yearly top-ups (percentage or fixed amount additions) to simulate real-world income progression. Includes dynamic visual growth lines.
+          </p>
+        </div>
+        <div class="mt-8 flex items-center justify-between">
+          <span class="font-mono text-xs text-mute uppercase">top-up yearly compounded</span>
+          <a href="/finance/sip" class="px-4 py-2 rounded-md bg-canvas border border-hairline font-mono text-xs font-semibold hover:bg-link hover:text-white hover:border-link active:bg-link-deep active:text-white shadow-vercel-sm flex items-center gap-2 group-hover:bg-primary group-hover:text-on-primary transition-all">
+            Open <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Retirement Planner -->
+      <div class="bg-canvas border border-hairline rounded-lg p-6 md:p-8 flex flex-col justify-between shadow-vercel-sm hover:border-hairline-strong transition-all group">
+        <div>
+          <div class="font-mono text-xs uppercase tracking-wider text-mute mb-4">Future Wealth Cushion</div>
+          <h3 class="font-sans text-lg md:text-xl font-semibold tracking-tight text-ink mb-2 group-hover:text-link transition-colors">
+            Retirement Planner
+          </h3>
+          <p class="text-body text-sm leading-relaxed">
+            Calculate your required retirement corpus adjusted for expected inflation, life expectancy, current expenses, and pre/post-retirement expected return rates. Determines the exact monthly savings necessary.
+          </p>
+        </div>
+        <div class="mt-8 flex items-center justify-between">
+          <span class="font-mono text-xs text-mute uppercase">inflation-adjusted corpus</span>
+          <a href="/finance/retirement" class="px-4 py-2 rounded-md bg-canvas border border-hairline font-mono text-xs font-semibold hover:bg-link hover:text-white hover:border-link active:bg-link-deep active:text-white shadow-vercel-sm flex items-center gap-2 group-hover:bg-primary group-hover:text-on-primary transition-all">
+            Open <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Loan EMI Calculator -->
+      <div class="bg-canvas border border-hairline rounded-lg p-6 md:p-8 flex flex-col justify-between shadow-vercel-sm hover:border-hairline-strong transition-all group">
+        <div>
+          <div class="font-mono text-xs uppercase tracking-wider text-mute mb-4">Mortgage & Credit</div>
+          <h3 class="font-sans text-lg md:text-xl font-semibold tracking-tight text-ink mb-2 group-hover:text-link transition-colors">
+            Home & Personal Loan EMI
+          </h3>
+          <p class="text-body text-sm leading-relaxed">
+            Compute EMI payouts, total payable interest, and aggregate debt liability. Features full amortization table outputs by month and interactive principal-to-interest breakdown charts.
+          </p>
+        </div>
+        <div class="mt-8 flex items-center justify-between">
+          <span class="font-mono text-xs text-mute uppercase">amortization schedule</span>
+          <a href="/finance/loans" class="px-4 py-2 rounded-md bg-canvas border border-hairline font-mono text-xs font-semibold hover:bg-link hover:text-white hover:border-link active:bg-link-deep active:text-white shadow-vercel-sm flex items-center gap-2 group-hover:bg-primary group-hover:text-on-primary transition-all">
+            Open <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Financial Advisor -->
+      <div class="bg-canvas border border-hairline rounded-lg p-6 md:p-8 flex flex-col justify-between shadow-vercel-sm hover:border-hairline-strong transition-all group">
+        <div>
+          <div class="font-mono text-xs uppercase tracking-wider text-mute mb-4">Portfolio Allocation</div>
+          <h3 class="font-sans text-lg md:text-xl font-semibold tracking-tight text-ink mb-2 group-hover:text-link transition-colors">
+            Financial Portfolio Planner
+          </h3>
+          <p class="text-body text-sm leading-relaxed">
+            Determine how to allocate capital between Equities, Gold, and Stable Fixed Income based on age and tenure. Explores equity subsets like direct stocks vs. mutual funds, and large, mid, small cap distributions.
+          </p>
+        </div>
+        <div class="mt-8 flex items-center justify-between">
+          <span class="font-mono text-xs text-mute uppercase">equity gold fixed-income caps</span>
+          <a href="/finance/risk-allocation" class="px-4 py-2 rounded-md bg-canvas border border-hairline font-mono text-xs font-semibold hover:bg-link hover:text-white hover:border-link active:bg-link-deep active:text-white shadow-vercel-sm flex items-center gap-2 group-hover:bg-primary group-hover:text-on-primary transition-all">
+            Open <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SEO Content Section -->
+  <section class="border-t border-hairline pt-16 mt-16 max-w-[1000px]">
+    <h2 class="font-sans text-2xl md:text-3xl font-semibold tracking-tight text-ink mb-6">
+      Comprehensive Health and Wealth Solutions in One Platform
+    </h2>
+    <div class="space-y-6 font-sans text-sm text-body leading-relaxed">
+      <p>
+        Welcome to WHealthCalculator.com, your unified online sandbox designed to bridge the gap between biological health metrics and long-term financial security. Whether you are searching for a precise <strong>bmi calculator online</strong>, aiming to track your daily nutrition, or seeking an institutional-grade <strong>investment calculator</strong>, our platform offers client-side, privacy-first simulation tools to help you make informed decisions. We understand that your physical and financial health are deeply interconnected—financial stress impacts biological well-being, while health challenges can redirect critical wealth accumulation.
+      </p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+        <div class="space-y-4">
+          <h3 class="font-sans text-lg font-semibold text-ink">
+            Advanced Health Parameters & Calorie Trackers
+          </h3>
+          <p>
+            Tracking parameters like weight, metabolism, and calorie intakes is central to maintaining your fitness. Our <strong>best health tracker</strong> system utilizes clinically validated equations. You can easily determine your body mass index using our <strong>bmi calculator</strong>. We offer specific metrics like a <strong>bmi calculator female</strong> and a <strong>bmi chart women</strong> to understand weight classifications. Calculate a <strong>normal bmi</strong> and plan your target body parameters on the fly.
+          </p>
+          <p>
+            Understanding energy balances is key to managing weight. Our built-in <strong>bmr calc</strong> shows <strong>how to calculate bmr</strong> using Mifflin-St Jeor and Devine formulas. Use our <strong>maintenance calorie calculator</strong> or a <strong>daily calorie calculator</strong> to find your Total Daily Energy Expenditure (TDEE). If your goal is shedding fat, the <strong>calorie calculator for weight loss</strong> adjusts target splits. Additionally, the integrated <strong>food calorie calculator</strong> and <strong>recipe nutrition calculator</strong> let you swap ingredients. Whether you want to adopt a <strong>heart healthy diet</strong>, follow a <strong>mediterranean diet</strong>, go on a <strong>sugar free diet</strong>, or maintain a <strong>gluten-free diet</strong>, our tool handles customization. Access structured eating schedules like a <strong>7-day diet plan for weight loss</strong>, a <strong>7-day protein diet plan for weight loss</strong>, a high-protein <strong>keto diet plan</strong>, a <strong>heart healthy diet plan</strong>, or a <strong>pcos diet plan</strong>. It acts as a comprehensive, completely <strong>free diet plan for weight loss</strong> and advanced <strong>nutrition calculator</strong> right in your browser.
+          </p>
+        </div>
+        
+        <div class="space-y-4">
+          <h3 class="font-sans text-lg font-semibold text-ink">
+            Strategic Wealth Trackers & Growth Calculators
+          </h3>
+          <p>
+            Securing your financial independence requires disciplined budgeting and regular compounding projections. As a personal <strong>wealth tracker</strong> and comprehensive <strong>wealth calculator</strong>, our platform features simulators to model growth. Use our <strong>return on investment calculator</strong> to visualize growth rates and compare various <strong>investment strategies</strong>. 
+          </p>
+          <p>
+            For monthly savings, our <strong>sip calculator</strong> (Systematic Investment Plan) is ideal. Simulate standard <strong>sip</strong> growth or a <strong>step up sip</strong>, which models incremental investment additions. It serves as a <strong>mutual fund calculator</strong> to gauge mutual fund returns. To manage debt, our <strong>emi calculator</strong> breaks down monthly payouts and outputs a complete loan amortization schedule.
+          </p>
+          <p>
+            Asset distribution is critical to mitigating market risk. Try the <strong>portfolio asset allocation</strong> planner to audit allocations based on age, or utilize our <strong>asset allocation calculator by age</strong> to balance equity, fixed income, and gold. If you are preparing for retirement, our <strong>retirement calculator</strong> facilitates detailed <strong>retirement planning</strong> by factoring in pre- and post-retirement return rates, inflation, and living costs. While our sandbox is an excellent starting point, we always recommend consulting a qualified <strong>investment advisor</strong> or finding a licensed <strong>investment advisor near me</strong> for personalized strategies.
+          </p>
+        </div>
+      </div>
+      
+      <p class="pt-4 text-xs text-mute border-t border-hairline">
+        Note: WHealthCalculator.com operates 100% client-side. We do not store or transmit your personal data, ensuring your health stats and financial assets remain private. All calculator simulations are educational resources.
+      </p>
+    </div>
+  </section>
+
+</Layout>

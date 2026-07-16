@@ -1,0 +1,75 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Privacy Policy" activeTab="privacy">
+  <div class="mb-12">
+    <div class="font-mono text-xs uppercase tracking-wider text-mute mb-2">04. Legal</div>
+    <h1 class="font-sans text-3xl md:text-5xl font-semibold tracking-tight text-ink leading-none">
+      Privacy Policy
+    </h1>
+    <p class="text-body text-sm mt-3 max-w-[600px]">
+      Last Updated: July 2026. Learn why your data is 100% secure.
+    </p>
+  </div>
+
+  <div class="max-w-[800px] space-y-8 font-sans text-sm text-body leading-relaxed">
+    <section class="space-y-3 bg-canvas-soft-2 border border-hairline rounded-lg p-6 mb-8">
+      <h2 class="font-sans text-base font-semibold text-ink flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-success"></span>
+        Our Privacy Promise: Your Data Stays on Your Device
+      </h2>
+      <p class="text-xs text-mute">
+        Unlike other trackers and calculators, WHealth is engineered from the ground up to run entirely inside your browser's local sandbox. We do not transfer your personal, fitness, or financial figures to any external cloud database, server, or logging backend.
+      </p>
+    </section>
+
+    <section class="space-y-3">
+      <h3 class="font-sans text-lg font-semibold tracking-tight text-ink">1. Information We Do Not Collect</h3>
+      <p>
+        When you adjust height sliders, input body weight, select country regions, type diet details, or compute SIP and loan parameters:
+      </p>
+      <ul class="list-disc pl-5 space-y-1 text-mute">
+        <li>We do not collect or log your input parameters.</li>
+        <li>We do not require user accounts, emails, or names to run calculations.</li>
+        <li>We do not record, store, or profile your caloric balances or financial net worth.</li>
+      </ul>
+    </section>
+
+    <section class="space-y-3">
+      <h3 class="font-sans text-lg font-semibold tracking-tight text-ink">2. Local Storage and Sandbox Memory</h3>
+      <p>
+        WHealth uses standard client-side browser mechanisms (such as transient JavaScript memory and HTML5 localStorage) to remember your configurations:
+      </p>
+      <ul class="list-disc pl-5 space-y-1 text-mute">
+        <li><strong>Unit Preferences:</strong> Height/Weight units (metric vs. imperial) are stored locally in your browser so you don't have to toggle them on every page load.</li>
+        <li><strong>Theme Preferences:</strong> Dark Mode toggles are saved locally inside your browser.</li>
+        <li><strong>Diet Swaps:</strong> Custom meal ingredients and portions scaled on the fly are kept in memory and reset if you click the Reset button or close the tab.</li>
+      </ul>
+      <p class="text-xs text-mute mt-2">
+        You can clear all stored preferences at any time by clearing your browser cache and site data for this domain.
+      </p>
+    </section>
+
+    <section class="space-y-3">
+      <h3 class="font-sans text-lg font-semibold tracking-tight text-ink">3. Third-Party Scripts & Trackers</h3>
+      <p>
+        Our platform operates with zero marketing scripts, advertising networks, pixel trackers, or analytics cookies. You will never experience retargeted advertising on other networks based on what you calculate on WHealth.
+      </p>
+    </section>
+
+    <section class="space-y-3 border-t border-hairline pt-6">
+      <h3 class="font-sans text-lg font-semibold tracking-tight text-ink">4. Changes to This Policy</h3>
+      <p>
+        We reserve the right to modify this Privacy Policy. Because we do not store customer contacts, any changes will be reflected directly on this page. We encourage you to review it periodically.
+      </p>
+    </section>
+
+    <section class="space-y-3 border-t border-hairline pt-6">
+      <h3 class="font-sans text-lg font-semibold tracking-tight text-ink">5. Contact</h3>
+      <p>
+        If you have questions about our local storage sandbox model or client-side execution, please reach out via our <a href="/contact" class="text-link hover:underline">Contact Page</a>.
+      </p>
+    </section>
+  </div>
+</Layout>

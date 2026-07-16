@@ -1,0 +1,35 @@
+---
+interface Props {
+  label: string;
+  value: string | number;
+  subtitle?: string;
+  className?: string;
+  highlighted?: boolean;
+  id?: string;
+}
+
+const { label, value, subtitle, className = '', highlighted = false, id } = Astro.props;
+---
+
+<div id={id} class={`rounded-md p-4 sm:p-5 transition-all duration-200 ${
+  highlighted 
+    ? 'bg-primary text-on-primary shadow-vercel-lg border border-primary' 
+    : 'bg-canvas shadow-vercel-sm border border-hairline hover:border-hairline-strong'
+} ${className}`}>
+  <!-- Label: Monospace technical tag -->
+  <div class={`font-mono text-xs uppercase tracking-wider mb-2 ${highlighted ? 'text-mute/80' : 'text-mute'}`}>
+    {label}
+  </div>
+  
+  <!-- Value: Sans-serif prominent displays -->
+  <div class="font-sans text-base sm:text-lg lg:text-xl font-semibold tracking-tight leading-none mb-1 break-words">
+    {value}
+  </div>
+  
+  <!-- Subtitle: Monospace description -->
+  {subtitle && (
+    <div class={`font-mono text-xs mt-2 metric-subtitle ${highlighted ? 'text-canvas-soft-2/70' : 'text-body'}`}>
+      {subtitle}
+    </div>
+  )}
+</div>

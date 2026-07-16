@@ -1,0 +1,170 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Contact Us" activeTab="contact">
+  <div class="max-w-[700px] mx-auto space-y-8">
+    <div>
+      <div class="font-mono text-xs uppercase tracking-wider text-mute mb-2">06. Support</div>
+      <h1 class="font-sans text-3xl md:text-5xl font-semibold tracking-tight text-ink leading-none">
+        Contact & Feedback
+      </h1>
+      <p class="text-body text-sm mt-3">
+        Have suggestions, bug reports, data corrections, custom menu/option requests, or regional food recommendations? Send a message.
+      </p>
+    </div>
+
+    <div class="bg-canvas border border-hairline rounded-lg p-6 md:p-8 shadow-vercel-sm space-y-6">
+      <h2 class="font-sans text-lg font-semibold tracking-tight border-b border-hairline pb-3 text-ink">
+        Send Feedback
+      </h2>
+
+      <!-- Setup Alert (Visible only in development/placeholder state) -->
+      <div id="key-alert" class="bg-warning/10 border border-warning/20 rounded p-4 text-xs text-mute leading-relaxed space-y-2">
+        <div class="font-mono font-semibold text-warning">Action Required: Set Your Access Key</div>
+        <p>
+          This form is pre-wired to send submissions directly to your email using Web3Forms. To activate it:
+        </p>
+        <ol class="list-decimal pl-4 space-y-1 font-mono text-[10px]">
+          <li>Go to <a href="https://web3forms.com" target="_blank" class="text-link hover:underline">web3forms.com</a> and enter your personal email to get a free key.</li>
+          <li>Open <code class="bg-canvas border border-hairline px-1 rounded">src/pages/contact.astro</code> and replace <code class="bg-canvas border border-hairline px-1 rounded">YOUR_ACCESS_KEY_HERE</code> with your key.</li>
+        </ol>
+      </div>
+
+      <form id="contact-form" class="space-y-4">
+        <!-- Web3Forms Config -->
+        <input type="hidden" name="access_key" value="345a4cfa-8076-4d85-9db2-eda8b01a1062" id="web3forms-key" />
+        <input type="hidden" name="subject" value="WHealth Calculator - User Feedback" />
+        <input type="hidden" name="from_name" value="WHealth User" />
+        <!-- Honeypot Bot Protection -->
+        <input type="checkbox" name="botcheck" class="hidden" style="display: none;" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label for="contact-name" class="block font-mono text-[10px] uppercase tracking-wider text-body">Name</label>
+            <input 
+              type="text" 
+              id="contact-name" 
+              name="name"
+              required
+              placeholder="Your name" 
+              class="w-full px-3 py-2 border border-hairline rounded bg-canvas text-ink font-sans text-sm focus:outline-none focus:border-hairline-strong transition-colors"
+            />
+          </div>
+          <div class="space-y-2">
+            <label for="contact-email" class="block font-mono text-[10px] uppercase tracking-wider text-body">Email Address</label>
+            <input 
+              type="email" 
+              id="contact-email" 
+              name="email"
+              required
+              placeholder="you@example.com" 
+              class="w-full px-3 py-2 border border-hairline rounded bg-canvas text-ink font-sans text-sm focus:outline-none focus:border-hairline-strong transition-colors"
+            />
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label for="contact-subject" class="block font-mono text-[10px] uppercase tracking-wider text-body">Subject</label>
+          <input 
+            type="text" 
+            id="contact-subject" 
+            name="subject_topic"
+            required
+            placeholder="Food suggestion, calculator feedback, bug report..." 
+            class="w-full px-3 py-2 border border-hairline rounded bg-canvas text-ink font-sans text-sm focus:outline-none focus:border-hairline-strong transition-colors"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label for="contact-message" class="block font-mono text-[10px] uppercase tracking-wider text-body">Message</label>
+          <textarea 
+            id="contact-message" 
+            name="message"
+            required
+            rows="5"
+            placeholder="Type your message or food macro details here..." 
+            class="w-full px-3 py-2 border border-hairline rounded bg-canvas text-ink font-sans text-sm focus:outline-none focus:border-hairline-strong transition-colors resize-none"
+          ></textarea>
+        </div>
+
+        <button 
+          type="submit"
+          id="contact-submit-btn"
+          class="w-full py-2.5 rounded bg-primary text-on-primary hover:opacity-90 font-mono text-xs font-semibold shadow-vercel-sm transition-all cursor-pointer flex items-center justify-center gap-2"
+        >
+          Send Message
+        </button>
+      </form>
+
+      <!-- Success Notification Widget -->
+      <div id="contact-success" class="hidden bg-success/10 border border-success/20 rounded p-6 text-center space-y-2">
+        <h3 class="font-sans text-sm font-semibold text-link">✓ Thank You for Your Feedback!</h3>
+        <p class="text-xs text-mute leading-relaxed">
+          Since WHealth is a free, personal project maintained in spare time, submissions are reviewed periodically. We appreciate your suggestions!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function setupContactForm() {
+      const form = document.getElementById('contact-form') as HTMLFormElement | null;
+      const success = document.getElementById('contact-success');
+      const submitBtn = document.getElementById('contact-submit-btn') as HTMLButtonElement | null;
+      const keyAlert = document.getElementById('key-alert');
+      const keyInput = document.getElementById('web3forms-key') as HTMLInputElement | null;
+
+      if (!form || !success || !submitBtn) return;
+
+      // Hide the instructions alert if the user has replaced the key placeholder
+      if (keyAlert && keyInput && keyInput.value !== 'YOUR_ACCESS_KEY_HERE') {
+        keyAlert.classList.add('hidden');
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Show loading state
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = 'Sending...';
+        submitBtn.setAttribute('disabled', 'true');
+
+        const formData = new FormData(form);
+        const object = Object.fromEntries(formData);
+        const json = JSON.stringify(object);
+
+        fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: json
+        })
+        .then(async (response) => {
+          let result = await response.json();
+          if (response.status === 200) {
+            form.classList.add('hidden');
+            if (keyAlert) keyAlert.classList.add('hidden');
+            success.classList.remove('hidden');
+          } else {
+            console.error(result);
+            alert(result.message || 'Something went wrong. Please check your Access Key.');
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          alert('Submission failed. Please check your network connection.');
+        })
+        .finally(() => {
+          submitBtn.innerHTML = originalText;
+          submitBtn.removeAttribute('disabled');
+        });
+      });
+    }
+
+    setupContactForm();
+    document.addEventListener('astro:page-load', setupContactForm);
+  </script>
+</Layout>

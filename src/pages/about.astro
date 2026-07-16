@@ -1,0 +1,99 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="About Us" activeTab="about">
+  <div class="mb-12">
+    <div class="font-mono text-xs uppercase tracking-wider text-mute mb-2">03. Company</div>
+    <h1 class="font-sans text-3xl md:text-5xl font-semibold tracking-tight text-ink leading-none">
+      About Us
+    </h1>
+    <p class="text-body text-sm mt-3 max-w-[600px]">
+      Bridging the gap between physical health and financial security.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    <!-- Main Description Column -->
+    <div class="lg:col-span-8 space-y-8 font-sans text-sm text-body leading-relaxed">
+      <section class="space-y-4">
+        <h2 class="font-sans text-xl font-semibold tracking-tight text-ink">Our Philosophy</h2>
+        <p>
+          At <strong>WHealthCalculator.com</strong>, we believe that true wellness is two-fold: physical fitness and long-term financial security. Often treated as separate disciplines, health and wealth are deeply linked. Stress from financial strain impacts physical health, and medical expenditures are one of the primary drivers of financial instability.
+        </p>
+        <p>
+          By consolidating clinical-grade health metrics (BMR, TDEE, Ideal Body Weight) and institutional-quality financial forecasting tools (compound interest SIP models, retirement corpus sizing, loan amortization schedules) into a single, unified interface, we empower users to audit both aspects of their lives in one distraction-free place.
+        </p>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="font-sans text-xl font-semibold tracking-tight text-ink">Core Values</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div class="bg-canvas border border-hairline rounded-lg p-5 shadow-vercel-sm space-y-2">
+            <div class="font-mono text-xs font-semibold text-link">01 / Precision</div>
+            <p class="text-xs text-mute leading-relaxed">
+              All tools run on clinically validated medical equations (Mifflin-St Jeor, Devine weight formulas) and exact compound interest accounting standards.
+            </p>
+          </div>
+          <div class="bg-canvas border border-hairline rounded-lg p-5 shadow-vercel-sm space-y-2">
+            <div class="font-mono text-xs font-semibold text-link">02 / Privacy-First</div>
+            <p class="text-xs text-mute leading-relaxed">
+              We do not log, sell, or collect your entries. All calculations and diet customization happen 100% locally on your device's browser memory.
+            </p>
+          </div>
+          <div class="bg-canvas border border-hairline rounded-lg p-5 shadow-vercel-sm space-y-2">
+            <div class="font-mono text-xs font-semibold text-link">03 / Distraction-Free</div>
+            <p class="text-xs text-mute leading-relaxed">
+              No pop-ups, no ads, no trackers, and no subscription bait. A clean, premium developer-centric tool for direct calculations.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="font-sans text-xl font-semibold tracking-tight text-ink">Open Architecture & Attributions</h2>
+        <p>
+          WHealthCalculator.com is built on modern web standards using Astro, Tailwind CSS v4, and vanilla ES6 JavaScript. We prioritize speed, light bundle sizes, and static page compiles to deliver near-instant loading times across low-connectivity mobile networks.
+        </p>
+        <p>
+          In building our platform, we stand on the shoulders of giants. We leverage several open-source libraries, frameworks, and design assets that make this project possible. All integrated third-party assets, code, and designs are acknowledged as the intellectual property of their respective creators and are utilized in accordance with their respective open-source or commercial licenses.
+        </p>
+      </section>
+    </div>
+
+    <!-- Side Team/FAQ Column -->
+    <div class="lg:col-span-4 space-y-6">
+      <div class="bg-canvas border border-hairline rounded-lg p-6 shadow-vercel-sm space-y-4">
+        <h3 class="font-sans text-base font-semibold tracking-tight text-ink">Platform Highlights</h3>
+        <ul class="space-y-3 text-xs text-mute">
+          <li class="flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-success"></span>
+            Mixed Metric & Imperial support
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-success"></span>
+            Dynamic regional street food directory
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-success"></span>
+            Amortization schedules & visual compounding lines
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-success"></span>
+            100% offline & client-side computing
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-canvas border border-hairline rounded-lg p-6 shadow-vercel-sm space-y-3">
+        <h3 class="font-sans text-sm font-semibold tracking-tight text-ink">Need Support?</h3>
+        <p class="text-xs text-mute leading-relaxed">
+          Have feedback on calculations or want to request a local dish/macro profile? Let us know.
+        </p>
+        <a href="/contact" class="inline-block font-mono text-xs font-semibold text-link hover:text-link-deep transition-colors">
+          Contact Support →
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>

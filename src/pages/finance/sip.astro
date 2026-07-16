@@ -1,0 +1,384 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MetricCard from '../../components/MetricCard.astro';
+---
+
+<Layout 
+  title="Step Up SIP Calculator - Mutual Fund Investment Growth Planner" 
+  description="Use our free SIP calculator to project your mutual fund returns. Plan a step-up Systematic Investment Plan with yearly top-ups to calculate investment growth."
+  activeTab="sip"
+>
+  <div class="mb-12">
+    <div class="font-mono text-xs uppercase tracking-wider text-mute mb-2">02. Wealth Growth</div>
+    <h1 class="font-sans text-3xl md:text-5xl font-semibold tracking-tight text-ink leading-none">
+      SIP Compounding Planner
+    </h1>
+    <p class="text-body text-sm mt-3 max-w-[600px]">
+      Project systemic mutual fund and equity investment growth. Enable yearly top-ups to align with salary hikes and savings capability.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <!-- Left Column: Inputs Form -->
+    <div class="lg:col-span-5 bg-canvas border border-hairline rounded-lg p-6 shadow-vercel-sm space-y-6">
+      <h2 class="font-sans text-lg font-semibold tracking-tight border-b border-hairline pb-3">Inputs</h2>
+
+      <!-- Monthly Investment Slider -->
+      <div>
+        <div class="flex justify-between items-center mb-1">
+          <label for="monthly-amt" class="font-mono text-xs uppercase tracking-wider text-body">Monthly Amount</label>
+          <input type="number" id="monthly-amt-num" min="500" max="100000" step="500" value="10000" class="w-24 h-7 border border-hairline bg-canvas text-ink rounded-sm px-2 text-xs font-mono text-right focus:border-hairline-strong outline-none" />
+        </div>
+        <input type="range" id="monthly-amt" min="500" max="100000" step="500" value="10000" class="w-full mt-1" />
+        <div class="flex justify-between text-[10px] text-mute font-mono mt-1">
+          <span>₹500</span>
+          <span>₹1,00,000</span>
+        </div>
+      </div>
+
+      <!-- Expected Return Rate Slider -->
+      <div>
+        <div class="flex justify-between items-center mb-1">
+          <label for="return-rate" class="font-mono text-xs uppercase tracking-wider text-body">Expected Return (p.a. %)</label>
+          <input type="number" id="return-rate-num" min="2" max="30" step="0.5" value="12" class="w-16 h-7 border border-hairline bg-canvas text-ink rounded-sm px-2 text-xs font-mono text-right focus:border-hairline-strong outline-none" />
+        </div>
+        <input type="range" id="return-rate" min="2" max="30" step="0.5" value="12" class="w-full mt-1" />
+        <div class="flex justify-between text-[10px] text-mute font-mono mt-1">
+          <span>2%</span>
+          <span>30%</span>
+        </div>
+      </div>
+
+      <!-- Tenure Slider -->
+      <div>
+        <div class="flex justify-between items-center mb-1">
+          <label for="tenure" class="font-mono text-xs uppercase tracking-wider text-body">Time Period (Years)</label>
+          <input type="number" id="tenure-num" min="1" max="40" value="10" class="w-16 h-7 border border-hairline bg-canvas text-ink rounded-sm px-2 text-xs font-mono text-right focus:border-hairline-strong outline-none" />
+        </div>
+        <input type="range" id="tenure" min="1" max="40" value="10" class="w-full mt-1" />
+        <div class="flex justify-between text-[10px] text-mute font-mono mt-1">
+          <span>1 yr</span>
+          <span>40 yrs</span>
+        </div>
+      </div>
+
+      <!-- Optional Yearly Top-Up Toggle -->
+      <div class="border-t border-hairline pt-4 space-y-4">
+        <label class="flex items-center gap-3 cursor-pointer select-none">
+          <input type="checkbox" id="enable-topup" class="w-4 h-4 rounded border-hairline text-primary focus:ring-0" />
+          <span class="font-sans text-sm font-medium text-ink">Enable Yearly Top-Up (Optional)</span>
+        </label>
+        
+        <!-- Top-Up Parameters -->
+        <div id="topup-container" class="hidden space-y-4 pl-7 border-l border-hairline">
+          <div>
+            <label class="block font-mono text-xs uppercase tracking-wider text-body mb-2">Top-Up Type</label>
+            <div class="grid grid-cols-2 gap-2">
+              <label class="flex items-center justify-center h-8 border border-hairline rounded-sm cursor-pointer select-none text-xs hover:bg-canvas-soft-2 transition-all has-[:checked]:bg-primary has-[:checked]:text-on-primary has-[:checked]:border-primary">
+                <input type="radio" name="topup-type" value="percentage" checked class="sr-only" />
+                Percentage (%)
+              </label>
+              <label class="flex items-center justify-center h-8 border border-hairline rounded-sm cursor-pointer select-none text-xs hover:bg-canvas-soft-2 transition-all has-[:checked]:bg-primary has-[:checked]:text-on-primary has-[:checked]:border-primary">
+                <input type="radio" name="topup-type" value="fixed" class="sr-only" />
+                Fixed Amount (₹)
+              </label>
+            </div>
+          </div>
+          
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label for="topup-val" class="font-mono text-xs uppercase tracking-wider text-body">Top-Up Increment</label>
+              <span id="topup-val-display" class="font-mono text-xs font-semibold text-ink">10%</span>
+            </div>
+            <input type="number" id="topup-val" value="10" class="w-full h-9 border border-hairline rounded-sm px-3 text-sm focus:border-hairline-strong outline-none" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Outputs -->
+    <div class="lg:col-span-7 space-y-6">
+      
+      <!-- Metric Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <MetricCard label="Total Invested" id="invested-card" value="--" subtitle="Principal Invested" />
+        <MetricCard label="Wealth Gained" id="gained-card" value="--" subtitle="Interest Earned" />
+        <MetricCard label="Future Value" id="fv-card" value="--" subtitle="Estimated Maturity" highlighted={true} />
+      </div>
+
+      <!-- Growth Chart Card -->
+      <div class="bg-canvas border border-hairline rounded-lg p-6 shadow-vercel-md">
+        <div class="flex justify-between items-center border-b border-hairline pb-3 mb-6">
+          <h3 class="font-sans text-base font-semibold tracking-tight">Growth Projection Chart</h3>
+          <div class="flex gap-4 font-mono text-[10px]">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-0.5 bg-hairline-strong inline-block"></span>
+              <span class="text-mute">Invested</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-0.5 bg-link inline-block"></span>
+              <span class="text-mute">Future Value</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Live SVG Line Chart -->
+        <div class="relative w-full h-64 bg-canvas-soft-2 rounded-sm border border-hairline p-4 flex items-end">
+          <svg id="growth-svg" class="w-full h-full" fill="none" preserveAspectRatio="none">
+            <!-- Shaded Future Value Area Gradient -->
+            <defs>
+              <linearGradient id="area-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--color-link)" stop-opacity="0.12" />
+                <stop offset="100%" stop-color="var(--color-link)" stop-opacity="0.00" />
+              </linearGradient>
+            </defs>
+            <polygon id="chart-area" points="" fill="url(#area-grad)" />
+            
+            <!-- Lines -->
+            <polyline id="chart-invested" points="" stroke="var(--color-hairline-strong)" stroke-width="2" stroke-dasharray="4 2" />
+            <polyline id="chart-growth" points="" stroke="var(--color-link)" stroke-width="2.5" />
+          </svg>
+          
+          <!-- Bottom timeline labels (Year markers) -->
+          <div id="chart-years" class="absolute bottom-1 left-4 right-4 flex justify-between font-mono text-[9px] text-mute pointer-events-none">
+            <span>Yr 0</span>
+            <span>Yr 10</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Compounding note -->
+      <div class="p-4 border border-hairline rounded-md bg-canvas-soft-2 font-mono text-xs text-body leading-relaxed flex gap-3">
+        <span class="text-link">📊</span>
+        <span>
+          Adding a yearly top-up represents salary hikes and career progression. For instance, a 10% annual top-up on a ₹10,000 SIP nearly doubles the maturity corpus over a 15-year period compared to a flat SIP.
+        </span>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  function setupSipCalculator() {
+    const monthlyAmtInput = document.getElementById('monthly-amt') as HTMLInputElement;
+    const monthlyAmtNum = document.getElementById('monthly-amt-num') as HTMLInputElement;
+    
+    const returnRateInput = document.getElementById('return-rate') as HTMLInputElement;
+    const returnRateNum = document.getElementById('return-rate-num') as HTMLInputElement;
+    
+    const tenureInput = document.getElementById('tenure') as HTMLInputElement;
+    const tenureNum = document.getElementById('tenure-num') as HTMLInputElement;
+
+    const enableTopup = document.getElementById('enable-topup') as HTMLInputElement;
+    const topupContainer = document.getElementById('topup-container') as HTMLDivElement;
+    const topupTypeRadios = document.getElementsByName('topup-type') as NodeListOf<HTMLInputElement>;
+    const topupVal = document.getElementById('topup-val') as HTMLInputElement;
+    const topupValDisplay = document.getElementById('topup-val-display') as HTMLSpanElement;
+
+    const investedCardVal = document.querySelector('#invested-card .font-sans') as HTMLDivElement;
+    const gainedCardVal = document.querySelector('#gained-card .font-sans') as HTMLDivElement;
+    const fvCardVal = document.querySelector('#fv-card .font-sans') as HTMLDivElement;
+
+    // Chart SVG elements
+    const growthSvg = document.getElementById('growth-svg') as unknown as SVGSVGElement;
+    const chartInvested = document.getElementById('chart-invested') as unknown as SVGPolylineElement;
+    const chartGrowth = document.getElementById('chart-growth') as unknown as SVGPolylineElement;
+    const chartArea = document.getElementById('chart-area') as unknown as SVGPolygonElement;
+    const chartYearsLabel = document.getElementById('chart-years') as HTMLDivElement;
+
+    // Toggle top-up container
+    enableTopup.addEventListener('change', () => {
+      if (enableTopup.checked) {
+        topupContainer.classList.remove('hidden');
+      } else {
+        topupContainer.classList.add('hidden');
+      }
+      calculate();
+    });
+
+    // Handle top-up type label change
+    topupTypeRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        if (radio.checked) {
+          if (radio.value === 'percentage') {
+            topupValDisplay.textContent = 'Percentage (%)';
+            if (parseFloat(topupVal.value) > 100) topupVal.value = '10';
+          } else {
+            topupValDisplay.textContent = 'Fixed Amount (₹)';
+            topupVal.value = '1000';
+          }
+        }
+        calculate();
+      });
+    });
+
+    // Bind event listeners
+    monthlyAmtInput.addEventListener('input', () => {
+      monthlyAmtNum.value = monthlyAmtInput.value;
+      calculate();
+    });
+    monthlyAmtNum.addEventListener('input', () => {
+      let val = parseFloat(monthlyAmtNum.value) || 0;
+      monthlyAmtInput.value = Math.max(500, Math.min(100000, val)).toString();
+      calculate();
+    });
+ 
+    returnRateInput.addEventListener('input', () => {
+      returnRateNum.value = returnRateInput.value;
+      calculate();
+    });
+    returnRateNum.addEventListener('input', () => {
+      let val = parseFloat(returnRateNum.value) || 0;
+      returnRateInput.value = Math.max(2, Math.min(30, val)).toString();
+      calculate();
+    });
+ 
+    tenureInput.addEventListener('input', () => {
+      tenureNum.value = tenureInput.value;
+      calculate();
+    });
+    tenureNum.addEventListener('input', () => {
+      let val = parseFloat(tenureNum.value) || 0;
+      tenureInput.value = Math.max(1, Math.min(40, val)).toString();
+      calculate();
+    });
+
+    const clampSipInputs = () => {
+      let amt = parseFloat(monthlyAmtNum.value) || 10000;
+      if (amt < 500) amt = 500;
+      if (amt > 100000) amt = 100000;
+      monthlyAmtNum.value = amt.toString();
+      monthlyAmtInput.value = amt.toString();
+
+      let rate = parseFloat(returnRateNum.value) || 12;
+      if (rate < 2) rate = 2;
+      if (rate > 30) rate = 30;
+      returnRateNum.value = rate.toString();
+      returnRateInput.value = rate.toString();
+
+      let yrs = parseFloat(tenureNum.value) || 10;
+      if (yrs < 1) yrs = 1;
+      if (yrs > 40) yrs = 40;
+      tenureNum.value = yrs.toString();
+      tenureInput.value = yrs.toString();
+
+      calculate();
+    };
+
+    [monthlyAmtNum, returnRateNum, tenureNum].forEach(input => {
+      input.addEventListener('blur', clampSipInputs);
+      input.addEventListener('change', clampSipInputs);
+    });
+ 
+    topupVal.addEventListener('input', calculate);
+
+    function calculate() {
+      const rawAmt = parseFloat(monthlyAmtNum.value) || parseFloat(monthlyAmtInput.value) || 10000;
+      const baseMonthly = Math.max(500, Math.min(100000, rawAmt));
+
+      const rawRate = parseFloat(returnRateNum.value) || parseFloat(returnRateInput.value) || 12;
+      const rateVal = Math.max(2, Math.min(30, rawRate));
+      const rate = rateVal;
+
+      const rawYears = parseFloat(tenureNum.value) || parseFloat(tenureInput.value) || 10;
+      const years = Math.max(1, Math.min(40, rawYears));
+      const topupEnabled = enableTopup.checked;
+      
+      let topupType = 'percentage';
+      topupTypeRadios.forEach(radio => {
+        if (radio.checked) topupType = radio.value;
+      });
+      const topupIncrement = parseFloat(topupVal.value) || 0;
+
+      const monthlyRate = (rate / 12) / 100;
+      const months = years * 12;
+
+      let totalInvested = 0;
+      let currentBalance = 0;
+      let currentMonthly = baseMonthly;
+
+      // Track data points for charting (Year-wise)
+      const investedHistory = [0];
+      const growthHistory = [0];
+
+      for (let m = 1; m <= months; m++) {
+        // Apply top-up at start of each year (starting from Year 2, i.e., month 13)
+        if (m > 1 && (m - 1) % 12 === 0 && topupEnabled) {
+          if (topupType === 'percentage') {
+            currentMonthly = currentMonthly * (1 + topupIncrement / 100);
+          } else {
+            currentMonthly = currentMonthly + topupIncrement;
+          }
+        }
+
+        totalInvested += currentMonthly;
+        const interest = (currentBalance + currentMonthly) * monthlyRate;
+        currentBalance = currentBalance + currentMonthly + interest;
+
+        // Record yearly milestones
+        if (m % 12 === 0) {
+          investedHistory.push(totalInvested);
+          growthHistory.push(currentBalance);
+        }
+      }
+
+      const wealthGained = currentBalance - totalInvested;
+
+      // Update card numeric values
+      investedCardVal.textContent = `₹${Math.round(totalInvested).toLocaleString('en-IN')}`;
+      gainedCardVal.textContent = `₹${Math.round(wealthGained).toLocaleString('en-IN')}`;
+      fvCardVal.textContent = `₹${Math.round(currentBalance).toLocaleString('en-IN')}`;
+
+      // Update Chart SVGs
+      // We will map these points into the SVG viewBox coordinates
+      const maxVal = currentBalance;
+      const numYears = years;
+
+      const svgWidth = growthSvg.clientWidth || 400;
+      const svgHeight = growthSvg.clientHeight || 200;
+
+      // Layout padding for charts
+      const padX = 10;
+      const padY = 10;
+
+      let investedPointsStr = '';
+      let growthPointsStr = '';
+      let areaPointsStr = `${padX},${svgHeight - padY} `; // starts at bottom-left
+
+      for (let i = 0; i <= numYears; i++) {
+        const valInvested = investedHistory[i];
+        const valGrowth = growthHistory[i];
+
+        // Map indices to X coordinate
+        const x = padX + (i / numYears) * (svgWidth - 2 * padX);
+        
+        // Map values to Y coordinate (invert since SVG y increases downward)
+        const yInvested = svgHeight - padY - (valInvested / maxVal) * (svgHeight - 2 * padY);
+        const yGrowth = svgHeight - padY - (valGrowth / maxVal) * (svgHeight - 2 * padY);
+
+        investedPointsStr += `${x},${yInvested} `;
+        growthPointsStr += `${x},${yGrowth} `;
+        areaPointsStr += `${x},${yGrowth} `;
+      }
+
+      areaPointsStr += `${svgWidth - padX},${svgHeight - padY}`; // ends at bottom-right
+
+      chartInvested.setAttribute('points', investedPointsStr);
+      chartGrowth.setAttribute('points', growthPointsStr);
+      chartArea.setAttribute('points', areaPointsStr);
+
+      // Update Year labels
+      chartYearsLabel.innerHTML = `<span>Yr 0</span><span>Yr ${Math.round(numYears/2)}</span><span>Yr ${numYears}</span>`;
+    }
+
+    // Initial run
+    calculate();
+    
+    // Recalculate on window resize to update chart scaling
+    window.addEventListener('resize', calculate);
+  }
+
+  // Hook layout mounts
+  setupSipCalculator();
+  document.addEventListener('astro:page-load', setupSipCalculator);
+</script>

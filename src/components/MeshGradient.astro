@@ -1,0 +1,25 @@
+<!-- src/components/MeshGradient.astro -->
+<div class="absolute inset-x-0 top-0 -z-10 h-[500px] overflow-hidden pointer-events-none opacity-25 dark:opacity-20 select-none">
+  <!-- Glowing gradient blobs using SVG blur filter -->
+  <svg 
+    class="absolute w-[1200px] h-[800px] top-[-300px] left-[50%] -translate-x-[50%] blur-[130px] opacity-70" 
+    fill="none" 
+    viewBox="0 0 1200 800"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <!-- Develop: Blue/Teal -->
+    <circle cx="250" cy="250" r="300" fill="#007cf0" />
+    <circle cx="450" cy="180" r="200" fill="#00dfd8" />
+    
+    <!-- Preview: Purple/Pink -->
+    <circle cx="850" cy="300" r="350" fill="#7928ca" />
+    <circle cx="700" cy="450" r="280" fill="#ff0080" />
+    
+    <!-- Ship: Amber/Orange -->
+    <circle cx="550" cy="550" r="250" fill="#f9cb28" />
+    <circle cx="350" cy="400" r="220" fill="#ff4d4d" />
+  </svg>
+  
+  <!-- Faint bottom fade overlay -->
+  <div class="absolute inset-0 bg-gradient-to-b from-transparent to-canvas-soft"></div>
+</div>

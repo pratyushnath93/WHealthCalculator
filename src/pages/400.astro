@@ -1,0 +1,29 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="400: Bad Request" description="The request could not be understood by WHealthCalculator.com.">
+  <div class="flex-1 flex flex-col items-center justify-center text-center py-20">
+    <div class="font-mono text-xs uppercase tracking-wider text-error mb-4">400 / BAD_REQUEST</div>
+    <h1 class="font-sans text-4xl md:text-6xl font-semibold tracking-tight text-ink mb-6 leading-none select-none">
+      Bad request.
+    </h1>
+    <p class="text-body text-sm max-w-[480px] mb-8 font-sans">
+      The server could not process the request. The request might be malformed or contain invalid parameters.
+    </p>
+    <div class="flex gap-3 justify-center">
+      <a 
+        href="/" 
+        class="px-5 py-2.5 rounded-full bg-primary text-on-primary font-medium text-xs hover:opacity-90 shadow-vercel-md transition-all"
+      >
+        Go back home
+      </a>
+      <a 
+        href="/contact" 
+        class="px-5 py-2.5 rounded-full bg-canvas text-ink border border-hairline font-medium text-xs hover:bg-canvas-soft-2 shadow-vercel-sm transition-all"
+      >
+        Contact support
+      </a>
+    </div>
+  </div>
+</Layout>

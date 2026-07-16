@@ -1,0 +1,389 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MetricCard from '../../components/MetricCard.astro';
+---
+
+<Layout 
+  title="Retirement Calculator - Inflation-Adjusted Retirement Planning" 
+  description="Plan your financial independence with our free retirement calculator. Calculate the exact corpus needed to maintain your lifestyle after retirement."
+  activeTab="retirement"
+>
+  <div class="mb-12">
+    <div class="font-mono text-xs uppercase tracking-wider text-mute mb-2">02. Wealth Distribution</div>
+    <h1 class="font-sans text-3xl md:text-5xl font-semibold tracking-tight text-ink leading-none">
+      Retirement Corpus Planner
+    </h1>
+    <p class="text-body text-sm mt-3 max-w-[600px]">
+      Estimate the financial cushion required to sustain your lifestyle in retirement. Accounts for inflation and expected returns pre and post retirement.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <!-- Left Column: Inputs Form -->
+    <div class="lg:col-span-5 bg-canvas border border-hairline rounded-lg p-6 shadow-vercel-sm space-y-6">
+      <h2 class="font-sans text-lg font-semibold tracking-tight border-b border-hairline pb-3">Parameters</h2>
+
+      <!-- Ages: Current & Retirement & Life Expectancy -->
+      <div class="grid grid-cols-3 gap-3">
+        <div>
+          <label for="current-age" class="block font-mono text-[10px] uppercase tracking-wider text-body mb-1">Current Age</label>
+          <input type="number" id="current-age" value="30" min="18" max="70" class="w-full h-10 border border-hairline rounded-sm px-2 text-sm focus:border-hairline-strong outline-none" />
+        </div>
+        <div>
+          <label for="retirement-age" class="block font-mono text-[10px] uppercase tracking-wider text-body mb-1">Retire Age</label>
+          <input type="number" id="retirement-age" value="60" min="40" max="80" class="w-full h-10 border border-hairline rounded-sm px-2 text-sm focus:border-hairline-strong outline-none" />
+        </div>
+        <div>
+          <label for="life-expectancy" class="block font-mono text-[10px] uppercase tracking-wider text-body mb-1">Life Expect</label>
+          <input type="number" id="life-expectancy" value="85" min="50" max="100" class="w-full h-10 border border-hairline rounded-sm px-2 text-sm focus:border-hairline-strong outline-none" />
+        </div>
+      </div>
+
+      <!-- Current Monthly Expenses -->
+      <div>
+        <div class="flex justify-between items-center mb-1">
+          <label for="expenses" class="font-mono text-xs uppercase tracking-wider text-body">Current Monthly Expense</label>
+          <input type="number" id="expenses-num" min="5000" max="500000" step="5000" value="50000" class="w-24 h-7 border border-hairline bg-canvas text-ink rounded-sm px-2 text-xs font-mono text-right focus:border-hairline-strong outline-none" />
+        </div>
+        <input type="range" id="expenses" min="5000" max="500000" step="5000" value="50000" class="w-full mt-1" />
+        <div class="flex justify-between text-[10px] text-mute font-mono mt-1">
+          <span>₹5k</span>
+          <span>₹500k</span>
+        </div>
+      </div>
+
+      <!-- Inflation Rate -->
+      <div>
+        <div class="flex justify-between items-center mb-1">
+          <label for="inflation" class="font-mono text-xs uppercase tracking-wider text-body">Expected Inflation (p.a. %)</label>
+          <input type="number" id="inflation-num" min="2" max="15" step="0.5" value="6" class="w-16 h-7 border border-hairline bg-canvas text-ink rounded-sm px-2 text-xs font-mono text-right focus:border-hairline-strong outline-none" />
+        </div>
+        <input type="range" id="inflation" min="2" max="15" step="0.5" value="6" class="w-full mt-1" />
+        <div class="flex justify-between text-[10px] text-mute font-mono mt-1">
+          <span>2%</span>
+          <span>15%</span>
+        </div>
+      </div>
+
+      <!-- Pre & Post Retirement Return rates -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="return-pre" class="block font-mono text-[10px] uppercase tracking-wider text-body mb-1">Pre-Retire Return (%)</label>
+          <input type="number" id="return-pre" value="12" min="3" max="25" class="w-full h-10 border border-hairline rounded-sm px-3 text-sm focus:border-hairline-strong outline-none" />
+        </div>
+        <div>
+          <label for="return-post" class="block font-mono text-[10px] uppercase tracking-wider text-body mb-1">Post-Retire Return (%)</label>
+          <input type="number" id="return-post" value="8" min="3" max="20" class="w-full h-10 border border-hairline rounded-sm px-3 text-sm focus:border-hairline-strong outline-none" />
+        </div>
+      </div>
+
+      <!-- Current Corpus (Optional) -->
+      <div>
+        <label for="current-savings" class="block font-mono text-xs uppercase tracking-wider text-body mb-1">Existing Savings Corpus (Optional)</label>
+        <div class="flex gap-2 items-center">
+          <span class="font-mono text-sm text-mute">₹</span>
+          <input type="number" id="current-savings" value="100000" class="w-full h-10 border border-hairline rounded-sm px-3 text-sm focus:border-hairline-strong outline-none" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Outputs -->
+    <div class="lg:col-span-7 space-y-6">
+      
+      <!-- Metrics -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <MetricCard label="Expense at Retire" id="inflated-expense-card" value="--" subtitle="Adjusted Monthly Cost" />
+        <MetricCard label="Net Corpus Needed" id="corpus-card" value="--" subtitle="Target Capital Cushion" highlighted={true} />
+        <MetricCard label="Req. Monthly Savings" id="monthly-savings-card" value="--" subtitle="Invest from today" />
+      </div>
+
+      <!-- Graph Card -->
+      <div class="bg-canvas border border-hairline rounded-lg p-6 shadow-vercel-md">
+        <div class="flex justify-between items-center border-b border-hairline pb-3 mb-6">
+          <h3 class="font-sans text-base font-semibold tracking-tight">Lifetime Wealth Curve</h3>
+          <div class="flex gap-4 font-mono text-[10px]">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-0.5 bg-link inline-block"></span>
+              <span class="text-mute">Accumulation</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-0.5 bg-error inline-block"></span>
+              <span class="text-mute">Decumulation</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- SVG Line chart representing life cycle -->
+        <div class="relative w-full h-64 bg-canvas-soft-2 rounded-sm border border-hairline p-4 flex items-end">
+          <svg id="lifecycle-svg" class="w-full h-full" fill="none" preserveAspectRatio="none">
+            <!-- Gradients -->
+            <defs>
+              <linearGradient id="accum-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--color-link)" stop-opacity="0.1" />
+                <stop offset="100%" stop-color="var(--color-link)" stop-opacity="0" />
+              </linearGradient>
+              <linearGradient id="decum-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--color-error)" stop-opacity="0.1" />
+                <stop offset="100%" stop-color="var(--color-error)" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            
+            <polygon id="accum-area" points="" fill="url(#accum-grad)" />
+            <polygon id="decum-area" points="" fill="url(#decum-grad)" />
+            
+            <polyline id="line-accum" points="" stroke="var(--color-link)" stroke-width="2.5" />
+            <polyline id="line-decum" points="" stroke="var(--color-error)" stroke-width="2.5" />
+            
+            <!-- Vertical Line marking Retirement Age -->
+            <line id="retire-marker" x1="0" y1="0" x2="0" y2="100" stroke="var(--color-hairline-strong)" stroke-width="1" stroke-dasharray="2 2" />
+          </svg>
+          
+          <!-- Bottom timeline labels -->
+          <div id="timeline-labels" class="absolute bottom-1 left-4 right-4 flex justify-between font-mono text-[9px] text-mute pointer-events-none">
+            <span>Age: --</span>
+            <span>Retire: --</span>
+            <span>End: --</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Safe withdrawal rate alert -->
+      <div class="p-4 border border-hairline rounded-md bg-canvas-soft-2 font-mono text-xs text-body leading-relaxed flex gap-3">
+        <span class="text-link">💡</span>
+        <span>
+          Retirement Corpus calculations utilize post-retirement real returns (post-retirement returns adjusted for inflation). As inflation erodes purchasing power, the monthly withdrawal increases by the inflation rate each year, resulting in decumulation down to zero at your estimated life expectancy.
+        </span>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  function setupRetirementPlanner() {
+    // Inputs
+    const currentAgeInput = document.getElementById('current-age') as HTMLInputElement;
+    const retirementAgeInput = document.getElementById('retirement-age') as HTMLInputElement;
+    const lifeExpectancyInput = document.getElementById('life-expectancy') as HTMLInputElement;
+    
+    const expensesInput = document.getElementById('expenses') as HTMLInputElement;
+    const expensesNum = document.getElementById('expenses-num') as HTMLInputElement;
+    
+    const inflationInput = document.getElementById('inflation') as HTMLInputElement;
+    const inflationNum = document.getElementById('inflation-num') as HTMLInputElement;
+    
+    const returnPreInput = document.getElementById('return-pre') as HTMLInputElement;
+    const returnPostInput = document.getElementById('return-post') as HTMLInputElement;
+    const currentSavingsInput = document.getElementById('current-savings') as HTMLInputElement;
+
+    // Display cards
+    const inflatedExpenseCard = document.querySelector('#inflated-expense-card .font-sans') as HTMLDivElement;
+    const corpusCard = document.querySelector('#corpus-card .font-sans') as HTMLDivElement;
+    const savingsCard = document.querySelector('#monthly-savings-card .font-sans') as HTMLDivElement;
+
+    // Chart
+    const lifecycleSvg = document.getElementById('lifecycle-svg') as unknown as SVGSVGElement;
+    const accumArea = document.getElementById('accum-area') as unknown as SVGPolygonElement;
+    const decumArea = document.getElementById('decum-area') as unknown as SVGPolygonElement;
+    const lineAccum = document.getElementById('line-accum') as unknown as SVGPolylineElement;
+    const lineDecum = document.getElementById('line-decum') as unknown as SVGPolylineElement;
+    const retireMarker = document.getElementById('retire-marker') as unknown as SVGLineElement;
+    const timelineLabels = document.getElementById('timeline-labels') as HTMLDivElement;
+
+    // Input listeners
+    [currentAgeInput, retirementAgeInput, lifeExpectancyInput, returnPreInput, returnPostInput, currentSavingsInput].forEach(input => {
+      input.addEventListener('input', calculate);
+    });
+
+    expensesInput.addEventListener('input', () => {
+      expensesNum.value = expensesInput.value;
+      calculate();
+    });
+    expensesNum.addEventListener('input', () => {
+      let val = parseFloat(expensesNum.value) || 0;
+      expensesInput.value = Math.max(5000, Math.min(500000, val)).toString();
+      calculate();
+    });
+ 
+    inflationInput.addEventListener('input', () => {
+      inflationNum.value = inflationInput.value;
+      calculate();
+    });
+    inflationNum.addEventListener('input', () => {
+      let val = parseFloat(inflationNum.value) || 0;
+      inflationInput.value = Math.max(2, Math.min(15, val)).toString();
+      calculate();
+    });
+
+    const clampRetirementInputs = () => {
+      let exp = parseFloat(expensesNum.value) || 50000;
+      if (exp < 5000) exp = 5000;
+      if (exp > 500000) exp = 500000;
+      expensesNum.value = exp.toString();
+      expensesInput.value = exp.toString();
+
+      let infl = parseFloat(inflationNum.value) || 6;
+      if (infl < 2) infl = 2;
+      if (infl > 15) infl = 15;
+      inflationNum.value = infl.toString();
+      inflationInput.value = infl.toString();
+
+      calculate();
+    };
+
+    [expensesNum, inflationNum].forEach(input => {
+      input.addEventListener('blur', clampRetirementInputs);
+      input.addEventListener('change', clampRetirementInputs);
+    });
+
+    function calculate() {
+      const currentAge = Math.max(18, parseInt(currentAgeInput.value) || 30);
+      const retireAge = Math.max(currentAge + 1, parseInt(retirementAgeInput.value) || 60);
+      const lifeExpect = Math.max(retireAge + 1, parseInt(lifeExpectancyInput.value) || 85);
+      const rawExpenses = parseFloat(expensesNum.value) || parseFloat(expensesInput.value) || 50000;
+      const currentExpenses = Math.max(5000, Math.min(500000, rawExpenses));
+      const rawInflation = parseFloat(inflationNum.value) || parseFloat(inflationInput.value) || 6;
+      const inflation = Math.max(2, Math.min(15, rawInflation));
+      const returnPre = parseFloat(returnPreInput.value) || 12;
+      const returnPost = parseFloat(returnPostInput.value) || 8;
+      const currentSavings = parseFloat(currentSavingsInput.value) || 0;
+
+      const yearsToRetire = retireAge - currentAge;
+      const yearsInRetire = lifeExpect - retireAge;
+
+      // 1. Calculate inflation-adjusted monthly expenses at retirement
+      const inflatedMonthlyExpenses = currentExpenses * Math.pow(1 + inflation / 100, yearsToRetire);
+
+      // 2. Real Rate of Return post-retirement
+      // Formula: (1 + post_rate) / (1 + inflation) - 1
+      const realRatePost = ((1 + returnPost / 100) / (1 + inflation / 100)) - 1;
+      const realRatePostMonthly = realRatePost / 12;
+      const monthsInRetire = yearsInRetire * 12;
+
+      // 3. Compute retirement corpus needed (Annuity due monthly)
+      let corpusNeeded = 0;
+      if (realRatePostMonthly !== 0) {
+        corpusNeeded = inflatedMonthlyExpenses * ((1 - Math.pow(1 + realRatePostMonthly, -monthsInRetire)) / realRatePostMonthly) * (1 + realRatePostMonthly);
+      } else {
+        corpusNeeded = inflatedMonthlyExpenses * monthsInRetire;
+      }
+
+      // 4. Required monthly savings
+      // Future value of current savings at retirement
+      const preRateMonthly = (returnPre / 12) / 100;
+      const monthsToRetire = yearsToRetire * 12;
+      const fvSavings = currentSavings * Math.pow(1 + preRateMonthly, monthsToRetire);
+      
+      const netCorpusToBuild = Math.max(0, corpusNeeded - fvSavings);
+      let monthlySavingsReq = 0;
+      if (netCorpusToBuild > 0) {
+        if (preRateMonthly !== 0) {
+          monthlySavingsReq = netCorpusToBuild * (preRateMonthly / (Math.pow(1 + preRateMonthly, monthsToRetire) - 1)) / (1 + preRateMonthly);
+        } else {
+          monthlySavingsReq = netCorpusToBuild / monthsToRetire;
+        }
+      }
+
+      // Update display cards
+      inflatedExpenseCard.textContent = `₹${Math.round(inflatedMonthlyExpenses).toLocaleString('en-IN')}`;
+      corpusCard.textContent = `₹${Math.round(corpusNeeded).toLocaleString('en-IN')}`;
+      savingsCard.textContent = `₹${Math.round(monthlySavingsReq).toLocaleString('en-IN')}`;
+
+      // Build data series for charts
+      const svgWidth = lifecycleSvg.clientWidth || 400;
+      const svgHeight = lifecycleSvg.clientHeight || 200;
+      const padX = 10;
+      const padY = 10;
+
+      // Accumulation path (currentAge to retireAge)
+      const accumPoints = [];
+      let currentCorpus = currentSavings;
+      for (let y = 0; y <= yearsToRetire; y++) {
+        accumPoints.push({
+          age: currentAge + y,
+          value: currentCorpus
+        });
+        // Grow corpus for 12 months adding monthlySavingsReq
+        for (let m = 0; m < 12; m++) {
+          currentCorpus = (currentCorpus + monthlySavingsReq) * (1 + preRateMonthly);
+        }
+      }
+
+      // Decumulation path (retireAge to lifeExpectancy)
+      const decumPoints = [{ age: retireAge, value: corpusNeeded }];
+      let retiringCorpus = corpusNeeded;
+      
+      // Post-retirement return rate monthly
+      const postRateMonthly = (returnPost / 12) / 100;
+      let currentWithdrawal = inflatedMonthlyExpenses;
+
+      for (let y = 1; y <= yearsInRetire; y++) {
+        // withdrawal increases by inflation rate at the end of each year
+        for (let m = 0; m < 12; m++) {
+          retiringCorpus = Math.max(0, (retiringCorpus - currentWithdrawal) * (1 + postRateMonthly));
+        }
+        currentWithdrawal = currentWithdrawal * (1 + inflation / 100);
+        decumPoints.push({
+          age: retireAge + y,
+          value: retiringCorpus
+        });
+      }
+
+      // Max value for Y scaling
+      const maxCorpus = Math.max(corpusNeeded, currentSavings);
+
+      // Plotting coordinates
+      const totalSpan = lifeExpect - currentAge;
+      const retireOffset = (yearsToRetire / totalSpan); // percentage along x axis
+
+      let accumPointsStr = '';
+      let accumAreaStr = `${padX},${svgHeight - padY} `;
+      
+      accumPoints.forEach(pt => {
+        const pctX = (pt.age - currentAge) / totalSpan;
+        const x = padX + pctX * (svgWidth - 2 * padX);
+        const y = svgHeight - padY - (pt.value / maxCorpus) * (svgHeight - 2 * padY);
+        accumPointsStr += `${x},${y} `;
+        accumAreaStr += `${x},${y} `;
+      });
+      accumAreaStr += `${padX + retireOffset * (svgWidth - 2 * padX)},${svgHeight - padY}`;
+
+      let decumPointsStr = '';
+      let decumAreaStr = `${padX + retireOffset * (svgWidth - 2 * padX)},${svgHeight - padY} `;
+      decumPoints.forEach(pt => {
+        const pctX = (pt.age - currentAge) / totalSpan;
+        const x = padX + pctX * (svgWidth - 2 * padX);
+        const y = svgHeight - padY - (pt.value / maxCorpus) * (svgHeight - 2 * padY);
+        decumPointsStr += `${x},${y} `;
+        decumAreaStr += `${x},${y} `;
+      });
+      decumAreaStr += `${svgWidth - padX},${svgHeight - padY}`;
+
+      // Update SVG lines
+      lineAccum.setAttribute('points', accumPointsStr);
+      lineDecum.setAttribute('points', decumPointsStr);
+      accumArea.setAttribute('points', accumAreaStr);
+      decumArea.setAttribute('points', decumAreaStr);
+
+      // Position vertical retirement marker
+      const retireX = padX + retireOffset * (svgWidth - 2 * padX);
+      retireMarker.setAttribute('x1', retireX.toString());
+      retireMarker.setAttribute('x2', retireX.toString());
+      retireMarker.setAttribute('y1', padY.toString());
+      retireMarker.setAttribute('y2', (svgHeight - padY).toString());
+
+      // Update Labels
+      timelineLabels.innerHTML = `
+        <span>Age: ${currentAge}</span>
+        <span class="absolute" style="left: ${retireX}px; transform: translateX(-50%);">Retire: ${retireAge}</span>
+        <span>End: ${lifeExpect}</span>
+      `;
+    }
+
+    // Run
+    calculate();
+    window.addEventListener('resize', calculate);
+  }
+
+  setupRetirementPlanner();
+  document.addEventListener('astro:page-load', setupRetirementPlanner);
+</script>
