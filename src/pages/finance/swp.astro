@@ -1,0 +1,334 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MetricCard from '../../components/MetricCard.astro';
+---
+
+<Layout 
+  title="SWP Calculator - Mutual Fund Systematic Withdrawal Plan Planner" 
+  description="Use our free SWP calculator to project your mutual fund withdrawals. Calculate cash flows, final remaining balance, and portfolio longevity."
+  activeTab="swp"
+>
+  <div class="mb-12">
+    <div class="font-mono text-xs uppercase tracking-wider text-mute mb-2">02. Wealth Growth</div>
+    <h1 class="font-sans text-3xl md:text-5xl font-semibold tracking-tight text-ink leading-none">
+      SWP Planner
+    </h1>
+    <p class="text-body text-sm mt-3 max-w-[600px]">
+      Project regular payouts from your investments. Simulate monthly cash withdrawals and compound growth on residual balances to manage longevity.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <!-- Left Column: Inputs Form -->
+    <div class="lg:col-span-5 bg-canvas border border-hairline rounded-lg p-6 shadow-vercel-sm space-y-6">
+      <h2 class="font-sans text-lg font-semibold tracking-tight border-b border-hairline pb-3">Inputs</h2>
+
+      <!-- Total Investment Slider -->
+      <div>
+        <div class="flex justify-between items-center mb-1">
+          <label for="total-invest" class="font-mono text-xs uppercase tracking-wider text-body">Total Investment</label>
+          <input type="number" id="total-invest-num" min="5000" max="100000000" step="5000" value="1000000" class="w-28 h-7 border border-hairline bg-canvas text-ink rounded-sm px-2 text-xs font-mono text-right focus:border-hairline-strong outline-none" />
+        </div>
+        <input type="range" id="total-invest" min="5000" max="100000000" step="50000" value="1000000" class="w-full mt-1" />
+        <div class="flex justify-between text-[10px] text-mute font-mono mt-1">
+          <span>₹5,000</span>
+          <span>₹10 Cr</span>
+        </div>
+      </div>
+
+      <!-- Monthly Withdrawal Slider -->
+      <div>
+        <div class="flex justify-between items-center mb-1">
+          <label for="monthly-withdraw" class="font-mono text-xs uppercase tracking-wider text-body">Monthly Withdrawal</label>
+          <input type="number" id="monthly-withdraw-num" min="500" max="10000000" step="500" value="10000" class="w-28 h-7 border border-hairline bg-canvas text-ink rounded-sm px-2 text-xs font-mono text-right focus:border-hairline-strong outline-none" />
+        </div>
+        <input type="range" id="monthly-withdraw" min="500" max="10000000" step="5000" value="10000" class="w-full mt-1" />
+        <div class="flex justify-between text-[10px] text-mute font-mono mt-1">
+          <span>₹500</span>
+          <span>₹1 Cr</span>
+        </div>
+      </div>
+
+      <!-- Expected Return Rate Slider -->
+      <div>
+        <div class="flex justify-between items-center mb-1">
+          <label for="return-rate" class="font-mono text-xs uppercase tracking-wider text-body">Expected Return (p.a. %)</label>
+          <input type="number" id="return-rate-num" min="2" max="30" step="0.5" value="12" class="w-16 h-7 border border-hairline bg-canvas text-ink rounded-sm px-2 text-xs font-mono text-right focus:border-hairline-strong outline-none" />
+        </div>
+        <input type="range" id="return-rate" min="2" max="30" step="0.5" value="12" class="w-full mt-1" />
+        <div class="flex justify-between text-[10px] text-mute font-mono mt-1">
+          <span>2%</span>
+          <span>30%</span>
+        </div>
+      </div>
+
+      <!-- Tenure Slider -->
+      <div>
+        <div class="flex justify-between items-center mb-1">
+          <label for="tenure" class="font-mono text-xs uppercase tracking-wider text-body">Time Period (Years)</label>
+          <input type="number" id="tenure-num" min="1" max="40" value="10" class="w-16 h-7 border border-hairline bg-canvas text-ink rounded-sm px-2 text-xs font-mono text-right focus:border-hairline-strong outline-none" />
+        </div>
+        <input type="range" id="tenure" min="1" max="40" value="10" class="w-full mt-1" />
+        <div class="flex justify-between text-[10px] text-mute font-mono mt-1">
+          <span>1 yr</span>
+          <span>40 yrs</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Outputs -->
+    <div class="lg:col-span-7 space-y-6">
+      
+      <!-- Metric Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <MetricCard label="Total Investment" id="invested-card" value="--" subtitle="Principal Invested" />
+        <MetricCard label="Total Withdrawn" id="withdrawn-card" value="--" subtitle="Cumulative Payouts" />
+        <MetricCard label="Final Balance" id="balance-card" value="--" subtitle="Residual Value" highlighted={true} />
+      </div>
+
+      <!-- Growth Chart Card -->
+      <div class="bg-canvas border border-hairline rounded-lg p-6 shadow-vercel-md">
+        <div class="flex justify-between items-center border-b border-hairline pb-3 mb-6">
+          <h3 class="font-sans text-base font-semibold tracking-tight">Withdrawal & Balance Trend</h3>
+          <div class="flex gap-4 font-mono text-[10px]">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-0.5 bg-hairline-strong inline-block"></span>
+              <span class="text-mute">Withdrawn</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-0.5 bg-link inline-block"></span>
+              <span class="text-mute">Remaining Balance</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Live SVG Line Chart -->
+        <div class="relative w-full h-64 bg-canvas-soft-2 rounded-sm border border-hairline p-4 flex items-end">
+          <svg id="growth-svg" class="w-full h-full" fill="none" preserveAspectRatio="none">
+            <!-- Shaded Remaining Balance Area Gradient -->
+            <defs>
+              <linearGradient id="area-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--color-link)" stop-opacity="0.12" />
+                <stop offset="100%" stop-color="var(--color-link)" stop-opacity="0.00" />
+              </linearGradient>
+            </defs>
+            <polygon id="chart-area" points="" fill="url(#area-grad)" />
+            
+            <!-- Lines -->
+            <polyline id="chart-withdrawn" points="" stroke="var(--color-hairline-strong)" stroke-width="2" stroke-dasharray="4 2" />
+            <polyline id="chart-balance" points="" stroke="var(--color-link)" stroke-width="2.5" />
+          </svg>
+          
+          <!-- Bottom timeline labels (Year markers) -->
+          <div id="chart-years" class="absolute bottom-1 left-4 right-4 flex justify-between font-mono text-[9px] text-mute pointer-events-none">
+            <span>Yr 0</span>
+            <span>Yr 10</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- SWP explanation note -->
+      <div class="p-4 border border-hairline rounded-md bg-canvas-soft-2 font-mono text-xs text-body leading-relaxed flex gap-3">
+        <span class="text-link">📊</span>
+        <span>
+          A Systematic Withdrawal Plan (SWP) provides a predictable income stream. If the expected investment return rate exceeds your withdrawal rate, your residual balance will continue to grow over time. Otherwise, capital will gradually deplete.
+        </span>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  function setupSwpCalculator() {
+    const totalInvestInput = document.getElementById('total-invest') as HTMLInputElement;
+    const totalInvestNum = document.getElementById('total-invest-num') as HTMLInputElement;
+    
+    const monthlyWithdrawInput = document.getElementById('monthly-withdraw') as HTMLInputElement;
+    const monthlyWithdrawNum = document.getElementById('monthly-withdraw-num') as HTMLInputElement;
+    
+    const returnRateInput = document.getElementById('return-rate') as HTMLInputElement;
+    const returnRateNum = document.getElementById('return-rate-num') as HTMLInputElement;
+    
+    const tenureInput = document.getElementById('tenure') as HTMLInputElement;
+    const tenureNum = document.getElementById('tenure-num') as HTMLInputElement;
+
+    const investedCardVal = document.querySelector('#invested-card .font-sans') as HTMLDivElement;
+    const withdrawnCardVal = document.querySelector('#withdrawn-card .font-sans') as HTMLDivElement;
+    const balanceCardVal = document.querySelector('#balance-card .font-sans') as HTMLDivElement;
+
+    // Chart SVG elements
+    const growthSvg = document.getElementById('growth-svg') as unknown as SVGSVGElement;
+    const chartWithdrawn = document.getElementById('chart-withdrawn') as unknown as SVGPolylineElement;
+    const chartBalance = document.getElementById('chart-balance') as unknown as SVGPolylineElement;
+    const chartArea = document.getElementById('chart-area') as unknown as SVGPolygonElement;
+    const chartYearsLabel = document.getElementById('chart-years') as HTMLDivElement;
+
+    // Bind event listeners
+    totalInvestInput.addEventListener('input', () => {
+      totalInvestNum.value = totalInvestInput.value;
+      calculate();
+    });
+    totalInvestNum.addEventListener('input', () => {
+      let val = parseFloat(totalInvestNum.value) || 0;
+      totalInvestInput.value = Math.max(5000, Math.min(100000000, val)).toString();
+      calculate();
+    });
+ 
+    monthlyWithdrawInput.addEventListener('input', () => {
+      monthlyWithdrawNum.value = monthlyWithdrawInput.value;
+      calculate();
+    });
+    monthlyWithdrawNum.addEventListener('input', () => {
+      let val = parseFloat(monthlyWithdrawNum.value) || 0;
+      monthlyWithdrawInput.value = Math.max(500, Math.min(10000000, val)).toString();
+      calculate();
+    });
+ 
+    returnRateInput.addEventListener('input', () => {
+      returnRateNum.value = returnRateInput.value;
+      calculate();
+    });
+    returnRateNum.addEventListener('input', () => {
+      let val = parseFloat(returnRateNum.value) || 0;
+      returnRateInput.value = Math.max(2, Math.min(30, val)).toString();
+      calculate();
+    });
+ 
+    tenureInput.addEventListener('input', () => {
+      tenureNum.value = tenureInput.value;
+      calculate();
+    });
+    tenureNum.addEventListener('input', () => {
+      let val = parseFloat(tenureNum.value) || 0;
+      tenureInput.value = Math.max(1, Math.min(40, val)).toString();
+      calculate();
+    });
+
+    const clampSwpInputs = () => {
+      let invest = parseFloat(totalInvestNum.value) || 1000000;
+      if (invest < 5000) invest = 5000;
+      if (invest > 100000000) invest = 100000000;
+      totalInvestNum.value = invest.toString();
+      totalInvestInput.value = invest.toString();
+
+      let withdraw = parseFloat(monthlyWithdrawNum.value) || 10000;
+      if (withdraw < 500) withdraw = 500;
+      if (withdraw > 10000000) withdraw = 10000000;
+      monthlyWithdrawNum.value = withdraw.toString();
+      monthlyWithdrawInput.value = withdraw.toString();
+
+      let rate = parseFloat(returnRateNum.value) || 12;
+      if (rate < 2) rate = 2;
+      if (rate > 30) rate = 30;
+      returnRateNum.value = rate.toString();
+      returnRateInput.value = rate.toString();
+
+      let yrs = parseFloat(tenureNum.value) || 10;
+      if (yrs < 1) yrs = 1;
+      if (yrs > 40) yrs = 40;
+      tenureNum.value = yrs.toString();
+      tenureInput.value = yrs.toString();
+
+      calculate();
+    };
+
+    [totalInvestNum, monthlyWithdrawNum, returnRateNum, tenureNum].forEach(input => {
+      input.addEventListener('blur', clampSwpInputs);
+      input.addEventListener('change', clampSwpInputs);
+    });
+
+    function calculate() {
+      const rawInvest = parseFloat(totalInvestNum.value) || parseFloat(totalInvestInput.value) || 1000000;
+      const totalInvestment = Math.max(5000, Math.min(100000000, rawInvest));
+
+      const rawWithdraw = parseFloat(monthlyWithdrawNum.value) || parseFloat(monthlyWithdrawInput.value) || 10000;
+      const monthlyWithdrawal = Math.max(500, Math.min(10000000, rawWithdraw));
+
+      const rawRate = parseFloat(returnRateNum.value) || parseFloat(returnRateInput.value) || 12;
+      const rate = Math.max(2, Math.min(30, rawRate));
+
+      const rawYears = parseFloat(tenureNum.value) || parseFloat(tenureInput.value) || 10;
+      const years = Math.max(1, Math.min(40, rawYears));
+
+      const monthlyRate = (rate / 12) / 100;
+      const months = years * 12;
+
+      let currentBalance = totalInvestment;
+      let totalWithdrawn = 0;
+
+      // Track data points for charting (Year-wise)
+      const balanceHistory = [totalInvestment];
+      const withdrawnHistory = [0];
+
+      for (let m = 1; m <= months; m++) {
+        let withdrawalThisMonth = 0;
+        if (currentBalance >= monthlyWithdrawal) {
+          withdrawalThisMonth = monthlyWithdrawal;
+        } else {
+          withdrawalThisMonth = Math.max(0, currentBalance);
+        }
+
+        totalWithdrawn += withdrawalThisMonth;
+        const balanceAfterWithdrawal = Math.max(0, currentBalance - withdrawalThisMonth);
+        const monthlyInterest = balanceAfterWithdrawal * monthlyRate;
+        currentBalance = balanceAfterWithdrawal + monthlyInterest;
+
+        // Record yearly milestones
+        if (m % 12 === 0) {
+          balanceHistory.push(currentBalance);
+          withdrawnHistory.push(totalWithdrawn);
+        }
+      }
+
+      // Update card numeric values
+      investedCardVal.textContent = `₹${Math.round(totalInvestment).toLocaleString('en-IN')}`;
+      withdrawnCardVal.textContent = `₹${Math.round(totalWithdrawn).toLocaleString('en-IN')}`;
+      balanceCardVal.textContent = `₹${Math.round(currentBalance).toLocaleString('en-IN')}`;
+
+      // Update Chart SVGs
+      const maxVal = Math.max(totalInvestment, currentBalance, totalWithdrawn, ...balanceHistory, ...withdrawnHistory);
+      const numYears = years;
+
+      const svgWidth = growthSvg.clientWidth || 400;
+      const svgHeight = growthSvg.clientHeight || 200;
+
+      const padX = 10;
+      const padY = 10;
+
+      let withdrawnPointsStr = '';
+      let balancePointsStr = '';
+      let areaPointsStr = `${padX},${svgHeight - padY} `; // starts at bottom-left
+
+      for (let i = 0; i <= numYears; i++) {
+        const valWithdrawn = withdrawnHistory[i];
+        const valBalance = balanceHistory[i];
+
+        const x = padX + (i / numYears) * (svgWidth - 2 * padX);
+        const yWithdrawn = svgHeight - padY - (valWithdrawn / maxVal) * (svgHeight - 2 * padY);
+        const yBalance = svgHeight - padY - (valBalance / maxVal) * (svgHeight - 2 * padY);
+
+        withdrawnPointsStr += `${x},${yWithdrawn} `;
+        balancePointsStr += `${x},${yBalance} `;
+        areaPointsStr += `${x},${yBalance} `;
+      }
+
+      areaPointsStr += `${svgWidth - padX},${svgHeight - padY}`;
+
+      chartWithdrawn.setAttribute('points', withdrawnPointsStr);
+      chartBalance.setAttribute('points', balancePointsStr);
+      chartArea.setAttribute('points', areaPointsStr);
+
+      chartYearsLabel.innerHTML = `<span>Yr 0</span><span>Yr ${Math.round(numYears/2)}</span><span>Yr ${numYears}</span>`;
+    }
+
+    // Initial run
+    calculate();
+    
+    // Recalculate on window resize to update chart scaling
+    window.addEventListener('resize', calculate);
+  }
+
+  // Hook layout mounts
+  setupSwpCalculator();
+  document.addEventListener('astro:page-load', setupSwpCalculator);
+</script>

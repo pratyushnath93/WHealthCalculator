@@ -4,17 +4,17 @@ import MetricCard from '../../components/MetricCard.astro';
 ---
 
 <Layout 
-  title="Step Up SIP Calculator - Mutual Fund Investment Growth Planner" 
-  description="Use our free SIP calculator to project your mutual fund returns. Plan a step-up Systematic Investment Plan with yearly top-ups to calculate investment growth."
+  title="SIP & Lumpsum Calculator - Mutual Fund Investment Growth Planner" 
+  description="Use our free mutual fund calculator to project your SIP and lumpsum returns. Plan systematic investments with yearly top-ups or analyze one-time investments."
   activeTab="sip"
 >
   <div class="mb-12">
     <div class="font-mono text-xs uppercase tracking-wider text-mute mb-2">02. Wealth Growth</div>
     <h1 class="font-sans text-3xl md:text-5xl font-semibold tracking-tight text-ink leading-none">
-      SIP Compounding Planner
+      SIP & Lumpsum Planner
     </h1>
     <p class="text-body text-sm mt-3 max-w-[600px]">
-      Project systemic mutual fund and equity investment growth. Enable yearly top-ups to align with salary hikes and savings capability.
+      Project systemic mutual fund and equity investment growth. Switch between monthly SIP and lumpsum options to compare compounding wealth.
     </p>
   </div>
 
@@ -23,16 +23,35 @@ import MetricCard from '../../components/MetricCard.astro';
     <div class="lg:col-span-5 bg-canvas border border-hairline rounded-lg p-6 shadow-vercel-sm space-y-6">
       <h2 class="font-sans text-lg font-semibold tracking-tight border-b border-hairline pb-3">Inputs</h2>
 
+      <!-- Tabs (Monthly SIP / Lumpsum) -->
+      <div class="grid grid-cols-2 gap-1 bg-canvas-soft-2 p-1 rounded-sm border border-hairline">
+        <button id="tab-monthly" type="button" class="py-1.5 text-xs font-medium rounded-sm bg-canvas text-ink shadow-vercel-sm cursor-pointer transition-all">Monthly (SIP)</button>
+        <button id="tab-lumpsum" type="button" class="py-1.5 text-xs font-medium rounded-sm text-body hover:text-ink cursor-pointer transition-all">Lumpsum</button>
+      </div>
+
       <!-- Monthly Investment Slider -->
-      <div>
+      <div id="monthly-amt-container">
         <div class="flex justify-between items-center mb-1">
           <label for="monthly-amt" class="font-mono text-xs uppercase tracking-wider text-body">Monthly Amount</label>
-          <input type="number" id="monthly-amt-num" min="500" max="100000" step="500" value="10000" class="w-24 h-7 border border-hairline bg-canvas text-ink rounded-sm px-2 text-xs font-mono text-right focus:border-hairline-strong outline-none" />
+          <input type="number" id="monthly-amt-num" min="500" max="100000000" step="500" value="10000" class="w-24 h-7 border border-hairline bg-canvas text-ink rounded-sm px-2 text-xs font-mono text-right focus:border-hairline-strong outline-none" />
         </div>
-        <input type="range" id="monthly-amt" min="500" max="100000" step="500" value="10000" class="w-full mt-1" />
+        <input type="range" id="monthly-amt" min="500" max="100000000" step="5000" value="10000" class="w-full mt-1" />
         <div class="flex justify-between text-[10px] text-mute font-mono mt-1">
           <span>₹500</span>
-          <span>₹1,00,000</span>
+          <span>₹10 Cr</span>
+        </div>
+      </div>
+
+      <!-- Lumpsum Investment Slider -->
+      <div id="lumpsum-amt-container" class="hidden">
+        <div class="flex justify-between items-center mb-1">
+          <label for="lumpsum-amt" class="font-mono text-xs uppercase tracking-wider text-body">Lumpsum Amount</label>
+          <input type="number" id="lumpsum-amt-num" min="5000" max="100000000" step="5000" value="100000" class="w-28 h-7 border border-hairline bg-canvas text-ink rounded-sm px-2 text-xs font-mono text-right focus:border-hairline-strong outline-none" />
+        </div>
+        <input type="range" id="lumpsum-amt" min="5000" max="100000000" step="50000" value="100000" class="w-full mt-1" />
+        <div class="flex justify-between text-[10px] text-mute font-mono mt-1">
+          <span>₹5,000</span>
+          <span>₹10 Cr</span>
         </div>
       </div>
 
@@ -63,7 +82,7 @@ import MetricCard from '../../components/MetricCard.astro';
       </div>
 
       <!-- Optional Yearly Top-Up Toggle -->
-      <div class="border-t border-hairline pt-4 space-y-4">
+      <div id="topup-section" class="border-t border-hairline pt-4 space-y-4">
         <label class="flex items-center gap-3 cursor-pointer select-none">
           <input type="checkbox" id="enable-topup" class="w-4 h-4 rounded border-hairline text-primary focus:ring-0" />
           <span class="font-sans text-sm font-medium text-ink">Enable Yearly Top-Up (Optional)</span>
@@ -160,8 +179,17 @@ import MetricCard from '../../components/MetricCard.astro';
 
 <script>
   function setupSipCalculator() {
+    const tabMonthly = document.getElementById('tab-monthly') as HTMLButtonElement;
+    const tabLumpsum = document.getElementById('tab-lumpsum') as HTMLButtonElement;
+    const monthlyAmtContainer = document.getElementById('monthly-amt-container') as HTMLDivElement;
+    const lumpsumAmtContainer = document.getElementById('lumpsum-amt-container') as HTMLDivElement;
+    const topupSection = document.getElementById('topup-section') as HTMLDivElement;
+
     const monthlyAmtInput = document.getElementById('monthly-amt') as HTMLInputElement;
     const monthlyAmtNum = document.getElementById('monthly-amt-num') as HTMLInputElement;
+
+    const lumpsumAmtInput = document.getElementById('lumpsum-amt') as HTMLInputElement;
+    const lumpsumAmtNum = document.getElementById('lumpsum-amt-num') as HTMLInputElement;
     
     const returnRateInput = document.getElementById('return-rate') as HTMLInputElement;
     const returnRateNum = document.getElementById('return-rate-num') as HTMLInputElement;
@@ -185,6 +213,36 @@ import MetricCard from '../../components/MetricCard.astro';
     const chartGrowth = document.getElementById('chart-growth') as unknown as SVGPolylineElement;
     const chartArea = document.getElementById('chart-area') as unknown as SVGPolygonElement;
     const chartYearsLabel = document.getElementById('chart-years') as HTMLDivElement;
+
+    let currentTab = 'monthly'; // 'monthly' or 'lumpsum'
+
+    // Tab switcher
+    const setTab = (tab: 'monthly' | 'lumpsum') => {
+      currentTab = tab;
+      if (tab === 'monthly') {
+        tabMonthly.classList.add('bg-canvas', 'text-ink', 'shadow-vercel-sm');
+        tabMonthly.classList.remove('text-body', 'hover:text-ink');
+        tabLumpsum.classList.remove('bg-canvas', 'text-ink', 'shadow-vercel-sm');
+        tabLumpsum.classList.add('text-body', 'hover:text-ink');
+
+        monthlyAmtContainer.classList.remove('hidden');
+        lumpsumAmtContainer.classList.add('hidden');
+        topupSection.classList.remove('hidden');
+      } else {
+        tabLumpsum.classList.add('bg-canvas', 'text-ink', 'shadow-vercel-sm');
+        tabLumpsum.classList.remove('text-body', 'hover:text-ink');
+        tabMonthly.classList.remove('bg-canvas', 'text-ink', 'shadow-vercel-sm');
+        tabMonthly.classList.add('text-body', 'hover:text-ink');
+
+        lumpsumAmtContainer.classList.remove('hidden');
+        monthlyAmtContainer.classList.add('hidden');
+        topupSection.classList.add('hidden');
+      }
+      calculate();
+    };
+
+    tabMonthly.addEventListener('click', () => setTab('monthly'));
+    tabLumpsum.addEventListener('click', () => setTab('lumpsum'));
 
     // Toggle top-up container
     enableTopup.addEventListener('change', () => {
@@ -219,7 +277,17 @@ import MetricCard from '../../components/MetricCard.astro';
     });
     monthlyAmtNum.addEventListener('input', () => {
       let val = parseFloat(monthlyAmtNum.value) || 0;
-      monthlyAmtInput.value = Math.max(500, Math.min(100000, val)).toString();
+      monthlyAmtInput.value = Math.max(500, Math.min(100000000, val)).toString();
+      calculate();
+    });
+
+    lumpsumAmtInput.addEventListener('input', () => {
+      lumpsumAmtNum.value = lumpsumAmtInput.value;
+      calculate();
+    });
+    lumpsumAmtNum.addEventListener('input', () => {
+      let val = parseFloat(lumpsumAmtNum.value) || 0;
+      lumpsumAmtInput.value = Math.max(5000, Math.min(100000000, val)).toString();
       calculate();
     });
  
@@ -246,9 +314,15 @@ import MetricCard from '../../components/MetricCard.astro';
     const clampSipInputs = () => {
       let amt = parseFloat(monthlyAmtNum.value) || 10000;
       if (amt < 500) amt = 500;
-      if (amt > 100000) amt = 100000;
+      if (amt > 100000000) amt = 100000000;
       monthlyAmtNum.value = amt.toString();
       monthlyAmtInput.value = amt.toString();
+
+      let lumpsum = parseFloat(lumpsumAmtNum.value) || 100000;
+      if (lumpsum < 5000) lumpsum = 5000;
+      if (lumpsum > 100000000) lumpsum = 100000000;
+      lumpsumAmtNum.value = lumpsum.toString();
+      lumpsumAmtInput.value = lumpsum.toString();
 
       let rate = parseFloat(returnRateNum.value) || 12;
       if (rate < 2) rate = 2;
@@ -265,7 +339,7 @@ import MetricCard from '../../components/MetricCard.astro';
       calculate();
     };
 
-    [monthlyAmtNum, returnRateNum, tenureNum].forEach(input => {
+    [monthlyAmtNum, lumpsumAmtNum, returnRateNum, tenureNum].forEach(input => {
       input.addEventListener('blur', clampSipInputs);
       input.addEventListener('change', clampSipInputs);
     });
@@ -273,53 +347,73 @@ import MetricCard from '../../components/MetricCard.astro';
     topupVal.addEventListener('input', calculate);
 
     function calculate() {
-      const rawAmt = parseFloat(monthlyAmtNum.value) || parseFloat(monthlyAmtInput.value) || 10000;
-      const baseMonthly = Math.max(500, Math.min(100000, rawAmt));
-
       const rawRate = parseFloat(returnRateNum.value) || parseFloat(returnRateInput.value) || 12;
       const rateVal = Math.max(2, Math.min(30, rawRate));
       const rate = rateVal;
 
       const rawYears = parseFloat(tenureNum.value) || parseFloat(tenureInput.value) || 10;
       const years = Math.max(1, Math.min(40, rawYears));
-      const topupEnabled = enableTopup.checked;
-      
-      let topupType = 'percentage';
-      topupTypeRadios.forEach(radio => {
-        if (radio.checked) topupType = radio.value;
-      });
-      const topupIncrement = parseFloat(topupVal.value) || 0;
-
-      const monthlyRate = (rate / 12) / 100;
-      const months = years * 12;
 
       let totalInvested = 0;
       let currentBalance = 0;
-      let currentMonthly = baseMonthly;
 
       // Track data points for charting (Year-wise)
       const investedHistory = [0];
       const growthHistory = [0];
 
-      for (let m = 1; m <= months; m++) {
-        // Apply top-up at start of each year (starting from Year 2, i.e., month 13)
-        if (m > 1 && (m - 1) % 12 === 0 && topupEnabled) {
-          if (topupType === 'percentage') {
-            currentMonthly = currentMonthly * (1 + topupIncrement / 100);
-          } else {
-            currentMonthly = currentMonthly + topupIncrement;
+      if (currentTab === 'monthly') {
+        const rawAmt = parseFloat(monthlyAmtNum.value) || parseFloat(monthlyAmtInput.value) || 10000;
+        const baseMonthly = Math.max(500, Math.min(100000000, rawAmt));
+
+        const topupEnabled = enableTopup.checked;
+        
+        let topupType = 'percentage';
+        topupTypeRadios.forEach(radio => {
+          if (radio.checked) topupType = radio.value;
+        });
+        const topupIncrement = parseFloat(topupVal.value) || 0;
+
+        const monthlyRate = (rate / 12) / 100;
+        const months = years * 12;
+
+        let currentMonthly = baseMonthly;
+
+        for (let m = 1; m <= months; m++) {
+          // Apply top-up at start of each year (starting from Year 2, i.e., month 13)
+          if (m > 1 && (m - 1) % 12 === 0 && topupEnabled) {
+            if (topupType === 'percentage') {
+              currentMonthly = currentMonthly * (1 + topupIncrement / 100);
+            } else {
+              currentMonthly = currentMonthly + topupIncrement;
+            }
+          }
+
+          totalInvested += currentMonthly;
+          const interest = (currentBalance + currentMonthly) * monthlyRate;
+          currentBalance = currentBalance + currentMonthly + interest;
+
+          // Record yearly milestones
+          if (m % 12 === 0) {
+            investedHistory.push(totalInvested);
+            growthHistory.push(currentBalance);
           }
         }
+      } else {
+        const rawLumpsum = parseFloat(lumpsumAmtNum.value) || parseFloat(lumpsumAmtInput.value) || 100000;
+        const lumpsumAmt = Math.max(5000, Math.min(100000000, rawLumpsum));
 
-        totalInvested += currentMonthly;
-        const interest = (currentBalance + currentMonthly) * monthlyRate;
-        currentBalance = currentBalance + currentMonthly + interest;
+        totalInvested = lumpsumAmt;
+        currentBalance = lumpsumAmt;
 
-        // Record yearly milestones
-        if (m % 12 === 0) {
-          investedHistory.push(totalInvested);
-          growthHistory.push(currentBalance);
+        investedHistory[0] = lumpsumAmt;
+        growthHistory[0] = lumpsumAmt;
+
+        for (let y = 1; y <= years; y++) {
+          const balance = lumpsumAmt * Math.pow(1 + rate / 100, y);
+          investedHistory.push(lumpsumAmt);
+          growthHistory.push(balance);
         }
+        currentBalance = growthHistory[years];
       }
 
       const wealthGained = currentBalance - totalInvested;

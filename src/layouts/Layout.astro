@@ -4,7 +4,7 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
-  activeTab?: 'health' | 'sip' | 'retirement' | 'loans' | 'risk' | 'home' | 'about' | 'contact' | 'privacy' | 'terms' | 'faq';
+  activeTab?: 'health' | 'sip' | 'swp' | 'retirement' | 'loans' | 'risk' | 'home' | 'about' | 'contact' | 'privacy' | 'terms' | 'faq';
   ogTitle?: string;
   ogDescription?: string;
   ogType?: string;
@@ -20,7 +20,7 @@ const {
   ogType,
   canonicalUrl
 } = Astro.props;
-const isWealthActive = ['sip', 'retirement', 'loans', 'risk'].includes(activeTab);
+const isWealthActive = ['sip', 'swp', 'retirement', 'loans', 'risk'].includes(activeTab);
 ---
 
 <!doctype html>
@@ -128,6 +128,12 @@ const isWealthActive = ['sip', 'retirement', 'loans', 'risk'].includes(activeTab
                 SIP Calculator
               </a>
               <a 
+                href="/finance/swp" 
+                class={`flex items-center px-3 py-2 rounded text-xs font-medium transition-colors ${activeTab === 'swp' ? 'bg-primary/10 text-primary font-semibold' : 'text-body hover:bg-canvas-soft-2 hover:text-ink'}`}
+              >
+                SWP Calculator
+              </a>
+              <a 
                 href="/finance/retirement" 
                 class={`flex items-center px-3 py-2 rounded text-xs font-medium transition-colors ${activeTab === 'retirement' ? 'bg-primary/10 text-primary font-semibold' : 'text-body hover:bg-canvas-soft-2 hover:text-ink'}`}
               >
@@ -222,6 +228,12 @@ const isWealthActive = ['sip', 'retirement', 'loans', 'risk'].includes(activeTab
                 SIP Calculator
               </a>
               <a 
+                href="/finance/swp" 
+                class={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${activeTab === 'swp' ? 'bg-primary/10 text-primary font-semibold' : 'text-body hover:bg-canvas-soft-2 hover:text-ink'}`}
+              >
+                SWP Calculator
+              </a>
+              <a 
                 href="/finance/retirement" 
                 class={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${activeTab === 'retirement' ? 'bg-primary/10 text-primary font-semibold' : 'text-body hover:bg-canvas-soft-2 hover:text-ink'}`}
               >
@@ -308,6 +320,7 @@ const isWealthActive = ['sip', 'retirement', 'loans', 'risk'].includes(activeTab
           <ul class="space-y-2 text-sm">
             <li><a href="/finance/loans" class="text-body hover:text-ink transition-colors">EMI Calculator</a></li>
             <li><a href="/finance/sip" class="text-body hover:text-ink transition-colors">SIP Calculator</a></li>
+            <li><a href="/finance/swp" class="text-body hover:text-ink transition-colors">SWP Calculator</a></li>
             <li><a href="/finance/retirement" class="text-body hover:text-ink transition-colors">Retirement Planner</a></li>
             <li><a href="/finance/risk-allocation" class="text-body hover:text-ink transition-colors">Financial Portfolio Planner</a></li>
           </ul>
