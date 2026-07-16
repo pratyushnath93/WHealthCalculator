@@ -615,7 +615,7 @@ import MetricCard from '../components/MetricCard.astro';
       "sandesh": { baseQty: 1, unit: "pc", cal: 80, p: 2.5, c: 11.0, f: 3.0 }
     };
 
-    let compiledDirectory: Record<string, { baseQty: number; unit: string; cal: number; p: number; c: number; f: number }> = {};
+    let compiledDirectory: Record<string, { baseQty: number; unit: string; cal: number; p: number; c: number; f: number; micros?: Record<string, number> }> = {};
     
     function compileFoodsDirectory() {
       compiledDirectory = { ...COMMON_FOODS_DIRECTORY };
@@ -635,7 +635,8 @@ import MetricCard from '../components/MetricCard.astro';
                   cal: ing.cal,
                   p: ing.p,
                   c: ing.c,
-                  f: ing.f
+                  f: ing.f,
+                  micros: ing.micros || {}
                 };
               }
             });
@@ -9367,12 +9368,148 @@ import MetricCard from '../components/MetricCard.astro';
             p: ing.p * scale,
             c: ing.c * scale,
             f: ing.f * scale,
-            micros: Object.entries(ing.micros).map(([n, v]) => `${n}: ${v}`).join(', ')
+            micros: Object.entries(ing.micros).map(([n, v]) => `${n}: ${(v * scale).toFixed(1)}`).join(', ')
           }))
         });
       });
 
+      adjustDietPlanToTargets(targetCalories, targetP, targetC, targetF);
+
       renderActiveDietPlan(targetCaloriesVar, targetPVar, targetCVar, targetFVar);
+    }
+
+    function adjustDietPlanToTargets(_targetCalories: number, targetP: number, targetC: number, targetF: number) {
+      const items: Array<{
+        ing: any;
+        baseQty: number;
+        baseCal: number;
+        baseP: number;
+        baseC: number;
+        baseF: number;
+        category: 'p' | 'c' | 'f';
+      }> = [];
+
+      activeDietPlan.forEach(meal => {
+        meal.ingredients.forEach(ing => {
+          const baseFood = compiledDirectory[ing.name.toLowerCase().trim()];
+          const baseQty = baseFood ? baseFood.baseQty : ing.qty;
+          const baseCal = baseFood ? baseFood.cal : ing.cal;
+          const baseP = baseFood ? baseFood.p : ing.p;
+          const baseC = baseFood ? baseFood.c : ing.c;
+          const baseF = baseFood ? baseFood.f : ing.f;
+
+          const pCal = baseP * 4;
+          const cCal = baseC * 4;
+          const fCal = baseF * 9;
+
+          let category: 'p' | 'c' | 'f' = 'c';
+          if (pCal > cCal && pCal > fCal) {
+            category = 'p';
+          } else if (fCal > pCal && fCal > cCal) {
+            category = 'f';
+          }
+
+          items.push({
+            ing,
+            baseQty,
+            baseCal,
+            baseP,
+            baseC,
+            baseF,
+            category
+          });
+        });
+      });
+
+      let scaleP = 1.0;
+      let scaleC = 1.0;
+      let scaleF = 1.0;
+
+      for (let iter = 0; iter < 20; iter++) {
+        let currentP = 0;
+        let currentC = 0;
+        let currentF = 0;
+
+        items.forEach(item => {
+          let s = 1.0;
+          if (item.category === 'p') s = scaleP;
+          else if (item.category === 'c') s = scaleC;
+          else if (item.category === 'f') s = scaleF;
+
+          currentP += item.baseP * s;
+          currentC += item.baseC * s;
+          currentF += item.baseF * s;
+        });
+
+        let sumBaseP_P = 0;
+        items.forEach(item => {
+          if (item.category === 'p') sumBaseP_P += item.baseP;
+        });
+        if (sumBaseP_P > 0) {
+          const errorP = targetP - currentP;
+          scaleP += errorP / sumBaseP_P;
+          scaleP = Math.max(0.3, Math.min(3.0, scaleP));
+        }
+
+        currentP = 0; currentC = 0; currentF = 0;
+        items.forEach(item => {
+          let s = 1.0;
+          if (item.category === 'p') s = scaleP;
+          else if (item.category === 'c') s = scaleC;
+          else if (item.category === 'f') s = scaleF;
+          currentP += item.baseP * s;
+          currentC += item.baseC * s;
+          currentF += item.baseF * s;
+        });
+
+        let sumBaseC_C = 0;
+        items.forEach(item => {
+          if (item.category === 'c') sumBaseC_C += item.baseC;
+        });
+        if (sumBaseC_C > 0) {
+          const errorC = targetC - currentC;
+          scaleC += errorC / sumBaseC_C;
+          scaleC = Math.max(0.3, Math.min(3.0, scaleC));
+        }
+
+        currentP = 0; currentC = 0; currentF = 0;
+        items.forEach(item => {
+          let s = 1.0;
+          if (item.category === 'p') s = scaleP;
+          else if (item.category === 'c') s = scaleC;
+          else if (item.category === 'f') s = scaleF;
+          currentP += item.baseP * s;
+          currentC += item.baseC * s;
+          currentF += item.baseF * s;
+        });
+
+        let sumBaseF_F = 0;
+        items.forEach(item => {
+          if (item.category === 'f') sumBaseF_F += item.baseF;
+        });
+        if (sumBaseF_F > 0) {
+          const errorF = targetF - currentF;
+          scaleF += errorF / sumBaseF_F;
+          scaleF = Math.max(0.3, Math.min(3.0, scaleF));
+        }
+      }
+
+      items.forEach(item => {
+        let s = 1.0;
+        if (item.category === 'p') s = scaleP;
+        else if (item.category === 'c') s = scaleC;
+        else if (item.category === 'f') s = scaleF;
+
+        item.ing.qty = item.baseQty * s;
+        item.ing.cal = item.baseCal * s;
+        item.ing.p = item.baseP * s;
+        item.ing.c = item.baseC * s;
+        item.ing.f = item.baseF * s;
+
+        const bFood = compiledDirectory[item.ing.name.toLowerCase().trim()];
+        const baseMicros = bFood && bFood.micros ? bFood.micros : {};
+        item.ing.micros = Object.entries(baseMicros).map(([n, v]) => `${n}: ${((v as number) * s).toFixed(1)}`).join(', ');
+      });
     }
 
     function getMealCategoryTitle(key: string, name: string): string {
@@ -9483,6 +9620,17 @@ import MetricCard from '../components/MetricCard.astro';
               ing.p *= ratio;
               ing.c *= ratio;
               ing.f *= ratio;
+              if (ing.micros) {
+                ing.micros = ing.micros.split(', ').map(tok => {
+                  const parts = tok.split(': ');
+                  if (parts.length === 2) {
+                    const name = parts[0];
+                    const val = parseFloat(parts[1]) * ratio;
+                    return `${name}: ${val.toFixed(1)}`;
+                  }
+                  return tok;
+                }).join(', ');
+              }
               renderActiveDietPlan(targetCalories, targetP, targetC, targetF);
             }
           });
@@ -9695,28 +9843,7 @@ import MetricCard from '../components/MetricCard.astro';
 
             btn.addEventListener('click', () => {
               selectedSwaps[meal.key] = optIdx;
-              
-              const mealWeights: Record<string, number> = { breakfast: 0.25, snack1: 0.10, lunch: 0.30, snack2: 0.10, dinner: 0.25, bedtime: 0.00 };
-              
-              const weight = mealWeights[meal.key];
-              const mealTargetCal = targetCalories * weight;
-              const baseCal = opt.ingredients.reduce((acc, ing) => acc + ing.cal, 0);
-              const scale = mealTargetCal / baseCal;
-
-              meal.activeOptIdx = optIdx;
-              meal.name = opt.name;
-              meal.ingredients = opt.ingredients.map(ing => ({
-                name: ing.name,
-                qty: ing.baseQty * scale,
-                unit: ing.unit,
-                cal: ing.cal * scale,
-                p: ing.p * scale,
-                c: ing.c * scale,
-                f: ing.f * scale,
-                micros: Object.entries(ing.micros).map(([n, v]) => `${n}: ${v}`).join(', ')
-              }));
-
-              renderActiveDietPlan(targetCalories, targetP, targetC, targetF);
+              generateDietPlan(targetCalories, targetP, targetC, targetF, goalSelect.value);
             });
             btnRow.appendChild(btn);
           });
