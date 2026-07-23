@@ -29,10 +29,10 @@ jobs:
 
       - name: Build iOS Xcode App
         run: |
-          xcodebuild -workspace ios/App/App.xcworkspace \
+          xcodebuild -project ios/App/App.xcodeproj \
                      -scheme App \
                      -configuration Release \
-                     -sdk iphonesimulator \
+                     -destination 'generic/platform=iOS Simulator' \
                      -derivedDataPath ios/App/build \
                      CODE_SIGN_IDENTITY="" \
                      CODE_SIGNING_REQUIRED=NO \
