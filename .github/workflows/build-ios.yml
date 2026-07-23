@@ -43,5 +43,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ios-app-build
-          path: ios/App/build/Build/Products/Release-iphonesimulator/
+          path: ios/App/build/
           retention-days: 7
