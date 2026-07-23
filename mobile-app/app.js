@@ -100,7 +100,9 @@ function showView(viewId, pushToHistory = true) {
   tabs.forEach(t => t.classList.remove('active'));
   
   let tabTarget = viewId;
-  if (viewId === 'view-sip' || viewId === 'view-swp' || viewId === 'view-loan' || viewId === 'view-retirement' || viewId === 'view-risk') {
+  if (viewId === 'view-health' || viewId === 'view-health-menu' || viewId === 'view-track-food') {
+    tabTarget = 'view-health';
+  } else if (viewId === 'view-sip' || viewId === 'view-swp' || viewId === 'view-loan' || viewId === 'view-retirement' || viewId === 'view-risk' || viewId === 'view-wealth-menu') {
     tabTarget = 'view-wealth-menu';
   } else if (viewId === 'view-contact' || viewId === 'view-privacy' || viewId === 'view-terms') {
     tabTarget = 'view-contact';
