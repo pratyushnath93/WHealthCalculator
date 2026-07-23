@@ -20,19 +20,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
 
-      - name: Install Project Dependencies
-        run: npm ci
+      - name: Install Dependencies
+        run: npm install
 
-      - name: Sync Capacitor iOS Web Assets
+      - name: Sync Capacitor iOS
         run: npx cap sync ios
 
-      - name: Build iOS Xcode Workspace
+      - name: Build iOS Xcode App
         run: |
           xcodebuild -workspace ios/App/App.xcworkspace \
                      -scheme App \
                      -configuration Release \
+                     -sdk iphonesimulator \
                      -derivedDataPath ios/App/build \
                      CODE_SIGN_IDENTITY="" \
                      CODE_SIGNING_REQUIRED=NO \
@@ -43,5 +43,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ios-app-build
-          path: ios/App/build/Build/Products/Release-iphoneos/
+          path: ios/App/build/Build/Products/Release-iphonesimulator/
           retention-days: 7
