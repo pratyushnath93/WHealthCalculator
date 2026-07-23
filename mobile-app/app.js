@@ -127,6 +127,9 @@ function showView(viewId, pushToHistory = true) {
   if (pushToHistory) {
     if (navHistory[navHistory.length - 1] !== viewId) {
       navHistory.push(viewId);
+      try {
+        window.history.pushState({ viewId: viewId }, '', '#' + viewId);
+      } catch (e) {}
     }
   }
 
@@ -139,17 +142,44 @@ function goBack() {
     navHistory.pop();
     const prevView = navHistory[navHistory.length - 1];
     showView(prevView, false);
+    try {
+      if (window.history.state && window.history.state.viewId !== prevView) {
+        window.history.replaceState({ viewId: prevView }, '', '#' + prevView);
+      }
+    } catch (e) {}
   } else {
     showView('view-home', false);
   }
 }
 window.goBack = goBack;
 
-// Hardware Back Button & Gesture Navigation Handler
+// Hardware Back Button & Swipe Gesture Navigation Handler
 function initHardwareBackPress() {
+  try {
+    window.history.replaceState({ viewId: 'view-home' }, '', '#view-home');
+  } catch (e) {}
+
+  window.addEventListener('popstate', (e) => {
+    if (e.state && e.state.viewId) {
+      if (navHistory[navHistory.length - 1] !== e.state.viewId) {
+        if (navHistory.length > 1) navHistory.pop();
+        showView(e.state.viewId, false);
+      }
+    } else {
+      if (navHistory.length > 1) {
+        goBack();
+      } else {
+        showView('view-home', false);
+      }
+    }
+  });
+
   document.addEventListener('backbutton', handleBackPress, false);
+
   if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
-    window.Capacitor.Plugins.App.addListener('backButton', handleBackPress);
+    window.Capacitor.Plugins.App.addListener('backButton', (data) => {
+      handleBackPress();
+    });
   }
 }
 
@@ -160,7 +190,11 @@ function handleBackPress() {
       window.Capacitor.Plugins.App.exitApp();
     }
   } else {
-    goBack();
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      goBack();
+    }
   }
 }
 
