@@ -8,7 +8,13 @@
   </url>
   <url>
     <loc>https://whealthcalculator.com/health</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://whealthcalculator.com/health/track-food</loc>
+    <lastmod>2026-07-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

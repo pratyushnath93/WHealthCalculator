@@ -4,18 +4,23 @@ import MetricCard from '../components/MetricCard.astro';
 ---
 
 <Layout 
-  title="Online BMI & Calorie Calculator - Health Parameter Tracker" 
+  title="Online BMI & Calorie Calculator - Health Metrices & Diet Planner" 
   description="Calculate your BMR, TDEE, and BMI online. Find target maintenance calories, weight loss calorie plans, and custom diet profiles (Keto, Mediterranean, Sugar-Free)."
   activeTab="health"
 >
   <div class="mb-12">
     <div class="font-mono text-xs uppercase tracking-wider text-mute mb-2">01. Body Composition</div>
     <h1 class="font-sans text-3xl md:text-5xl font-semibold tracking-tight text-ink leading-none">
-      Health & Calorie Planner
+      Health Metrices & Diet Planner
     </h1>
     <p class="text-body text-sm mt-3 max-w-[600px]">
       Calculate BMR, TDEE, target caloric intake, and precise macronutrient splits customized for your fitness objective.
     </p>
+    <div class="mt-4">
+      <a href="/health/track-food" class="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-md bg-ink text-canvas hover:opacity-90 transition-all shadow-vercel-sm">
+        🥗 Launch Track Food & Meal Log Tool →
+      </a>
+    </div>
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

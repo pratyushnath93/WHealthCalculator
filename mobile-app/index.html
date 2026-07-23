@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>WHealth Calculator</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="app.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+</head>
+<body class="bg-canvas text-ink font-sans antialiased select-none">
+  <!-- Sidebar Menu Drawer Overlay -->
+  <div id="sidebar-overlay" class="sidebar-overlay hidden"></div>
+  
+  <!-- Sidebar Drawer -->
+  <div id="sidebar-drawer" class="sidebar-drawer closed">
+    <div class="sidebar-header">
+      <span class="logo-text">WHealth <span class="text-link">Menu</span></span>
+      <button id="close-menu" class="icon-btn" aria-label="Close Menu">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <!-- Main Menu Section -->
+      <div class="nav-section">Main Menu</div>
+      <button class="nav-link-btn" data-view="view-home">
+        <span>🏠 Home</span>
+      </button>
+      
+      <!-- Health Planners Section -->
+      <div class="nav-section">Health Planners</div>
+      <button class="nav-link-btn" data-view="view-health">
+        <span>❤️ Health Metrices & Diet Planner</span>
+      </button>
+      <button class="nav-link-btn" data-view="view-track-food">
+        <span>🥗 Track Food</span>
+      </button>
+      
+      <!-- Finance Submenus Section -->
+      <div class="nav-section">Finance Planners</div>
+      <button class="nav-link-btn" data-view="view-sip">
+        <span>📈 SIP & Lumpsum</span>
+      </button>
+      <button class="nav-link-btn" data-view="view-swp">
+        <span>🔄 SWP Calculator</span>
+      </button>
+      <button class="nav-link-btn" data-view="view-loan">
+        <span>💳 Loan EMI</span>
+      </button>
+      <button class="nav-link-btn" data-view="view-retirement">
+        <span>👵 Retirement Goal</span>
+      </button>
+      <button class="nav-link-btn" data-view="view-risk">
+        <span>📊 Risk Allocation</span>
+      </button>
+      
+      <!-- Information Section -->
+      <div class="nav-section">Information</div>
+      <button class="nav-link-btn" data-view="view-about">
+        <span>ℹ️ About Us</span>
+      </button>
+      <button class="nav-link-btn" data-view="view-contact">
+        <span>📧 Contact Us</span>
+      </button>
+      <button class="nav-link-btn" data-view="view-privacy">
+        <span>🔒 Privacy Policy</span>
+      </button>
+      <button class="nav-link-btn" data-view="view-terms">
+        <span>📄 Terms & Conditions</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Sticky App Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button id="menu-toggle" class="icon-btn" aria-label="Open Menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <span class="logo-text" style="cursor: pointer;" onclick="showView('view-home')">WHealth <span class="text-link">Calculator</span></span>
+      </div>
+      <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">
+        <svg id="theme-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Viewport -->
+  <main class="app-content">
+    
+    <!-- 0. Home Landing Page -->
+    <section id="view-home" class="app-view active">
+      <div class="welcome-section">
+        <h1>WHealth Planners</h1>
+        <p>Select a category below to get started.</p>
+      </div>
+
+      <div class="hub-list">
+        <!-- Health Card -->
+        <button class="hub-item" onclick="showView('view-health-menu')">
+          <div class="hub-item-icon bg-red" style="background-color: rgba(239, 68, 68, 0.1); color: #ef4444;">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+          </div>
+          <div class="hub-item-info">
+            <span class="hub-item-title">Health Planners</span>
+            <span class="hub-item-desc">Calculate BMI, BMR, TDEE, macros & diet plans, log daily nutrition</span>
+          </div>
+          <span class="hub-item-arrow">→</span>
+        </button>
+
+        <!-- Finance & Wealth Card -->
+        <button class="hub-item" onclick="showView('view-wealth-menu')">
+          <div class="hub-item-icon bg-blue" style="background-color: rgba(59, 130, 246, 0.1); color: #3b82f6;">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          </div>
+          <div class="hub-item-info">
+            <span class="hub-item-title">Finance & Wealth Planners</span>
+            <span class="hub-item-desc">SIP growth, SWP cash withdrawals, Loan EMI, Retirement & Portfolio risk allocations</span>
+          </div>
+          <span class="hub-item-arrow">→</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 0.2 Health Category Menu View -->
+    <section id="view-health-menu" class="app-view">
+      <div class="view-header flex-row-center" style="gap: 12px; align-items: center;">
+        <button class="back-circle-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <div style="flex-grow: 1;">
+          <h2 style="margin: 0; line-height: 1.2;">Health Planners</h2>
+          <p class="view-subtitle">Select a Health Calculator</p>
+        </div>
+      </div>
+
+      <div class="menu-grid">
+        <!-- Health Metrices & Diet Planner Card -->
+        <button class="menu-card" onclick="showView('view-health')">
+          <div class="menu-card-icon bg-red">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+          </div>
+          <h3>Health Metrices & Diet Planner</h3>
+          <p>BMI, BMR, TDEE, macros & diet plans</p>
+        </button>
+
+        <!-- Track Food Card -->
+        <button class="menu-card" onclick="showView('view-track-food')">
+          <div class="menu-card-icon bg-green" style="background-color: rgba(34, 197, 94, 0.1); color: #22c55e;">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          </div>
+          <h3>Track Food</h3>
+          <p>Log meals, nutrition insights & saved recipes</p>
+        </button>
+      </div>
+
+      <p style="font-size: 8px; color: var(--color-mute); margin-top: 16px; margin-bottom: 8px; text-align: center; line-height: 1.3;">* Health calculations are estimates and are not a substitute for medical or nutritional advice. Please consult a licensed doctor or registered dietitian before making health or dietary decisions.</p>
+    </section>
+
+    <!-- 0.1 Wealth Category Menu View -->
+    <section id="view-wealth-menu" class="app-view">
+      <div class="view-header flex-row-center" style="gap: 12px; align-items: center;">
+        <button class="back-circle-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <div style="flex-grow: 1;">
+          <h2 style="margin: 0; line-height: 1.2;">Wealth Planners</h2>
+          <p class="view-subtitle">Select a Finance Calculator</p>
+        </div>
+      </div>
+
+      <div class="menu-grid">
+        <!-- SIP Card -->
+        <button class="menu-card" onclick="showView('view-sip')">
+          <div class="menu-card-icon bg-blue">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          </div>
+          <h3>SIP & Lumpsum</h3>
+          <p>Compound growth schedules</p>
+        </button>
+
+        <!-- SWP Card -->
+        <button class="menu-card" onclick="showView('view-swp')">
+          <div class="menu-card-icon bg-green">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>
+          </div>
+          <h3>SWP Calculator</h3>
+          <p>Cash withdrawal longevity</p>
+        </button>
+
+        <!-- Loan Card -->
+        <button class="menu-card" onclick="showView('view-loan')">
+          <div class="menu-card-icon bg-purple">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="10" y2="21"></line><line x1="14" y1="3" x2="14" y2="21"></line></svg>
+          </div>
+          <h3>Loan EMI</h3>
+          <p>Amortization tables</p>
+        </button>
+
+        <!-- Retirement Card -->
+        <button class="menu-card" onclick="showView('view-retirement')">
+          <div class="menu-card-icon bg-orange">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 0-10 10c0 5.523 4.477 10 10 10s10-4.477 10-10A10 10 0 0 0 12 2zm1 14H11V11H13V16zm0-7H11V7H13V9z"></path></svg>
+          </div>
+          <h3>Retirement Goal</h3>
+          <p>Accumulation target corpus</p>
+        </button>
+
+        <!-- Risk Card -->
+        <button class="menu-card" onclick="showView('view-risk')">
+          <div class="menu-card-icon bg-teal">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          </div>
+          <h3>Risk Allocation</h3>
+          <p>Asset splits & portfolios</p>
+        </button>
+      </div>
+
+      <p style="font-size: 8px; color: var(--color-mute); margin-top: 16px; margin-bottom: 8px; text-align: center; line-height: 1.3;">* Financial calculations are estimates and should not be considered investment, tax, or legal advice. Please consult a qualified financial advisor, Chartered Accountant (CA), or other certified professional before making financial decisions.</p>
+    </section>
+
+    <!-- 1. SIP View -->
+    <section id="view-sip" class="app-view">
+      <div class="view-header flex-row-center" style="gap: 12px; align-items: center;">
+        <button class="back-circle-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <div style="flex-grow: 1;">
+          <h2 style="margin: 0; line-height: 1.2;">SIP & Lumpsum</h2>
+          <div class="segmented-control mt-2">
+            <button id="tab-sip-monthly" class="segment-btn active">Monthly SIP</button>
+            <button id="tab-sip-lumpsum" class="segment-btn">Lumpsum</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="calculator-form">
+        <!-- Amount Input -->
+        <div class="input-group">
+          <div class="input-labels">
+            <span class="input-title" id="sip-amount-label">Monthly Investment</span>
+            <div class="number-input-wrapper">
+              <span class="currency-prefix">₹</span>
+              <input type="number" id="sip-amount" value="25000" min="500" max="100000000">
+            </div>
+          </div>
+          <input type="range" id="sip-amount-slider" min="500" max="100000000" step="500" value="25000" class="app-slider">
+          <div class="slider-limits"><span>₹500</span><span>₹10 Cr</span></div>
+        </div>
+
+        <!-- Expected Return Rate -->
+        <div class="input-group">
+          <div class="input-labels">
+            <span class="input-title">Expected Return Rate (p.a.)</span>
+            <div class="number-input-wrapper">
+              <input type="number" id="sip-rate" value="12" min="1" max="30" step="0.1">
+              <span class="currency-suffix">%</span>
+            </div>
+          </div>
+          <input type="range" id="sip-rate-slider" min="1" max="30" step="0.5" value="12" class="app-slider">
+          <div class="slider-limits"><span>1%</span><span>30%</span></div>
+        </div>
+
+        <!-- Tenure -->
+        <div class="input-group">
+          <div class="input-labels">
+            <span class="input-title">Tenure</span>
+            <div class="number-input-wrapper">
+              <input type="number" id="sip-tenure" value="10" min="1" max="40">
+              <span class="currency-suffix">Yr</span>
+            </div>
+          </div>
+          <input type="range" id="sip-tenure-slider" min="1" max="40" step="1" value="10" class="app-slider">
+          <div class="slider-limits"><span>1 Yr</span><span>40 Yr</span></div>
+        </div>
+
+        <!-- Top Up -->
+        <div class="input-group" id="sip-topup-container">
+          <div class="input-labels">
+            <span class="input-title">Annual Top-Up Growth</span>
+            <div class="number-input-wrapper">
+              <input type="number" id="sip-topup" value="0" min="0" max="100">
+              <span class="currency-suffix">%</span>
+            </div>
+          </div>
+          <input type="range" id="sip-topup-slider" min="0" max="100" step="1" value="0" class="app-slider">
+          <div class="slider-limits"><span>0%</span><span>100%</span></div>
+        </div>
+      </div>
+
+      <!-- Results Display -->
+      <div class="results-container">
+        <div class="results-grid">
+          <div class="result-card">
+            <span class="result-label">Invested Amount</span>
+            <span class="result-value" id="sip-invested">₹0</span>
+          </div>
+          <div class="result-card">
+            <span class="result-label">Est. Returns</span>
+            <span class="result-value text-accent" id="sip-returns">₹0</span>
+          </div>
+          <div class="result-card full-width">
+            <span class="result-label">Total Value</span>
+            <span class="result-value text-xl font-bold" id="sip-total">₹0</span>
+          </div>
+        </div>
+
+        <!-- Dynamic Chart -->
+        <div class="chart-container">
+          <svg id="sip-chart" viewBox="0 0 400 200" width="100%" height="180"></svg>
+        </div>
+
+        <!-- Yearly Breakdown Schedule Table -->
+        <div class="results-table-card">
+          <h3>Yearly Breakdown Schedule</h3>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th class="text-right">Invested</th>
+                  <th class="text-right">Returns</th>
+                  <th class="text-right">Maturity Value</th>
+                </tr>
+              </thead>
+              <tbody id="sip-table-body">
+                <!-- Filled dynamically by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size: 8px; color: var(--color-mute); margin-top: 16px; margin-bottom: 8px; text-align: center; line-height: 1.3;">* Financial calculations are estimates and should not be considered investment, tax, or legal advice. Please consult a qualified financial advisor, Chartered Accountant (CA), or other certified professional before making financial decisions.</p>
+    </section>
+
+    <section id="view-swp" class="app-view">
+      <div class="view-header flex-row-center" style="gap: 12px; align-items: center;">
+        <button class="back-circle-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <div style="flex-grow: 1;">
+          <h2 style="margin: 0; line-height: 1.2;">SWP Planner</h2>
+          <p class="view-subtitle">Systematic Withdrawal Plan</p>
+        </div>
+      </div>
+
+      <div class="calculator-form">
+        <!-- Total Investment -->
+        <div class="input-group">
+          <div class="input-labels">
+            <span class="input-title">Total Investment</span>
+            <div class="number-input-wrapper">
+              <span class="currency-prefix">₹</span>
+              <input type="number" id="swp-amount" value="1000000" min="10000" max="100000000">
+            </div>
+          </div>
+          <input type="range" id="swp-amount-slider" min="10000" max="100000000" step="10000" value="1000000" class="app-slider">
+          <div class="slider-limits"><span>₹10,000</span><span>₹10 Cr</span></div>
+        </div>
+
+        <!-- Monthly Withdrawal -->
+        <div class="input-group">
+          <div class="input-labels">
+            <span class="input-title">Monthly Withdrawal</span>
+            <div class="number-input-wrapper">
+              <span class="currency-prefix">₹</span>
+              <input type="number" id="swp-withdrawal" value="10000" min="500" max="10000000">
+            </div>
+          </div>
+          <input type="range" id="swp-withdrawal-slider" min="500" max="10000000" step="500" value="10000" class="app-slider">
+          <div class="slider-limits"><span>₹500</span><span>₹1 Cr</span></div>
+        </div>
+
+        <!-- Expected Return Rate -->
+        <div class="input-group">
+          <div class="input-labels">
+            <span class="input-title">Expected Return Rate (p.a.)</span>
+            <div class="number-input-wrapper">
+              <input type="number" id="swp-rate" value="12" min="1" max="30" step="0.1">
+              <span class="currency-suffix">%</span>
+            </div>
+          </div>
+          <input type="range" id="swp-rate-slider" min="1" max="30" step="0.5" value="12" class="app-slider">
+          <div class="slider-limits"><span>1%</span><span>30%</span></div>
+        </div>
+
+        <!-- Tenure -->
+        <div class="input-group">
+          <div class="input-labels">
+            <span class="input-title">Tenure</span>
+            <div class="number-input-wrapper">
+              <input type="number" id="swp-tenure" value="10" min="1" max="40">
+              <span class="currency-suffix">Yr</span>
+            </div>
+          </div>
+          <input type="range" id="swp-tenure-slider" min="1" max="40" step="1" value="10" class="app-slider">
+          <div class="slider-limits"><span>1 Yr</span><span>40 Yr</span></div>
+        </div>
+      </div>
+
+      <!-- Results Display -->
+      <div class="results-container">
+        <div class="results-grid">
+          <div class="result-card">
+            <span class="result-label">Total Invested</span>
+            <span class="result-value" id="swp-invested">₹0</span>
+          </div>
+          <div class="result-card">
+            <span class="result-label">Total Withdrawn</span>
+            <span class="result-value text-accent" id="swp-withdrawn">₹0</span>
+          </div>
+          <div class="result-card full-width">
+            <span class="result-label">Remaining Balance</span>
+            <span class="result-value text-xl font-bold" id="swp-total">₹0</span>
+          </div>
+        </div>
+
+        <!-- Dynamic Chart -->
+        <div class="chart-container">
+          <svg id="swp-chart" viewBox="0 0 400 200" width="100%" height="180"></svg>
+        </div>
+
+        <!-- Yearly Breakdown Table -->
+        <div class="results-table-card">
+          <h3>Yearly Withdrawal Breakdown</h3>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th class="text-right">Invested</th>
+                  <th class="text-right">Total Withdrawn</th>
+                  <th class="text-right">Remaining Balance</th>
+                </tr>
+              </thead>
+              <tbody id="swp-table-body">
+                <!-- Filled dynamically by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size: 8px; color: var(--color-mute); margin-top: 16px; margin-bottom: 8px; text-align: center; line-height: 1.3;">* Financial calculations are estimates and should not be considered investment, tax, or legal advice. Please consult a qualified financial advisor, Chartered Accountant (CA), or other certified professional before making financial decisions.</p>
+    </section>
+
+    <section id="view-loan" class="app-view">
+      <div class="view-header flex-row-center" style="gap: 12px; align-items: center;">
+        <button class="back-circle-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <div style="flex-grow: 1;">
+          <h2 style="margin: 0; line-height: 1.2;">Loan EMI</h2>
+          <div class="segmented-control mt-2">
+            <button id="loan-type-home" class="segment-btn active">Home Loan</button>
+            <button id="loan-type-personal" class="segment-btn">Personal/Auto</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="calculator-form">
+        <!-- Loan Amount -->
+        <div class="input-group">
+          <div class="input-labels">
+            <span class="input-title">Loan Amount</span>
+            <div class="number-input-wrapper">
+              <span class="currency-prefix">₹</span>
+              <input type="number" id="loan-amount" value="5000000" min="10000" max="100000000">
+            </div>
+          </div>
+          <input type="range" id="loan-amount-slider" min="10000" max="100000000" step="10000" value="5000000" class="app-slider">
+          <div class="slider-limits"><span id="loan-min-limit">₹10,000</span><span id="loan-max-limit">₹10 Cr</span></div>
+        </div>
+
+        <!-- Interest Rate -->
+        <div class="input-group">
+          <div class="input-labels">
+            <span class="input-title">Interest Rate (p.a.)</span>
+            <div class="number-input-wrapper">
+              <input type="number" id="loan-rate" value="8.5" min="1" max="30" step="0.1">
+              <span class="currency-suffix">%</span>
+            </div>
+          </div>
+          <input type="range" id="loan-rate-slider" min="1" max="30" step="0.1" value="8.5" class="app-slider">
+          <div class="slider-limits"><span>1%</span><span>30%</span></div>
+        </div>
+
+        <!-- Tenure -->
+        <div class="input-group">
+          <div class="input-labels">
+            <span class="input-title">Tenure</span>
+            <div class="number-input-wrapper">
+              <input type="number" id="loan-tenure" value="20" min="1" max="30">
+              <span class="currency-suffix">Yr</span>
+            </div>
+          </div>
+          <input type="range" id="loan-tenure-slider" min="1" max="30" step="1" value="20" class="app-slider">
+          <div class="slider-limits"><span>1 Yr</span><span id="loan-tenure-limit">30 Yr</span></div>
+        </div>
+      </div>
+
+      <!-- Results Display -->
+      <div class="results-container">
+        <div class="results-grid">
+          <div class="result-card">
+            <span class="result-label">Monthly EMI</span>
+            <span class="result-value text-xl font-bold text-accent" id="loan-emi">₹0</span>
+          </div>
+          <div class="result-card">
+            <span class="result-label">Total Interest</span>
+            <span class="result-value" id="loan-interest">₹0</span>
+          </div>
+          <div class="result-card full-width">
+            <span class="result-label">Total Amount Payable</span>
+            <span class="result-value font-bold" id="loan-total">₹0</span>
+          </div>
+        </div>
+
+        <!-- Dynamic Chart -->
+        <div class="chart-container flex-center">
+          <svg id="loan-chart" viewBox="0 0 200 200" width="160" height="160"></svg>
+        </div>
+
+        <!-- Amortization Schedule Table -->
+        <div class="results-table-card">
+          <div class="table-header-row">
+            <h3>Amortization Schedule</h3>
+            <select id="loan-schedule-view" class="app-select-small">
+              <option value="yearly" selected>Yearly</option>
+              <option value="monthly">Monthly (12m)</option>
+            </select>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th id="loan-table-time-header">Year</th>
+                  <th class="text-right">Principal Paid</th>
+                  <th class="text-right">Interest Paid</th>
+                  <th class="text-right">Outstanding</th>
+                </tr>
+              </thead>
+              <tbody id="loan-table-body">
+                <!-- Filled dynamically by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size: 8px; color: var(--color-mute); margin-top: 16px; margin-bottom: 8px; text-align: center; line-height: 1.3;">* Financial calculations are estimates and should not be considered investment, tax, or legal advice. Please consult a qualified financial advisor, Chartered Accountant (CA), or other certified professional before making financial decisions.</p>
+    </section>
+
+    <section id="view-retirement" class="app-view">
+      <div class="view-header flex-row-center" style="gap: 12px; align-items: center;">
+        <button class="back-circle-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <div style="flex-grow: 1;">
+          <h2 style="margin: 0; line-height: 1.2;">Retirement Goal</h2>
+          <p class="view-subtitle">Retirement Goal Planner</p>
+        </div>
+      </div>
+
+      <div class="calculator-form">
+        <!-- Current Age & Retirement Age -->
+        <div class="input-row">
+          <div class="input-group half">
+            <div class="input-labels">
+              <span class="input-title">Current Age</span>
+              <input type="number" id="ret-current-age" value="30" min="18" max="79" class="input-small">
+            </div>
+          </div>
+          <div class="input-group half">
+            <div class="input-labels">
+              <span class="input-title">Retirement Age</span>
+              <input type="number" id="ret-target-age" value="60" min="40" max="80" class="input-small">
+            </div>
+          </div>
+        </div>
+
+        <!-- Current Monthly Expenses -->
+        <div class="input-group">
+          <div class="input-labels">
+            <span class="input-title">Current Monthly Expense</span>
+            <div class="number-input-wrapper">
+              <span class="currency-prefix">₹</span>
+              <input type="number" id="ret-expense" value="50000" min="5000" max="1000000">
+            </div>
+          </div>
+          <input type="range" id="ret-expense-slider" min="5000" max="1000000" step="5000" value="50000" class="app-slider">
+          <div class="slider-limits"><span>₹5,000</span><span>₹10 L</span></div>
+        </div>
+
+        <!-- Inflation Rate -->
+        <div class="input-group">
+          <div class="input-labels">
+            <span class="input-title">Inflation Rate</span>
+            <div class="number-input-wrapper">
+              <input type="number" id="ret-inflation" value="6" min="1" max="15">
+              <span class="currency-suffix">%</span>
+            </div>
+          </div>
+          <input type="range" id="ret-inflation-slider" min="1" max="15" step="0.5" value="6" class="app-slider">
+          <div class="slider-limits"><span>1%</span><span>15%</span></div>
+        </div>
+
+        <!-- Expected Pre & Post Return Rate -->
+        <div class="input-row">
+          <div class="input-group half">
+            <div class="input-labels">
+              <span class="input-title">Pre-Ret. Return</span>
+              <div class="number-input-wrapper">
+                <input type="number" id="ret-pre-rate" value="12" min="5" max="25" class="input-small">
+                <span class="currency-suffix">%</span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group half">
+            <div class="input-labels">
+              <span class="input-title">Post-Ret. Return</span>
+              <div class="number-input-wrapper">
+                <input type="number" id="ret-post-rate" value="8" min="4" max="15" class="input-small">
+                <span class="currency-suffix">%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Display -->
+      <div class="results-container">
+        <div class="results-grid">
+          <div class="result-card">
+            <span class="result-label">Retirement Corpus Needed</span>
+            <span class="result-value text-xl font-bold text-accent" id="ret-corpus">₹0</span>
+          </div>
+          <div class="result-card">
+            <span class="result-label">Required Monthly Savings</span>
+            <span class="result-value font-bold" id="ret-savings">₹0</span>
+          </div>
+        </div>
+
+        <!-- Dynamic Chart -->
+        <div class="chart-container">
+          <svg id="ret-chart" viewBox="0 0 400 200" width="100%" height="180"></svg>
+        </div>
+
+        <!-- Accumulation Buildup Table -->
+        <div class="results-table-card">
+          <h3>Accumulation Buildup Table</h3>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th class="text-right">Invested</th>
+                  <th class="text-right">Interest Earned</th>
+                  <th class="text-right">Total Corpus</th>
+                </tr>
+              </thead>
+              <tbody id="ret-table-body">
+                <!-- Filled dynamically by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size: 8px; color: var(--color-mute); margin-top: 16px; margin-bottom: 8px; text-align: center; line-height: 1.3;">* Financial calculations are estimates and should not be considered investment, tax, or legal advice. Please consult a qualified financial advisor, Chartered Accountant (CA), or other certified professional before making financial decisions.</p>
+    </section>
+
+    <section id="view-health" class="app-view">
+      <div class="view-header flex-row-center" style="gap: 12px; align-items: center;">
+        <button class="back-circle-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <div style="flex-grow: 1;">
+          <h2 style="margin: 0; line-height: 1.2;">Health Metrices & Diet Planner</h2>
+          <p class="view-subtitle">BMI, BMR, TDEE & Diet Planner</p>
+        </div>
+      </div>
+
+      <div class="calculator-form">
+        <!-- Gender Select -->
+        <div class="input-group">
+          <span class="input-title">Gender</span>
+          <div class="segmented-control">
+            <button id="health-gender-male" class="segment-btn active">Male</button>
+            <button id="health-gender-female" class="segment-btn">Female</button>
+          </div>
+        </div>
+
+        <!-- Age Input -->
+        <div class="input-group">
+          <div class="input-labels">
+            <span class="input-title">Age</span>
+            <div class="number-input-wrapper">
+              <input type="number" id="health-age" value="28" min="15" max="80">
+              <span class="currency-suffix">Yr</span>
+            </div>
+          </div>
+          <input type="range" id="health-age-slider" min="15" max="80" step="1" value="28" class="app-slider">
+          <div class="slider-limits"><span>15 Yr</span><span>80 Yr</span></div>
+        </div>
+
+        <!-- Height Selector & Values -->
+        <div class="input-group">
+          <div class="input-labels">
+            <span class="input-title">Height Unit</span>
+            <select id="health-height-unit" class="app-select-small">
+              <option value="metric" selected>Metric (cm)</option>
+              <option value="imperial">Imperial (ft/in)</option>
+            </select>
+          </div>
+
+          <!-- Height cm -->
+          <div id="height-metric-container" class="mt-2">
+            <div class="number-input-wrapper">
+              <input type="number" id="health-height-cm" value="175" min="100" max="250">
+              <span class="currency-suffix">cm</span>
+            </div>
+          </div>
+
+          <!-- Height ft/in -->
+          <div id="height-imperial-container" class="input-row hidden mt-2">
+            <div class="input-group half">
+              <input type="number" id="health-height-ft" value="5" min="3" max="8" class="input-small-full" placeholder="ft">
+            </div>
+            <div class="input-group half">
+              <input type="number" id="health-height-in" value="9" min="0" max="11" class="input-small-full" placeholder="in">
+            </div>
+          </div>
+        </div>
+
+        <!-- Weight Selector & Values -->
+        <div class="input-group">
+          <div class="input-labels">
+            <span class="input-title">Weight</span>
+            <select id="health-weight-unit" class="app-select-small">
+              <option value="metric" selected>Metric (kg)</option>
+              <option value="imperial">Imperial (lbs)</option>
+            </select>
+          </div>
+          <div class="number-input-wrapper mt-2">
+            <input type="number" id="health-weight" value="70" min="30" max="250">
+            <span id="health-weight-unit-label" class="currency-suffix">kg</span>
+          </div>
+        </div>
+
+        <!-- Activity Level Dropdown -->
+        <div class="input-group">
+          <span class="input-title">Activity Level</span>
+          <select id="health-activity" class="app-select">
+            <option value="1.2" selected>Sedentary (Little to no exercise)</option>
+            <option value="1.375">Lightly Active (1-3 days/week)</option>
+            <option value="1.55">Moderately Active (3-5 days/week)</option>
+            <option value="1.725">Very Active (6-7 days/week)</option>
+            <option value="1.9">Extra Active (Hard training / physical job)</option>
+          </select>
+        </div>
+
+        <!-- Fitness Goal Dropdown -->
+        <div class="input-group">
+          <span class="input-title">Fitness Goal</span>
+          <select id="health-goal" class="app-select">
+            <option value="maintain" selected>Maintain Healthy Lifestyle</option>
+            <option value="loss">Weight Loss</option>
+            <option value="fat-loss">Fat Loss (High Protein Deficit)</option>
+            <option value="gain">Weight Gain</option>
+            <option value="bodybuilding">Body Building</option>
+            <option value="lean-mass">Lean Mass Building</option>
+          </select>
+        </div>
+
+        <!-- Country Selection -->
+        <div class="input-group">
+          <span class="input-title">Country</span>
+          <select id="health-country" class="app-select">
+            <option value="" disabled>Select Country</option>
+            <option value="IN" selected>India</option>
+            <option value="US">United States</option>
+            <option value="UK">United Kingdom</option>
+            <option value="AU">Australia</option>
+            <option value="JP">Japan</option>
+            <option value="BR">Brazil</option>
+            <option value="DE">Germany</option>
+            <option value="ZA">South Africa</option>
+            <option value="AE">United Arab Emirates</option>
+          </select>
+        </div>
+
+        <!-- City Selection -->
+        <div class="input-group">
+          <span class="input-title">City</span>
+          <select id="health-city" class="app-select" disabled>
+            <option value="" disabled selected>Select a country first</option>
+          </select>
+        </div>
+
+        <!-- Dietary Preference -->
+        <div class="input-group">
+          <span class="input-title">Dietary Preference</span>
+          <select id="health-dietary" class="app-select">
+            <option value="veg">Vegetarian</option>
+            <option value="non-veg" selected>Non-Vegetarian</option>
+          </select>
+        </div>
+
+        <!-- Action Button -->
+        <button id="health-calculate-btn" class="action-btn mt-4">
+          ⚡ Calculate & Generate Plan
+        </button>
+      </div>
+
+      <!-- Results Display -->
+      <div class="results-container">
+        <!-- Core metrics row -->
+        <div class="results-grid">
+          <div class="result-card">
+            <span class="result-label">BMR</span>
+            <span class="result-value" id="health-bmr">-- kcal</span>
+          </div>
+          <div class="result-card">
+            <span class="result-label">TDEE</span>
+            <span class="result-value text-accent" id="health-tdee">-- kcal</span>
+          </div>
+          <div class="result-card">
+            <span class="result-label">Daily Target</span>
+            <span class="result-value font-bold text-accent" id="health-target">-- kcal</span>
+          </div>
+          <div class="result-card">
+            <span class="result-label">BMI & Status</span>
+            <span class="result-value" id="health-bmi">--</span>
+            <span class="result-sub-value" id="health-bmi-subtitle" style="font-size: 8px; color: var(--color-mute);">Target: --</span>
+          </div>
+        </div>
+
+        <!-- Interactive Macronutrients donut Split -->
+        <div class="results-table-card">
+          <h3>Macronutrients target Split</h3>
+          <div class="chart-layout">
+            <div class="relative w-28 h-28 mx-auto">
+              <svg class="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" stroke="var(--color-hairline)" stroke-width="12" fill="transparent" />
+                <circle id="donut-carbs" cx="60" cy="60" r="50" stroke="#0070f3" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+                <circle id="donut-protein" cx="60" cy="60" r="50" stroke="#ff0080" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+                <circle id="donut-fat" cx="60" cy="60" r="50" stroke="#f9cb28" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+              </svg>
+              <div class="donut-center-text">
+                <span class="label">Target</span>
+                <span id="center-cal" class="value">-- kcal</span>
+              </div>
+            </div>
+
+            <!-- Legend details -->
+            <div class="donut-legend">
+              <div class="donut-legend-item">
+                <div class="donut-legend-left">
+                  <span class="legend-dot dot-carbs"></span>
+                  <span class="donut-legend-label">Carbs <span id="carb-pct" class="donut-legend-pct">(50%)</span></span>
+                </div>
+                <div class="donut-legend-right">
+                  <span id="carb-g" class="donut-legend-val">-- g</span>
+                  <div id="carb-cal" class="donut-legend-subval">-- kcal</div>
+                </div>
+              </div>
+              
+              <div class="donut-legend-item">
+                <div class="donut-legend-left">
+                  <span class="legend-dot dot-protein"></span>
+                  <span class="donut-legend-label">Protein <span id="protein-pct" class="donut-legend-pct">(20%)</span></span>
+                </div>
+                <div class="donut-legend-right">
+                  <span id="protein-g" class="donut-legend-val">-- g</span>
+                  <div id="protein-cal" class="donut-legend-subval">-- kcal</div>
+                </div>
+              </div>
+
+              <div class="donut-legend-item">
+                <div class="donut-legend-left">
+                  <span class="legend-dot dot-fats"></span>
+                  <span class="donut-legend-label">Fats <span id="fat-pct" class="donut-legend-pct">(30%)</span></span>
+                </div>
+                <div class="donut-legend-right">
+                  <span id="fat-g" class="donut-legend-val">-- g</span>
+                  <div id="fat-cal" class="donut-legend-subval">-- kcal</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Daily Calorie Targets List -->
+        <div class="result-card full-width">
+          <span class="result-label">Daily Calorie Goals</span>
+          <div class="goals-list">
+            <div class="goal-item"><span>Lose Weight (Mild Deficit)</span><span id="health-goal-lose" class="font-mono font-bold">--</span></div>
+            <div class="goal-item"><span>Maintenance Calories</span><span id="health-goal-maintain" class="font-mono font-bold">--</span></div>
+            <div class="goal-item"><span>Gain Weight (Mild Surplus)</span><span id="health-goal-gain" class="font-mono font-bold">--</span></div>
+          </div>
+        </div>
+
+        <!-- 2. Personalised Diet Chart Plan -->
+        <div class="results-table-card mt-6">
+          <div class="flex-row-center border-b border-hairline pb-2" style="justify-content: space-between; align-items: center; width: 100%;">
+            <h2 class="font-display text-base font-bold tracking-tight text-ink" style="margin: 0; border: none; padding: 0;">Daily Nutrition Plan</h2>
+            <div class="flex-row-center" style="gap: 6px;">
+              <button id="reset-diet-btn" class="diet-action-btn hidden" style="border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444;">🔄 Reset</button>
+              <button id="print-diet-btn" class="diet-action-btn hidden" style="border: 1px solid var(--color-link); color: var(--color-link);">Export</button>
+            </div>
+          </div>
+          
+          <!-- Empty State (No Location chosen) -->
+          <div id="diet-empty-state" class="p-8 text-center bg-canvas-soft border border-dashed border-hairline rounded-xl mt-4">
+            <span style="font-size: 24px; display: block; margin-bottom: 8px;">📍</span>
+            <h4 class="font-bold text-ink text-sm">Location Required</h4>
+            <p style="font-size: 11px; color: var(--color-mute);" class="mt-2">Please select your Country and City above and click Calculate to generate your local, culturally-curated full-day diet plan.</p>
+          </div>
+
+          <!-- Active Panel -->
+          <div id="diet-active-panel" class="hidden mt-4 space-y-4">
+            <div class="diet-info-card">
+              <span class="card-title">Eating Habits & Local Timing</span>
+              <p id="diet-habits-text"></p>
+              <div class="timezone-row">Local Timezone: <span id="diet-timezone-text" class="timezone-val"></span></div>
+            </div>
+
+            <!-- Meals timeline container -->
+            <div id="meals-timeline-container" class="space-y-4 mt-4">
+              <!-- Dynamically populated meal cards -->
+            </div>
+
+            <!-- Action Buttons Row -->
+            <div class="flex-center mt-3">
+              <button id="add-custom-meal-btn" class="back-btn text-xs">+ Add Custom Meal Card</button>
+            </div>
+
+            <!-- Intake Target Summary Table -->
+            <div class="results-table-card mt-6">
+              <h3>Target vs. Planned Menu Intake</h3>
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr class="font-mono text-[9px] text-mute uppercase">
+                      <th>Nutrient</th>
+                      <th class="text-right">Target</th>
+                      <th class="text-right">Actual</th>
+                      <th class="text-right">Difference</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="nutrient-name">Calories</td>
+                      <td id="summary-target-cal" class="text-right">--</td>
+                      <td id="summary-actual-cal" class="text-right">--</td>
+                      <td id="summary-diff-cal" class="text-right font-bold">--</td>
+                    </tr>
+                    <tr>
+                      <td class="nutrient-name"><span class="legend-dot dot-protein"></span> Protein</td>
+                      <td id="summary-target-prot" class="text-right">--</td>
+                      <td id="summary-actual-prot" class="text-right">--</td>
+                      <td id="summary-diff-prot" class="text-right font-bold">--</td>
+                    </tr>
+                    <tr>
+                      <td class="nutrient-name"><span class="legend-dot dot-carbs"></span> Carbs</td>
+                      <td id="summary-target-carb" class="text-right">--</td>
+                      <td id="summary-actual-carb" class="text-right">--</td>
+                      <td id="summary-diff-carb" class="text-right font-bold">--</td>
+                    </tr>
+                    <tr>
+                      <td class="nutrient-name"><span class="legend-dot dot-fats"></span> Fat</td>
+                      <td id="summary-target-fat" class="text-right">--</td>
+                      <td id="summary-actual-fat" class="text-right">--</td>
+                      <td id="summary-diff-fat" class="text-right font-bold">--</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="flex-center mt-3">
+                <span id="nutritional-match-badge" class="inline-flex px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold"></span>
+              </div>
+            </div>
+
+            <!-- Micronutrient Breakdown Summary -->
+            <div class="results-table-card mt-4">
+              <h3>Total Micronutrients Aggregation</h3>
+              <div id="summary-micros-list" class="grid grid-cols-2 gap-x-4 gap-y-1.5 font-mono text-[10px] text-mute">
+                <!-- Dynamically populated micronutrient content -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size: 8px; color: var(--color-mute); margin-top: 16px; margin-bottom: 8px; text-align: center; line-height: 1.3;">* Health calculations are estimates and are not a substitute for medical or nutritional advice. Please consult a licensed doctor or registered dietitian before making health or dietary decisions.</p>
+    </section>
+
+    <!-- 0.3 Track Food View -->
+    <section id="view-track-food" class="app-view">
+      <div class="view-header flex-row-center" style="gap: 12px; align-items: center;">
+        <button class="back-circle-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <div style="flex-grow: 1;">
+          <h2 style="margin: 0; line-height: 1.2;">Track Food</h2>
+          <p class="view-subtitle">Log meals, nutrition insights & saved recipes</p>
+        </div>
+      </div>
+
+      <!-- Segmented Sub-Header Tabs (Sticky Top) -->
+      <div class="segmented-control mt-2 mb-4" style="position: sticky; top: 56px; z-index: 45; background: var(--color-canvas); padding: 4px 0; border-radius: 12px; box-shadow: var(--shadow-sm);">
+        <button id="tab-tf-all" class="segment-btn active" onclick="switchTrackFoodTab('all')">1. All Meals</button>
+        <button id="tab-tf-insights" class="segment-btn" onclick="switchTrackFoodTab('insights')">2. Insights</button>
+        <button id="tab-tf-saved" class="segment-btn" onclick="switchTrackFoodTab('saved')">3. Saved Meals</button>
+      </div>
+
+      <!-- Panel 1: All Meals -->
+      <div id="panel-tf-all" class="track-food-panel space-y-4">
+        <!-- Daily Progress & Summary with Date Picker -->
+        <div class="results-table-card">
+          <div class="flex-row-center" style="justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+            <span class="font-bold text-ink text-sm">Daily Meals Log</span>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 13px;">📅</span>
+              <input type="date" id="tf-log-date" class="input-small-full" style="width: 125px; padding: 4px 6px; font-size: 11px; font-weight: bold; border-radius: 6px;" onchange="onTrackFoodDateChange()">
+              <button class="action-btn" style="width: auto; padding: 4px 8px; font-size: 10px; border-radius: 6px;" onclick="setTrackFoodDateToday()">Today</button>
+            </div>
+          </div>
+          <div class="grid grid-cols-4 gap-2 text-center" style="display:grid; grid-template-columns: repeat(4, 1fr);">
+            <div class="result-card p-2">
+              <span class="result-label" style="font-size: 9px;">Calories</span>
+              <span id="tf-sum-cal" class="font-mono text-xs font-bold text-accent">0 kcal</span>
+            </div>
+            <div class="result-card p-2">
+              <span class="result-label" style="font-size: 9px;">Protein</span>
+              <span id="tf-sum-prot" class="font-mono text-xs font-bold text-ink">0g</span>
+            </div>
+            <div class="result-card p-2">
+              <span class="result-label" style="font-size: 9px;">Carbs</span>
+              <span id="tf-sum-carb" class="font-mono text-xs font-bold text-link">0g</span>
+            </div>
+            <div class="result-card p-2">
+              <span class="result-label" style="font-size: 9px;">Fat</span>
+              <span id="tf-sum-fat" class="font-mono text-xs font-bold text-warning">0g</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Row: Add Food & New Meal Category -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <button id="btn-open-add-food" class="action-btn tf-action-btn" style="font-size: 11px; padding: 8px; border-radius: 8px;" onclick="toggleTrackFoodAction('add-food')">
+            ➕ Add Food
+          </button>
+          <button id="btn-open-add-cat" class="action-btn tf-action-btn" style="font-size: 11px; padding: 8px; border-radius: 8px;" onclick="toggleTrackFoodAction('add-cat')">
+            🏷 New Meal Category
+          </button>
+        </div>
+
+        <!-- Custom Category Creator Box (hidden by default) -->
+        <div id="form-add-category-box" class="calculator-form hidden p-3 border border-hairline rounded-xl bg-canvas-soft" style="margin-top:8px;">
+          <div class="flex-row-center" style="justify-content: space-between; margin-bottom: 6px;">
+            <span class="font-bold text-ink text-xs">Create Custom Meal Category</span>
+            <button class="icon-btn" onclick="toggleTrackFoodAction('close')">✕</button>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <input type="text" id="tf-new-cat-input" placeholder="e.g. Pre-Workout, Brunch, Midnight Snack" class="input-small-full" style="text-align:left; font-size:12px; height:36px;" autocomplete="off">
+            <button class="action-btn" style="width: auto; padding: 0 14px; font-size: 11px; white-space: nowrap;" onclick="addNewMealCategory()">+ Create</button>
+          </div>
+        </div>
+
+        <!-- Add Custom Food Form (hidden by default) -->
+        <div id="form-add-food" class="calculator-form hidden p-4 border border-hairline rounded-xl bg-canvas-soft" style="margin-top:8px;">
+          <div class="flex-row-center" style="justify-content: space-between; margin-bottom: 8px;">
+            <h4 class="font-bold text-ink text-sm" style="margin:0;">Add Food / Diet Items</h4>
+            <button class="icon-btn" onclick="toggleTrackFoodAction('close')">✕</button>
+          </div>
+          
+          <div class="input-group">
+            <span class="input-title">Meal Category</span>
+            <select id="tf-add-category" class="app-select">
+              <!-- Dynamically populated categories -->
+            </select>
+          </div>
+
+          <!-- Single Unified Search & Auto-Suggest Input -->
+          <div class="input-group" style="position: relative;">
+            <span class="input-title">Food Name (Type to Search & Auto-Suggest)</span>
+            <input type="text" id="tf-add-name" placeholder="Type e.g. Chicken, Oats, Paneer, Rice, Egg, Apple..." class="input-small-full" style="text-align:left; font-size:13px;" oninput="onFoodSearchInput('add')" autocomplete="off">
+            <div id="tf-search-suggestions-add" class="hidden" style="position: absolute; top: 100%; left: 0; right: 0; background: var(--color-surface); border: 1px solid var(--color-hairline); border-radius: 8px; max-height: 180px; overflow-y: auto; z-index: 50; box-shadow: var(--shadow-md); margin-top: 4px;"></div>
+          </div>
+
+          <!-- Optional Saved Meal Selector inside Add Food -->
+          <div class="input-group">
+            <span class="input-title">Or Pick from Saved Meals (Optional)</span>
+            <select id="tf-add-saved-meal-select" class="app-select" onchange="onSelectSavedMealInAddFood()">
+              <option value="">-- Optional: Choose Saved Meal --</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2" style="display:grid; grid-template-columns: 1fr 1fr;">
+            <div class="input-group">
+              <span class="input-title">Quantity / Portion</span>
+              <input type="number" id="tf-add-qty" value="100" min="1" max="2000" class="input-small-full" oninput="calculateFoodNutritionFromQty()">
+            </div>
+            <div class="input-group">
+              <span class="input-title">Unit</span>
+              <span id="tf-add-unit-label" class="input-small-full" style="display:flex; align-items:center; justify-content:center; background:var(--color-canvas-soft-2); font-weight:bold; font-size:11px;">grams (g)</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2" style="display:grid; grid-template-columns: 1fr 1fr;">
+            <div class="input-group">
+              <span class="input-title">Calories (kcal)</span>
+              <input type="number" id="tf-add-cal" placeholder="300" class="input-small-full">
+            </div>
+            <div class="input-group">
+              <span class="input-title">Protein (g)</span>
+              <input type="number" id="tf-add-prot" placeholder="20" class="input-small-full">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2" style="display:grid; grid-template-columns: 1fr 1fr;">
+            <div class="input-group">
+              <span class="input-title">Carbs (g)</span>
+              <input type="number" id="tf-add-carb" placeholder="35" class="input-small-full">
+            </div>
+            <div class="input-group">
+              <span class="input-title">Fat (g)</span>
+              <input type="number" id="tf-add-fat" placeholder="10" class="input-small-full">
+            </div>
+          </div>
+
+          <div style="display:flex; gap:6px; margin-top:8px;">
+            <button class="action-btn" style="flex:1; background:var(--color-canvas-soft-2); color:var(--color-ink); border:1px solid var(--color-hairline); font-size:11px; padding:8px 4px;" onclick="stageFoodItemAdd()">
+              ➕ Stage Item
+            </button>
+            <button class="action-btn" style="flex:1; font-size:11px; padding:8px 4px;" onclick="addStagedOrSingleFoodItem()">
+              ✔ Add to Log
+            </button>
+            <button class="action-btn" style="flex:1; background:var(--color-canvas-soft-2); color:#0070f3; border:1px solid #0070f3; font-size:11px; padding:8px 4px;" onclick="saveFoodAsSavedMeal()">
+              💾 Save as Meal
+            </button>
+          </div>
+
+          <!-- Staged Items List -->
+          <div id="tf-add-staging-container" class="hidden space-y-2 mt-2 p-2 border border-hairline rounded-lg bg-canvas">
+            <span class="font-bold text-xs text-ink">Staged Batch Items:</span>
+            <div id="tf-add-staging-list" class="space-y-1.5"></div>
+          </div>
+        </div>
+
+        <!-- Meal Category Container Cards -->
+        <div id="tf-meals-log-container" class="space-y-4 mt-3">
+          <!-- Dynamically rendered meals list -->
+        </div>
+      </div>
+
+      <!-- Panel 2: Insights -->
+      <div id="panel-tf-insights" class="track-food-panel hidden space-y-4">
+        <div class="results-table-card">
+          <h3>Daily Macro Distribution Insights</h3>
+          <div class="chart-layout">
+            <div class="relative w-28 h-28 mx-auto">
+              <svg class="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" stroke="var(--color-hairline)" stroke-width="12" fill="transparent" />
+                <circle id="tf-donut-carbs" cx="60" cy="60" r="50" stroke="#0070f3" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+                <circle id="tf-donut-protein" cx="60" cy="60" r="50" stroke="#ff0080" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+                <circle id="tf-donut-fat" cx="60" cy="60" r="50" stroke="#f9cb28" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+              </svg>
+              <div class="donut-center-text">
+                <span class="label">Logged</span>
+                <span id="tf-center-cal" class="value">0 kcal</span>
+              </div>
+            </div>
+
+            <div class="donut-legend">
+              <div class="donut-legend-item">
+                <div class="donut-legend-left">
+                  <span class="legend-dot dot-carbs"></span>
+                  <span class="donut-legend-label">Carbs <span id="tf-carb-pct" class="donut-legend-pct">(0%)</span></span>
+                </div>
+                <div class="donut-legend-right">
+                  <span id="tf-carb-g" class="donut-legend-val">0g</span>
+                </div>
+              </div>
+              <div class="donut-legend-item">
+                <div class="donut-legend-left">
+                  <span class="legend-dot dot-protein"></span>
+                  <span class="donut-legend-label">Protein <span id="tf-protein-pct" class="donut-legend-pct">(0%)</span></span>
+                </div>
+                <div class="donut-legend-right">
+                  <span id="tf-protein-g" class="donut-legend-val">0g</span>
+                </div>
+              </div>
+              <div class="donut-legend-item">
+                <div class="donut-legend-left">
+                  <span class="legend-dot dot-fats"></span>
+                  <span class="donut-legend-label">Fat <span id="tf-fat-pct" class="donut-legend-pct">(0%)</span></span>
+                </div>
+                <div class="donut-legend-right">
+                  <span id="tf-fat-g" class="donut-legend-val">0g</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="results-table-card">
+          <h3>Estimated Micronutrient Breakdown</h3>
+          <div id="tf-micros-grid" class="grid grid-cols-2 gap-x-4 gap-y-2 font-mono text-xs text-mute mt-2" style="display:grid; grid-template-columns: 1fr 1fr;">
+            <!-- Dynamically populated micro metrics -->
+          </div>
+        </div>
+
+        <div class="results-table-card">
+          <h3>Per-Meal Macro & Energy Breakdown</h3>
+          <div id="tf-per-meal-breakdown" class="space-y-2 mt-2">
+            <!-- Dynamically rendered per-meal % bars -->
+          </div>
+        </div>
+
+        <!-- Last 7 Days Nutrition Trends Card -->
+        <div class="results-table-card">
+          <div class="flex-row-center" style="justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+            <h3 style="margin: 0;">Last 7 Days Nutrition Trends</h3>
+            <select id="tf-trend-nutrient-select" class="app-select" style="width: 140px; padding: 4px 8px; font-size: 11px;" onchange="render7DayTrendsChart()">
+              <option value="cal" selected>Calories (kcal)</option>
+              <option value="prot">Protein (g)</option>
+              <option value="carb">Carbohydrates (g)</option>
+              <option value="fat">Fat (g)</option>
+              <option value="fiber">Fibre (g)</option>
+            </select>
+          </div>
+          <div id="tf-trends-chart-container" style="width: 100%; min-height: 180px; margin-top: 8px;">
+            <!-- Single Responsive SVG Bar Chart rendered dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3: Saved Meals -->
+      <div id="panel-tf-saved" class="track-food-panel hidden space-y-4">
+        <div class="results-table-card">
+          <h3>Your Saved Meals Library</h3>
+          <div id="tf-saved-meals-list" class="space-y-3 mt-3">
+            <!-- Dynamically rendered saved meals cards -->
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size: 8px; color: var(--color-mute); margin-top: 16px; margin-bottom: 8px; text-align: center; line-height: 1.3;">* Health calculations are estimates and are not a substitute for medical or nutritional advice. Please consult a licensed doctor or registered dietitian before making health or dietary decisions.</p>
+    </section>
+
+    <section id="view-risk" class="app-view">
+      <div class="view-header flex-row-center" style="gap: 12px; align-items: center;">
+        <button class="back-circle-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <div style="flex-grow: 1;">
+          <h2 style="margin: 0; line-height: 1.2;">Risk Allocation</h2>
+          <p class="view-subtitle">Portfolio Asset Allocation</p>
+        </div>
+      </div>
+
+      <div class="calculator-form">
+        <!-- Age Input -->
+        <div class="input-group">
+          <div class="input-labels">
+            <span class="input-title">Your Age</span>
+            <div class="number-input-wrapper">
+              <input type="number" id="risk-age" value="30" min="18" max="75">
+              <span class="currency-suffix">Yr</span>
+            </div>
+          </div>
+          <input type="range" id="risk-age-slider" min="18" max="75" step="1" value="30" class="app-slider">
+          <div class="slider-limits"><span>18 Yr</span><span>75 Yr</span></div>
+        </div>
+
+        <!-- Investment Horizon Dropdown -->
+        <div class="input-group">
+          <span class="input-title">Investment Horizon</span>
+          <select id="risk-tenure" class="app-select">
+            <option value="1y">Very Short Term (1 Year)</option>
+            <option value="1-5y">Short Term (1 to 5 Years)</option>
+            <option value="5-10y">Medium Term (5 to 10 Years)</option>
+            <option value="10y" selected>Long Term (10+ Years)</option>
+          </select>
+        </div>
+
+        <!-- Risk Appetite Select -->
+        <div class="input-group">
+          <span class="input-title">Risk Appetite</span>
+          <div class="segmented-control">
+            <button id="risk-lvl-con" class="segment-btn">Conservative</button>
+            <button id="risk-lvl-mod" class="segment-btn active">Moderate</button>
+            <button id="risk-lvl-agg" class="segment-btn">Aggressive</button>
+          </div>
+        </div>
+
+        <!-- Risk Index Panel -->
+        <div class="p-4 border border-hairline rounded-xl bg-canvas-soft text-[10px] text-mute font-mono space-y-1 mt-2">
+          <strong>Risk Profile Index:</strong>
+          <p id="risk-index-label" class="font-sans text-xs font-bold text-link uppercase mt-1">Aggressive Portfolio</p>
+          <p class="text-mute font-sans mt-2" style="font-size: 8px; line-height: 1.3;">Asset allocations rebalance automatically as tenure decreases or age increases to prioritize capital preservation.</p>
+        </div>
+      </div>
+
+      <!-- Results Display -->
+      <div class="results-container">
+        
+        <!-- 1. Core Asset Class splits Donut -->
+        <div class="results-table-card">
+          <h3>Core Asset Class Allocation</h3>
+          <div class="chart-layout">
+            <div class="relative w-28 h-28 mx-auto">
+              <svg class="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" stroke="var(--color-hairline)" stroke-width="12" fill="transparent" />
+                <circle id="donut-equity" cx="60" cy="60" r="50" stroke="var(--color-link)" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+                <circle id="donut-gold" cx="60" cy="60" r="50" stroke="#f9cb28" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+                <circle id="donut-debt" cx="60" cy="60" r="50" stroke="var(--color-hairline-strong)" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+              </svg>
+              <div class="donut-center-text">
+                <span class="label">Portfolio</span>
+                <span class="value">100%</span>
+              </div>
+            </div>
+
+            <!-- Legend details -->
+            <div class="donut-legend">
+              <div class="donut-legend-item">
+                <div class="donut-legend-left">
+                  <span class="legend-dot dot-link"></span>
+                  <span class="donut-legend-label">Equities / Stocks</span>
+                </div>
+                <div class="donut-legend-right">
+                  <span id="legend-equity-pct" class="donut-legend-val">--%</span>
+                </div>
+              </div>
+              
+              <div class="donut-legend-item">
+                <div class="donut-legend-left">
+                  <span class="legend-dot dot-fats"></span>
+                  <span class="donut-legend-label">Gold & Commodities</span>
+                </div>
+                <div class="donut-legend-right">
+                  <span id="legend-gold-pct" class="donut-legend-val">--%</span>
+                </div>
+              </div>
+
+              <div class="donut-legend-item">
+                <div class="donut-legend-left">
+                  <span class="legend-dot dot-debt"></span>
+                  <span class="donut-legend-label">Fixed Income / Debt</span>
+                </div>
+                <div class="donut-legend-right">
+                  <span id="legend-debt-pct" class="donut-legend-val">--%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Equities Sub-Allocation Breakdown Donut -->
+        <div id="equity-breakdown-card" class="results-table-card">
+          <h3>Equities Sub-Allocation Breakdown</h3>
+          <div class="chart-layout">
+            <div class="relative w-28 h-28 mx-auto">
+              <svg class="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" stroke="var(--color-hairline)" stroke-width="12" fill="transparent" />
+                <circle id="donut-stocks" cx="60" cy="60" r="50" stroke="#ff0080" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+                <circle id="donut-largecap" cx="60" cy="60" r="50" stroke="#00dfd8" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+                <circle id="donut-midcap" cx="60" cy="60" r="50" stroke="#7928ca" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+                <circle id="donut-smallcap" cx="60" cy="60" r="50" stroke="#f9cb28" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+                <circle id="donut-liquid" cx="60" cy="60" r="50" stroke="#29bc9b" stroke-width="12" fill="transparent" stroke-dasharray="314.16" stroke-dashoffset="0" />
+              </svg>
+              <div class="donut-center-text">
+                <span class="label">Equity Split</span>
+                <span id="center-equity-total" class="value">--%</span>
+              </div>
+            </div>
+
+            <!-- Legend details -->
+            <div class="donut-legend">
+              <div class="donut-legend-item">
+                <div class="donut-legend-left">
+                  <span class="legend-dot dot-direct-stocks"></span>
+                  <span class="donut-legend-label">Direct Stocks</span>
+                </div>
+                <div class="donut-legend-right">
+                  <span id="legend-stocks-pct" class="donut-legend-val">--%</span>
+                  <div id="legend-stocks-sub" class="donut-legend-subval">--</div>
+                </div>
+              </div>
+              
+              <div class="donut-legend-item">
+                <div class="donut-legend-left">
+                  <span class="legend-dot dot-large-cap"></span>
+                  <span class="donut-legend-label">Large Cap MFs</span>
+                </div>
+                <div class="donut-legend-right">
+                  <span id="legend-largecap-pct" class="donut-legend-val">--%</span>
+                  <div id="legend-largecap-sub" class="donut-legend-subval">--</div>
+                </div>
+              </div>
+
+              <div class="donut-legend-item">
+                <div class="donut-legend-left">
+                  <span class="legend-dot dot-mid-cap"></span>
+                  <span class="donut-legend-label">Mid Cap MFs</span>
+                </div>
+                <div class="donut-legend-right">
+                  <span id="legend-midcap-pct" class="donut-legend-val">--%</span>
+                  <div id="legend-midcap-sub" class="donut-legend-subval">--</div>
+                </div>
+              </div>
+
+              <div class="donut-legend-item">
+                <div class="donut-legend-left">
+                  <span class="legend-dot dot-small-cap"></span>
+                  <span class="donut-legend-label">Small Cap MFs</span>
+                </div>
+                <div class="donut-legend-right">
+                  <span id="legend-smallcap-pct" class="donut-legend-val">--%</span>
+                  <div id="legend-smallcap-sub" class="donut-legend-subval">--</div>
+                </div>
+              </div>
+
+              <div class="donut-legend-item">
+                <div class="donut-legend-left">
+                  <span class="legend-dot dot-liquid"></span>
+                  <span class="donut-legend-label">Debt & Liquid MFs</span>
+                </div>
+                <div class="donut-legend-right">
+                  <span id="legend-liquid-pct" class="donut-legend-val">--%</span>
+                  <div id="legend-liquid-sub" class="donut-legend-subval">--</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Safe withdrawal rate / No Equity alert -->
+        <div id="no-equity-message" class="hidden p-3 border border-amber-500/25 rounded-lg bg-amber-500/10 text-xs flex items-start gap-2.5 mt-3" style="background-color: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 10px; padding: 12px; margin-top: 12px;">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <div>
+            <div style="font-weight: 600; font-size: 12px; color: #f59e0b; margin-bottom: 2px;">1-Year Capital Preservation Strategy</div>
+            <div style="font-size: 11px; line-height: 1.4; opacity: 0.9;">Equity exposure is excluded for 1-year horizons due to market volatility. Assets are safely allocated to low-risk fixed income & liquid instruments to protect capital.</div>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size: 8px; color: var(--color-mute); margin-top: 16px; margin-bottom: 8px; text-align: center; line-height: 1.3;">* Financial calculations are estimates and should not be considered investment, tax, or legal advice. Please consult a qualified financial advisor, Chartered Accountant (CA), or other certified professional before making financial decisions.</p>
+    </section>
+
+    <!-- 6. About Us View -->
+    <section id="view-about" class="app-view">
+      <div class="view-header flex-row-center" style="gap: 12px; align-items: center;">
+        <button class="back-circle-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <div style="flex-grow: 1;">
+          <h2 style="margin: 0; line-height: 1.2;">About Us</h2>
+          <p class="view-subtitle">WHealth Calculator Platform</p>
+        </div>
+      </div>
+
+      <div class="calculator-form" style="font-size: 13px; line-height: 1.5; color: var(--color-ink); gap: 16px;">
+        <div style="text-align: center; padding: 12px 0;">
+          <div class="menu-card-icon bg-red" style="width: 60px; height: 60px; border-radius: 16px; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; background-color: rgba(239, 68, 68, 0.1); color: #ef4444;">
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+          </div>
+          <h3 style="font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--color-ink); margin: 0;">WHealth Calculator</h3>
+          <p style="font-size: 12px; color: var(--color-mute); margin-top: 4px;">Integrated Health & Wealth Intelligence Platform</p>
+        </div>
+
+        <div class="results-table-card">
+          <h4 style="font-weight: 700; color: var(--color-ink); margin-bottom: 6px;">🎯 Our Mission</h4>
+          <p style="font-size: 12px; color: var(--color-mute); line-height: 1.5; margin: 0;">
+            WHealth Calculator is engineered to provide precise, private, and offline-first calculators for body composition, localized diet planning, food tracking, and financial portfolio management.
+          </p>
+        </div>
+
+        <div class="results-table-card">
+          <h4 style="font-weight: 700; color: var(--color-ink); margin-bottom: 8px;">🍎 Health Planners Suite</h4>
+          <ul style="font-size: 12px; color: var(--color-mute); line-height: 1.6; padding-left: 18px; margin: 0;">
+            <li><strong>Health Metrices & Diet Planner:</strong> Calculates BMR, TDEE, macronutrient splits, and localized full-day meal charts.</li>
+            <li><strong>Track Food & Nutrition Insights:</strong> Log daily meals across All Meals, analyze micro & macro breakdowns in Insights, and manage custom Saved Meals.</li>
+          </ul>
+        </div>
+
+        <div class="results-table-card">
+          <h4 style="font-weight: 700; color: var(--color-ink); margin-bottom: 8px;">📈 Wealth & Finance Suite</h4>
+          <ul style="font-size: 12px; color: var(--color-mute); line-height: 1.6; padding-left: 18px; margin: 0;">
+            <li><strong>SIP & Lumpsum:</strong> Compound investment growth projections with annual step-ups.</li>
+            <li><strong>SWP Planner:</strong> Systematic withdrawal longevity & portfolio sustainability.</li>
+            <li><strong>Loan EMI & Retirement:</strong> Amortization schedules and inflation-adjusted corpus calculators.</li>
+            <li><strong>Portfolio Risk Allocation:</strong> Age & tenure glide-path risk index scoring.</li>
+          </ul>
+        </div>
+
+        <div class="results-table-card" style="background-color: var(--color-canvas-soft);">
+          <h4 style="font-weight: 700; color: var(--color-ink); margin-bottom: 4px;">🔒 100% Private & On-Device</h4>
+          <p style="font-size: 11px; color: var(--color-mute); margin: 0;">
+            All data calculations and stored meals run entirely inside your device's local sandbox (`localStorage`). Zero tracking, zero telemetry, no user sign-in required.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Contact Us View -->
+    <section id="view-contact" class="app-view">
+      <div class="view-header flex-row-center" style="gap: 12px; align-items: center;">
+        <button class="back-circle-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <div style="flex-grow: 1;">
+          <h2 style="margin: 0; line-height: 1.2;">Contact Us</h2>
+          <p class="view-subtitle">Get in Touch</p>
+        </div>
+      </div>
+
+      <div class="calculator-form">
+        <div style="text-align: center; padding: 12px 0;">
+          <div class="menu-card-icon bg-blue" style="width: 56px; height: 56px; border-radius: 14px; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center;">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </div>
+          <h3 style="font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--color-ink);">We'd love to hear from you</h3>
+          <p style="font-size: 13px; color: var(--color-mute); margin-top: 4px; line-height: 1.4;">Have questions or feedback about WHealth Planners? Send us a message below.</p>
+        </div>
+
+        <div class="input-group">
+          <span class="input-title">Your Name</span>
+          <input type="text" placeholder="Enter your name" class="input-small-full" style="font-family: var(--font-sans); text-align: left; font-weight: 500;">
+        </div>
+
+        <div class="input-group">
+          <span class="input-title">Email Address</span>
+          <input type="email" placeholder="Enter your email" class="input-small-full" style="font-family: var(--font-sans); text-align: left; font-weight: 500;">
+        </div>
+
+        <div class="input-group">
+          <span class="input-title">Message</span>
+          <textarea placeholder="How can we help you?" class="input-small-full" style="font-family: var(--font-sans); text-align: left; font-weight: 500; height: 100px; padding: 10px 12px; resize: none;"></textarea>
+        </div>
+
+        <button class="action-btn mt-2" onclick="alert('Thank you! Your message has been sent successfully.')">
+          Send Message
+        </button>
+      </div>
+    </section>
+
+    <!-- 8. Privacy Policy View -->
+    <section id="view-privacy" class="app-view">
+      <div class="view-header flex-row-center" style="gap: 12px; align-items: center;">
+        <button class="back-circle-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <div style="flex-grow: 1;">
+          <h2 style="margin: 0; line-height: 1.2;">Privacy Policy</h2>
+          <p class="view-subtitle">Legal & Safety</p>
+        </div>
+      </div>
+
+      <div class="calculator-form" style="font-size: 12px; line-height: 1.5; color: var(--color-mute); gap: 14px;">
+        <div style="background-color: var(--color-canvas-soft); padding: 12px; border-radius: 8px; border: 1px solid var(--color-hairline);">
+          <strong style="color: var(--color-ink); display: block; margin-bottom: 4px;">🔒 Privacy Promise: Your Data Stays on Your Device</strong>
+          Unlike other trackers, WHealth is engineered to run entirely inside your device's sandbox. We do not transfer your personal, fitness, or financial data to any external server or database.
+        </div>
+        
+        <div>
+          <h4 style="color: var(--color-ink); font-weight: 600; margin-bottom: 4px;">1. Information We Do Not Collect</h4>
+          When you input parameters, select locations, or calculate financial goals, we do not collect or log your inputs, and we do not require account registration.
+        </div>
+        
+        <div>
+          <h4 style="color: var(--color-ink); font-weight: 600; margin-bottom: 4px;">2. Local Storage</h4>
+          We use local storage only to remember your unit preferences (metric/imperial) and theme selection (dark mode) for seamless UX.
+        </div>
+        
+        <div>
+          <h4 style="color: var(--color-ink); font-weight: 600; margin-bottom: 4px;">3. No Trackers</h4>
+          We use zero marketing cookies, pixel trackers, or advertising scripts.
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Terms & Conditions View -->
+    <section id="view-terms" class="app-view">
+      <div class="view-header flex-row-center" style="gap: 12px; align-items: center;">
+        <button class="back-circle-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <div style="flex-grow: 1;">
+          <h2 style="margin: 0; line-height: 1.2;">Terms & Conditions</h2>
+          <p class="view-subtitle">Terms & Disclaimers</p>
+        </div>
+      </div>
+
+      <div class="calculator-form" style="font-size: 12px; line-height: 1.5; color: var(--color-mute); gap: 14px;">
+        <div style="background-color: rgba(239, 68, 68, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.15);">
+          <strong style="color: #ef4444; display: block; margin-bottom: 4px;">⚠️ Health / Medical Disclaimer</strong>
+          Health calculations are estimates and are not a substitute for medical or nutritional advice. Please consult a licensed doctor or registered dietitian before making health or dietary decisions.
+        </div>
+
+        <div style="background-color: rgba(249, 203, 40, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(249, 203, 40, 0.2);">
+          <strong style="color: var(--color-ink); display: block; margin-bottom: 4px;">⚠️ Financial Disclaimer</strong>
+          Financial calculations are estimates and should not be considered investment, tax, or legal advice. Please consult a qualified financial advisor, Chartered Accountant (CA), or other certified professional before making financial decisions.
+        </div>
+
+        <div>
+          <h4 style="color: var(--color-ink); font-weight: 600; margin-bottom: 4px;">1. Acceptable Use</h4>
+          You agree to use this application for personal, non-commercial purposes only, and not to reverse engineer or scrape calculator algorithms.
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Navigation Bar -->
+  <nav class="app-nav">
+    <button class="nav-tab active" data-target="view-home">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      <span>Home</span>
+    </button>
+    <button class="nav-tab" data-target="view-health">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+      <span>Health</span>
+    </button>
+    <button class="nav-tab" data-target="view-wealth-menu">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+      <span>Wealth</span>
+    </button>
+    <button class="nav-tab" data-target="view-contact">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+      <span>Contact Us</span>
+    </button>
+  </nav>
+
+  <!-- Modern Category Picker Modal -->
+  <div id="modal-category-picker" class="sidebar-overlay hidden" style="display:flex; align-items:center; justify-content:center; padding:16px; z-index: 1000;">
+    <div class="calculator-form p-4 border border-hairline rounded-2xl bg-canvas" style="width:100%; max-width:320px; box-shadow:var(--shadow-lg);">
+      <div class="flex-row-center" style="justify-space-between; margin-bottom:12px;">
+        <h4 class="font-bold text-ink text-sm" style="margin:0;" id="modal-cat-title">Add Meal to Daily Log</h4>
+        <button class="icon-btn" onclick="closeCategoryPickerModal()">✕</button>
+      </div>
+      
+      <div class="input-group">
+        <span class="input-title">Select Meal Category</span>
+        <select id="modal-cat-select" class="app-select" style="font-size:12px;">
+          <!-- Dynamically populated categories -->
+        </select>
+      </div>
+
+      <div style="display:flex; gap:8px; margin-top:12px;">
+        <button class="action-btn" style="flex:1; background:var(--color-canvas-soft-2); color:var(--color-ink); border:1px solid var(--color-hairline);" onclick="closeCategoryPickerModal()">
+          Cancel
+        </button>
+        <button class="action-btn" style="flex:1;" onclick="confirmAddSavedMealFromModal()">
+          ✔ Add to Log
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Diet Database first, then main application JS -->
+  <script src="diet-db.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
