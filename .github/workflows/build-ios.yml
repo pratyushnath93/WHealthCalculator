@@ -39,9 +39,16 @@ jobs:
                      CODE_SIGNING_ALLOWED=NO \
                      clean build
 
+      - name: Package App into IPA for InstallOnAir / Diawi
+        run: |
+          mkdir -p ios/App/build/Payload
+          cp -R ios/App/build/Build/Products/Release-iphonesimulator/App.app ios/App/build/Payload/
+          cd ios/App/build
+          zip -r App.ipa Payload
+
       - name: Upload Compiled iOS Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ios-app-build
-          path: ios/App/build/
+          path: ios/App/build/App.ipa
           retention-days: 7
