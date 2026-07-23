@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initNavigation();
   initCalculators();
+  initHardwareBackPress();
 });
 
 // 1. Theme Configuration
@@ -143,6 +144,82 @@ function goBack() {
   }
 }
 window.goBack = goBack;
+
+// Hardware Back Button & Gesture Navigation Handler
+function initHardwareBackPress() {
+  document.addEventListener('backbutton', handleBackPress, false);
+  if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+    window.Capacitor.Plugins.App.addListener('backButton', handleBackPress);
+  }
+}
+
+function handleBackPress() {
+  const currentView = navHistory[navHistory.length - 1] || 'view-home';
+  if (currentView === 'view-home' || navHistory.length <= 1) {
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+      window.Capacitor.Plugins.App.exitApp();
+    }
+  } else {
+    goBack();
+  }
+}
+
+// Mobile App Contact Form Submission to Web3Forms API
+async function submitMobileContactForm(e) {
+  e.preventDefault();
+  const nameInput = document.getElementById('app-contact-name');
+  const emailInput = document.getElementById('app-contact-email');
+  const msgInput = document.getElementById('app-contact-message');
+  const btn = document.getElementById('app-contact-btn');
+  const successBanner = document.getElementById('contact-success-banner');
+
+  const name = nameInput ? nameInput.value.trim() : '';
+  const email = emailInput ? emailInput.value.trim() : '';
+  const message = msgInput ? msgInput.value.trim() : '';
+
+  if (!name || !email || !message) return;
+
+  btn.disabled = true;
+  btn.innerText = 'Sending...';
+
+  try {
+    const formData = new FormData();
+    formData.append('access_key', '345a4cfa-8076-4d85-9db2-eda8b01a1062');
+    formData.append('subject', 'WHealth App - User Feedback');
+    formData.append('from_name', 'WHealth Mobile App');
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('message', message);
+
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: formData
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      if (nameInput) nameInput.value = '';
+      if (emailInput) emailInput.value = '';
+      if (msgInput) msgInput.value = '';
+
+      if (successBanner) {
+        successBanner.classList.remove('hidden');
+        setTimeout(() => {
+          successBanner.classList.add('hidden');
+        }, 7000);
+      }
+    } else {
+      alert('Submission issue: ' + (result.message || 'Please try again.'));
+    }
+  } catch (err) {
+    console.error('Contact submission error:', err);
+    alert('Network error. Please check your internet connection and try again.');
+  } finally {
+    btn.disabled = false;
+    btn.innerText = 'Send Message';
+  }
+}
+window.submitMobileContactForm = submitMobileContactForm;
 
 // 3. General Utilities
 function formatCurrency(val) {

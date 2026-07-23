@@ -1588,24 +1588,33 @@
           <p style="font-size: 13px; color: var(--color-mute); margin-top: 4px; line-height: 1.4;">Have questions or feedback about WHealth Planners? Send us a message below.</p>
         </div>
 
-        <div class="input-group">
-          <span class="input-title">Your Name</span>
-          <input type="text" placeholder="Enter your name" class="input-small-full" style="font-family: var(--font-sans); text-align: left; font-weight: 500;">
+        <!-- Modern Inline Success Banner (hidden by default) -->
+        <div id="contact-success-banner" class="hidden" style="background-color: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.25); border-radius: 14px; padding: 14px; text-align: center; margin-bottom: 12px;">
+          <div style="width: 38px; height: 38px; background-color: rgba(34, 197, 94, 0.15); color: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px auto; font-size: 18px; font-weight: bold;">✓</div>
+          <h4 style="margin: 0; font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--color-ink);">Message Sent Successfully!</h4>
+          <p style="margin: 4px 0 0 0; font-size: 11px; color: var(--color-mute); line-height: 1.4;">Thank you for reaching out. We have received your query and will reply to your email shortly.</p>
         </div>
 
-        <div class="input-group">
-          <span class="input-title">Email Address</span>
-          <input type="email" placeholder="Enter your email" class="input-small-full" style="font-family: var(--font-sans); text-align: left; font-weight: 500;">
-        </div>
+        <form id="mobile-contact-form" onsubmit="submitMobileContactForm(event)" class="calculator-form" style="gap: 12px; padding: 0;">
+          <div class="input-group">
+            <span class="input-title">Your Name</span>
+            <input type="text" id="app-contact-name" placeholder="Enter your name" required class="input-small-full" style="font-family: var(--font-sans); text-align: left; font-weight: 500;">
+          </div>
 
-        <div class="input-group">
-          <span class="input-title">Message</span>
-          <textarea placeholder="How can we help you?" class="input-small-full" style="font-family: var(--font-sans); text-align: left; font-weight: 500; height: 100px; padding: 10px 12px; resize: none;"></textarea>
-        </div>
+          <div class="input-group">
+            <span class="input-title">Email Address</span>
+            <input type="email" id="app-contact-email" placeholder="Enter your email" required class="input-small-full" style="font-family: var(--font-sans); text-align: left; font-weight: 500;">
+          </div>
 
-        <button class="action-btn mt-2" onclick="alert('Thank you! Your message has been sent successfully.')">
-          Send Message
-        </button>
+          <div class="input-group">
+            <span class="input-title">Message</span>
+            <textarea id="app-contact-message" placeholder="How can we help you?" required class="input-small-full" style="font-family: var(--font-sans); text-align: left; font-weight: 500; height: 100px; padding: 10px 12px; resize: none;"></textarea>
+          </div>
+
+          <button type="submit" id="app-contact-btn" class="action-btn mt-2">
+            Send Message
+          </button>
+        </form>
       </div>
     </section>
 
