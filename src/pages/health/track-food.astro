@@ -696,6 +696,7 @@ import MetricCard from '../../components/MetricCard.astro';
       { name: "Sodium", val: Math.round(totalCal * 0.8) + " mg" },
       { name: "Magnesium", val: Math.round(totalProt * 3.5 + (totalCal > 0 ? 80 : 0)) + " mg" },
       { name: "Zinc", val: Math.round(totalProt * 0.12 + (totalCal > 0 ? 1.5 : 0)) + " mg" },
+      { name: "Selenium", val: Math.round(totalProt * 0.7 + (totalCal > 0 ? 15 : 0)) + " mcg" },
       { name: "Vitamin A", val: totalCal > 0 ? "450 mcg" : "0 mcg" },
       { name: "Vitamin C", val: totalCal > 0 ? "65 mg" : "0 mg" },
       { name: "Vitamin D", val: totalCal > 0 ? "10 mcg" : "0 mcg" }

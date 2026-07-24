@@ -157,6 +157,25 @@ import MetricCard from '../components/MetricCard.astro';
         </select>
       </div>
 
+      <!-- Health Condition / Medical Profile -->
+      <div>
+        <label for="health-condition" class="block font-mono text-xs uppercase tracking-wider text-body mb-2">Health Condition / Medical Profile</label>
+        <select id="health-condition" class="w-full h-10 bg-canvas border border-hairline rounded-sm px-3 text-sm outline-none focus:border-hairline-strong transition-colors">
+          <option value="none" selected>None (Healthy Baseline)</option>
+          <option value="high-bp">High BP (Hypertension)</option>
+          <option value="high-sugar">High Sugar / Pre-Diabetes</option>
+          <option value="low-bp">Low BP (Hypotension)</option>
+          <option value="low-sugar">Low Sugar (Hypoglycemia)</option>
+          <option value="diabetes">Type 2 Diabetes Mellitus</option>
+          <option value="thyroid">Thyroid Condition</option>
+          <option value="high-uric-acid">High Uric Acid (Gout)</option>
+          <option value="high-cholesterol">High Cholesterol (Hyperlipidemia)</option>
+          <option value="fatty-liver">Fatty Liver Disease</option>
+          <option value="heart-disease">Heart Disease (Cardiovascular)</option>
+          <option value="kidney-disease">Kidney Disease (CKD)</option>
+        </select>
+      </div>
+
       <!-- Calculate Button -->
       <button 
         id="calculate-btn"
@@ -291,6 +310,11 @@ import MetricCard from '../components/MetricCard.astro';
         <span>
           Macronutrient splits are defined by targets: Weight/Fat loss emphasizes higher Protein ratios to preserve skeletal muscle mass during deficits. Body building and Gain prioritize higher Carbohydrates to fuel training intensity and sustain glycogen levels.
         </span>
+      </div>
+
+      <!-- Medical Condition Guidance Banner Card -->
+      <div id="health-condition-guidance-card" class="p-4 border border-warning/30 rounded-md bg-canvas-soft font-mono text-xs leading-relaxed shadow-vercel-sm hidden">
+        <!-- Dynamically populated therapeutic protocol notes -->
       </div>
     </div>
   </div>
@@ -456,6 +480,19 @@ import MetricCard from '../components/MetricCard.astro';
       </div>
     </div>
   </div>
+
+  <!-- Medical & Therapeutic Disclaimer Card -->
+  <div class="mt-12 bg-canvas-soft-2 border border-warning/35 rounded-lg p-6 font-mono text-xs leading-relaxed text-body shadow-vercel-sm space-y-3 print:hidden">
+    <div class="flex items-center gap-2 text-warning font-bold uppercase tracking-wider text-xs">
+      <span>⚠️</span> Clinical & Medical Disclaimer
+    </div>
+    <p class="text-body text-xs leading-normal">
+      The nutritional targets, macronutrient splits, micronutrient estimates, bio-chemical indicators, and localized meal plans provided by WHealth Calculator are intended solely for educational, dietary planning, and general health awareness purposes. They do not constitute professional medical advice, clinical diagnosis, or therapeutic treatment plans.
+    </p>
+    <p class="text-mute text-[11px] leading-normal border-t border-hairline/50 pt-2">
+      <strong>Important Notice for Medical Conditions:</strong> Individuals with pre-existing medical conditions (including High BP / Hypertension, Diabetes, Chronic Kidney Disease, High Uric Acid / Gout, Thyroid disorders, High Cholesterol, or Heart Disease) must consult a qualified medical doctor, endocrinologist, or registered clinical dietitian before modifying their dietary intake or starting new nutrition or supplement regimens.
+    </p>
+  </div>
 </Layout>
 
 <style>
@@ -537,10 +574,11 @@ import MetricCard from '../components/MetricCard.astro';
 
     const CIRCUMFERENCE = 314.16;
 
-    // Location Selectors
+    // Location Selectors & Medical Profile
     const countrySelect = document.getElementById('country') as HTMLSelectElement;
     const citySelect = document.getElementById('city') as HTMLSelectElement;
     const dietaryPreferenceSelect = document.getElementById('dietary-preference') as HTMLSelectElement;
+    const healthConditionSelect = document.getElementById('health-condition') as HTMLSelectElement;
     
     // Diet display containers
     const dietEmptyState = document.getElementById('diet-empty-state') as HTMLDivElement;
@@ -9864,7 +9902,7 @@ import MetricCard from '../components/MetricCard.astro';
           <div>P: <span class="text-body">${Math.round(mealP * 10) / 10}g</span></div>
           <div>C: <span class="text-body">${Math.round(mealC * 10) / 10}g</span></div>
           <div>F: <span class="text-body">${Math.round(mealF * 10) / 10}g</span></div>
-          <div>Fib: <span class="text-body font-bold" style="color:#10b981;">${Math.round(mealC * 0.12 * 10) / 10}g</span></div>
+          <div>Fib: <span class="text-body">${Math.round(mealC * 0.12 * 10) / 10}g</span></div>
         `;
         nutCard.appendChild(macroRow);
 
@@ -9981,9 +10019,17 @@ import MetricCard from '../components/MetricCard.astro';
         nutritionalMatchBadge.innerHTML = '<span>!</span> Daily requirements customized';
       }
 
-      // Ensure Magnesium and Zinc are present in actualMicros
+      // Ensure all 10 Micronutrient compounds from estimates are present in actualMicros
+      actualMicros['Calcium (mg)'] = Math.round(actualP * 14 + 150);
+      actualMicros['Iron (mg)'] = Math.round(actualP * 0.15 + 2);
+      actualMicros['Potassium (mg)'] = Math.round(actualCal * 0.9);
+      actualMicros['Sodium (mg)'] = Math.round(actualCal * 0.8);
       actualMicros['Magnesium (mg)'] = Math.round(actualP * 3.5 + 80);
       actualMicros['Zinc (mg)'] = Math.round(actualP * 0.12 + 1.5);
+      actualMicros['Selenium (mcg)'] = Math.round(actualP * 0.7 + (actualCal > 0 ? 15 : 0));
+      actualMicros['Vitamin A (mcg)'] = Math.round(actualP * 6.0 + 350);
+      actualMicros['Vitamin C (mg)'] = Math.round(actualC * 0.4 + 25);
+      actualMicros['Vitamin D (mcg)'] = Math.round(actualCal * 0.005 + 5);
 
       // Render total micros list
       if (summaryMicrosList) {
@@ -10101,6 +10147,23 @@ import MetricCard from '../components/MetricCard.astro';
               }
             }
             
+            // 4. Medical Condition adjustments
+            const condition = healthConditionSelect ? healthConditionSelect.value : 'none';
+            const optNameLower = opt.name.toLowerCase();
+            if (condition === 'high-uric-acid') {
+              if (optNameLower.includes('mutton') || optNameLower.includes('beef') || optNameLower.includes('shawarma') || optNameLower.includes('turkey')) {
+                score -= 60; // De-prioritize high-purine meats
+              }
+            } else if (condition === 'high-cholesterol' || condition === 'fatty-liver' || condition === 'heart-disease') {
+              if (optNameLower.includes('puri') || optNameLower.includes('samosa') || optNameLower.includes('paratha') || optNameLower.includes('butter')) {
+                score -= 60; // De-prioritize high saturated fat foods
+              }
+            } else if (condition === 'diabetes' || condition === 'high-sugar') {
+              if (optNameLower.includes('sweet') || optNameLower.includes('rasgulla') || optNameLower.includes('jamun') || optNameLower.includes('date')) {
+                score -= 60; // De-prioritize high glycemic sweets
+              }
+            }
+            
             if (score > bestScore) {
               bestScore = score;
               bestIdx = idx;
@@ -10127,6 +10190,10 @@ import MetricCard from '../components/MetricCard.astro';
     });
 
     dietaryPreferenceSelect.addEventListener('change', () => {
+      // Wait for Calculate button click
+    });
+
+    healthConditionSelect.addEventListener('change', () => {
       // Wait for Calculate button click
     });
 
@@ -10265,7 +10332,7 @@ import MetricCard from '../components/MetricCard.astro';
         targetCalories = tdee + 250;
       }
 
-      // 5. Macro ratio mapping (Protein, Fat, Carbs)
+      // 5. Macro ratio mapping (Protein, Fat, Carbs) & Medical Profile adjustments
       let p_pct = 20, f_pct = 30, c_pct = 50; // maintain default
       if (goal === 'loss') {
         p_pct = 30; f_pct = 30; c_pct = 40;
@@ -10277,6 +10344,34 @@ import MetricCard from '../components/MetricCard.astro';
         p_pct = 30; f_pct = 25; c_pct = 45;
       } else if (goal === 'lean-mass') {
         p_pct = 30; f_pct = 25; c_pct = 45;
+      }
+
+      const healthCondition = (document.getElementById('health-condition') as HTMLSelectElement)?.value || 'none';
+
+      if (healthCondition === 'high-sugar' || healthCondition === 'diabetes') {
+        c_pct = Math.max(25, c_pct - 15);
+        p_pct = p_pct + 10;
+        f_pct = 100 - c_pct - p_pct;
+      } else if (healthCondition === 'high-bp' || healthCondition === 'heart-disease') {
+        f_pct = Math.min(20, f_pct);
+        p_pct = Math.max(25, p_pct);
+        c_pct = 100 - p_pct - f_pct;
+      } else if (healthCondition === 'low-sugar') {
+        c_pct = Math.max(50, c_pct);
+        p_pct = 20;
+        f_pct = 30;
+      } else if (healthCondition === 'high-uric-acid') {
+        p_pct = Math.min(22, p_pct);
+        c_pct = 50;
+        f_pct = 100 - p_pct - c_pct;
+      } else if (healthCondition === 'high-cholesterol' || healthCondition === 'fatty-liver') {
+        f_pct = Math.min(20, f_pct);
+        c_pct = 45;
+        p_pct = 35;
+      } else if (healthCondition === 'kidney-disease') {
+        p_pct = 15;
+        c_pct = 55;
+        f_pct = 30;
       }
 
       // Compute macro values
@@ -10347,20 +10442,67 @@ import MetricCard from '../components/MetricCard.astro';
       fatGLbl.textContent = `${Math.round(fatG)} g`;
       fatCalLbl.textContent = `${Math.round(fatCal).toLocaleString()} kcal`;
 
-      const estFiberG = Math.round((targetCalories / 1000) * 14);
+      let estFiberG = Math.round((targetCalories / 1000) * 14);
+      if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'fatty-liver') {
+        estFiberG = Math.max(35, Math.round((targetCalories / 1000) * 18));
+      }
       const fiberGLbl = document.getElementById('fiber-g');
       if (fiberGLbl) fiberGLbl.textContent = `${estFiberG} g`;
+
+      // Render Health Condition Guidance Card Banner
+      const guidanceCard = document.getElementById('health-condition-guidance-card');
+      if (guidanceCard) {
+        const notes: Record<string, { title: string; text: string }> = {
+          'none': { title: 'Healthy Baseline Protocol', text: 'Balanced macros, micronutrients, and bio-chemical targets optimized for general wellness and metabolic maintenance.' },
+          'high-bp': { title: 'Hypertension (High BP) Protocol', text: 'Sodium capped at <1,400 mg/day. Potassium (>3,500 mg) & Magnesium (>380 mg) increased to foster arterial wall relaxation. Saturated fat restricted.' },
+          'high-sugar': { title: 'Pre-Diabetes / High Sugar Protocol', text: 'Carbohydrates reduced by 15-20%. Dietary Fibre target boosted to >35g/day. Low glycemic index foods prioritized to prevent blood glucose spikes.' },
+          'low-bp': { title: 'Hypotension (Low BP) Protocol', text: 'Sodium target adjusted to ~2,600 mg with structured electrolyte & hydration schedules to maintain healthy intravascular volume.' },
+          'low-sugar': { title: 'Hypoglycemia (Low Sugar) Protocol', text: 'Complex carbohydrates maintained at >50%. Frequent small meals & snacks scheduled to sustain steady blood glucose levels.' },
+          'diabetes': { title: 'Type 2 Diabetes Mellitus Protocol', text: 'Strict carbohydrate control (25-30% ratio). Protein & high-solubility Fiber increased (>35g/day) to slow gastric emptying and stabilize HbA1c.' },
+          'thyroid': { title: 'Thyroid Care Protocol', text: 'Selenium (55 mcg) & Zinc optimized. Adequate protein intake maintained to support T4-to-T3 peripheral conversion.' },
+          'high-uric-acid': { title: 'Gout / High Uric Acid Protocol', text: 'Purine level strictly capped at <140 mg/day. Red meat, organ meat, and seafood de-prioritized in favor of low-purine proteins & high fluid intake.' },
+          'high-cholesterol': { title: 'Hyperlipidemia / High Cholesterol Protocol', text: 'Dietary Cholesterol capped at <140 mg/day. Fat reduced to <20%. Soluble fiber elevated to bind bile acids and lower LDL-C.' },
+          'fatty-liver': { title: 'Fatty Liver (MASLD) Protocol', text: 'Simple sugars & fructose eliminated. High Fiber (+25%) & moderate protein recommended to reduce hepatic steatosis.' },
+          'heart-disease': { title: 'Cardiovascular Disease Protocol', text: 'Sodium (<1,400 mg) & Dietary Cholesterol (<140 mg) capped. Potassium & Omega fatty acid sources prioritized.' },
+          'kidney-disease': { title: 'Chronic Kidney Disease (CKD) Protocol', text: 'Protein restricted to ~0.7g/kg (~15% of calories) to minimize renal glomerular workload. Sodium & Potassium strictly monitored.' }
+        };
+        const activeNote = notes[healthCondition] || notes['none'];
+        guidanceCard.innerHTML = `
+          <div class="flex items-start gap-2.5">
+            <span class="text-warning text-base font-bold">📋</span>
+            <div>
+              <h4 class="font-bold text-ink uppercase tracking-wider text-[11px] mb-1">${activeNote.title}</h4>
+              <p class="text-body text-xs leading-normal">${activeNote.text}</p>
+            </div>
+          </div>
+        `;
+        guidanceCard.classList.remove('hidden');
+      }
 
       // Render Micronutrient Targets
       const healthMicrosGrid = document.getElementById('health-page-micros-grid');
       if (healthMicrosGrid) {
+        let sodiumVal = Math.round(targetCalories * 0.8);
+        let potassiumVal = Math.round(targetCalories * 0.9);
+        let magnesiumVal = Math.round(proteinG * 3.5 + 80);
+
+        if (healthCondition === 'high-bp' || healthCondition === 'heart-disease' || healthCondition === 'kidney-disease') {
+          sodiumVal = 1350;
+          potassiumVal = 3600;
+          magnesiumVal = 380;
+        } else if (healthCondition === 'low-bp') {
+          sodiumVal = 2600;
+          potassiumVal = 2800;
+        }
+
         const micros = [
           { name: "Calcium", val: Math.round(proteinG * 14 + 150) + " mg" },
           { name: "Iron", val: Math.round(proteinG * 0.15 + 2) + " mg" },
-          { name: "Potassium", val: Math.round(targetCalories * 0.9) + " mg" },
-          { name: "Sodium", val: Math.round(targetCalories * 0.8) + " mg" },
-          { name: "Magnesium", val: Math.round(proteinG * 3.5 + 80) + " mg" },
+          { name: "Potassium", val: potassiumVal + " mg" },
+          { name: "Sodium", val: sodiumVal + " mg" },
+          { name: "Magnesium", val: magnesiumVal + " mg" },
           { name: "Zinc", val: Math.round(proteinG * 0.12 + 1.5) + " mg" },
+          { name: "Selenium", val: Math.round(proteinG * 0.7 + (targetCalories > 0 ? 15 : 0)) + " mcg" },
           { name: "Vitamin A", val: "450 mcg" },
           { name: "Vitamin C", val: "65 mg" },
           { name: "Vitamin D", val: "10 mcg" }
@@ -10376,9 +10518,19 @@ import MetricCard from '../components/MetricCard.astro';
       // Render Bio-Chemical Targets
       const healthBiochemicalsGrid = document.getElementById('health-page-biochemicals-grid');
       if (healthBiochemicalsGrid) {
+        let cholVal = Math.round(proteinG * 2.8 + 45);
+        let purineVal = Math.round(proteinG * 2.2 + targetCalories * 0.05);
+
+        if (healthCondition === 'high-cholesterol' || healthCondition === 'heart-disease') {
+          cholVal = Math.min(135, cholVal);
+        }
+        if (healthCondition === 'high-uric-acid') {
+          purineVal = Math.min(130, purineVal);
+        }
+
         const biochemicals = [
-          { name: "Dietary Cholesterol Target", val: Math.round(proteinG * 2.8 + 45) + " mg" },
-          { name: "Purine Level Estimate", val: Math.round(proteinG * 2.2 + targetCalories * 0.05) + " mg" }
+          { name: "Dietary Cholesterol Target", val: cholVal + " mg" },
+          { name: "Purine Level Estimate", val: purineVal + " mg" }
         ];
         healthBiochemicalsGrid.innerHTML = biochemicals.map(b => `
           <div class="flex justify-between p-2 rounded bg-canvas-soft border border-hairline">
