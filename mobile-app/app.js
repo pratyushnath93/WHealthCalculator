@@ -1700,10 +1700,10 @@ const DIET_DATABASE = window.DIET_DATABASE;
       summaryMicrosList.innerHTML = '';
       Object.entries(actualMicros).forEach(([name, val]) => {
         const div = document.createElement('div');
-        div.className = 'flex justify-between border-b border-hairline/45 pb-1';
+        div.className = 'flex justify-between border-b border-hairline/40 py-1 font-mono text-[9.5px]';
         const cleanName = name.replace(' (mg)','').replace(' (mcg)','').replace(' (g)','');
         const unit = name.includes('mg') ? 'mg' : name.includes('mcg') ? 'mcg' : 'g';
-        div.innerHTML = `<span>${cleanName}:</span><span class="font-semibold text-ink">${Math.round(val * 10) / 10} ${unit}</span>`;
+        div.innerHTML = `<span class="text-mute">${cleanName}</span><span class="font-semibold text-ink">${Math.round(val * 10) / 10} ${unit}</span>`;
         summaryMicrosList.appendChild(div);
       });
 
@@ -1714,8 +1714,8 @@ const DIET_DATABASE = window.DIET_DATABASE;
           { name: "Purine Level", val: Math.round(actualP * 2.2 + actualCal * 0.05) + " mg" }
         ];
         summaryBiochemicalsList.innerHTML = biochemicals.map(b => `
-          <div class="flex justify-between border-b border-hairline/45 pb-1">
-            <span>${b.name}:</span><span class="font-semibold text-ink">${b.val}</span>
+          <div class="flex justify-between border-b border-hairline/40 py-1 font-mono text-[9.5px]">
+            <span class="text-mute">${b.name}</span><span class="font-semibold text-ink">${b.val}</span>
           </div>
         `).join('');
       }
@@ -2130,9 +2130,9 @@ const DIET_DATABASE = window.DIET_DATABASE;
           { name: "Vitamin D", val: "10 mcg" }
         ];
         healthMicrosGrid.innerHTML = micros.map(m => `
-          <div class="flex justify-between p-1.5 rounded bg-canvas-soft border border-hairline">
+          <div class="flex justify-between border-b border-hairline/40 py-1 font-mono text-[9.5px]">
             <span class="text-mute">${m.name}</span>
-            <strong class="font-bold text-ink">${m.val}</strong>
+            <span class="font-semibold text-ink">${m.val}</span>
           </div>
         `).join('');
       }
@@ -2155,9 +2155,9 @@ const DIET_DATABASE = window.DIET_DATABASE;
           { name: "Purine Level Estimate", val: purineVal + " mg" }
         ];
         healthBiochemicalsGrid.innerHTML = biochemicals.map(b => `
-          <div class="flex justify-between p-1.5 rounded bg-canvas-soft border border-hairline">
+          <div class="flex justify-between border-b border-hairline/40 py-1 font-mono text-[9.5px]">
             <span class="text-mute">${b.name}</span>
-            <strong class="font-bold text-ink">${b.val}</strong>
+            <span class="font-semibold text-ink">${b.val}</span>
           </div>
         `).join('');
       }
