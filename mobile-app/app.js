@@ -1699,11 +1699,13 @@ const DIET_DATABASE = window.DIET_DATABASE;
       // Render total micros list
       summaryMicrosList.innerHTML = '';
       Object.entries(actualMicros).forEach(([name, val]) => {
-        const div = document.createElement('div');
-        div.className = 'flex justify-between border-b border-hairline/40 py-1 font-mono text-[9.5px]';
         const cleanName = name.replace(' (mg)','').replace(' (mcg)','').replace(' (g)','');
+        if (cleanName === 'Fluoride' || cleanName === 'Vitamin E') return; // Filter out Fluoride & Vitamin E
+
+        const div = document.createElement('div');
+        div.className = 'flex justify-between border-b border-hairline/45 pb-1';
         const unit = name.includes('mg') ? 'mg' : name.includes('mcg') ? 'mcg' : 'g';
-        div.innerHTML = `<span class="text-mute">${cleanName}</span><span class="font-semibold text-ink">${Math.round(val * 10) / 10} ${unit}</span>`;
+        div.innerHTML = `<span>${cleanName}:</span><span class="font-semibold text-ink">${Math.round(val * 10) / 10} ${unit}</span>`;
         summaryMicrosList.appendChild(div);
       });
 
@@ -1714,8 +1716,8 @@ const DIET_DATABASE = window.DIET_DATABASE;
           { name: "Purine Level", val: Math.round(actualP * 2.2 + actualCal * 0.05) + " mg" }
         ];
         summaryBiochemicalsList.innerHTML = biochemicals.map(b => `
-          <div class="flex justify-between border-b border-hairline/40 py-1 font-mono text-[9.5px]">
-            <span class="text-mute">${b.name}</span><span class="font-semibold text-ink">${b.val}</span>
+          <div class="flex justify-between border-b border-hairline/45 pb-1">
+            <span>${b.name}:</span><span class="font-semibold text-ink">${b.val}</span>
           </div>
         `).join('');
       }
@@ -1842,8 +1844,112 @@ const DIET_DATABASE = window.DIET_DATABASE;
         countrySelect.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
       
+      function exportDietPlan() {
+        const country = countrySelect ? countrySelect.value : '';
+        const city = citySelect && citySelect.options[citySelect.selectedIndex] ? citySelect.options[citySelect.selectedIndex].text : '';
+
+        let htmlContent = `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>WHealth Calculator - Daily Nutrition Plan</title>
+            <style>
+              body { font-family: system-ui, -apple-system, sans-serif; padding: 20px; color: #111; line-height: 1.5; font-size: 13px; }
+              h1 { font-size: 20px; border-bottom: 2px solid #111; padding-bottom: 8px; margin-bottom: 4px; }
+              h2 { font-size: 15px; margin-top: 20px; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
+              .meta { color: #555; font-size: 11px; margin-bottom: 16px; }
+              .target-box { background: #f4f4f5; border: 1px solid #e4e4e7; padding: 12px; border-radius: 6px; margin-bottom: 16px; font-family: monospace; }
+              .meal-card { border: 1px solid #e4e4e7; padding: 12px; border-radius: 6px; margin-bottom: 12px; page-break-inside: avoid; }
+              .meal-title { font-weight: bold; font-size: 14px; margin-bottom: 4px; }
+              .ing-list { list-style: none; padding-left: 0; margin: 8px 0 0 0; }
+              .ing-item { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px dashed #eee; padding: 3px 0; }
+              @media print { body { padding: 0; } }
+            </style>
+          </head>
+          <body>
+            <h1>WHealth Calculator — Personalised Daily Nutrition Plan</h1>
+            <div class="meta">Location: ${city || country} | Generated on ${new Date().toLocaleDateString()}</div>
+            
+            <div class="target-box">
+              <strong>Daily Caloric & Macro Targets:</strong><br>
+              Calories: ${targetCaloriesVar} kcal | Protein: ${Math.round(targetPVar)}g | Carbs: ${Math.round(targetCVar)}g | Fat: ${Math.round(targetFVar)}g
+            </div>
+
+            <h2>Daily Meals Timeline</h2>
+        `;
+
+        activeDietPlan.forEach((meal, idx) => {
+          let mealCal = 0, mealP = 0, mealC = 0, mealF = 0;
+          meal.ingredients.forEach(i => {
+            mealCal += i.cal || 0;
+            mealP += i.p || 0;
+            mealC += i.c || 0;
+            mealF += i.f || 0;
+          });
+
+          htmlContent += `
+            <div class="meal-card">
+              <div class="meal-title">MEAL 0${idx + 1}: ${getMealCategoryTitle(meal.key, meal.name)} (${meal.time})</div>
+              <div style="font-size:11px; color:#666;">Recipe: ${meal.name}</div>
+              <div style="font-family:monospace; font-size:11px; margin-top:4px;">
+                Calories: ${Math.round(mealCal)} kcal | P: ${Math.round(mealP)}g | C: ${Math.round(mealC)}g | F: ${Math.round(mealF)}g
+              </div>
+              <ul class="ing-list">
+                ${meal.ingredients.map(ing => `
+                  <li class="ing-item">
+                    <span>${ing.name} (${Math.round(ing.qty)}${ing.unit})</span>
+                    <span>${Math.round(ing.cal)} kcal</span>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+          `;
+        });
+
+        htmlContent += `
+            <h2>Total Micronutrients (Vitamins & Minerals)</h2>
+            <div style="font-family:monospace; font-size:11px; display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
+              ${Object.entries(actualMicros)
+                .filter(([n]) => !n.includes('Fluoride') && !n.includes('Vitamin E'))
+                .map(([n, v]) => `<div>${n.replace(/ \(.+\)/, '')}: <strong>${Math.round(v * 10) / 10} ${n.includes('mcg') ? 'mcg' : 'mg'}</strong></div>`)
+                .join('')}
+            </div>
+
+            <div style="margin-top:24px; font-size:10px; color:#888; text-align:center;">
+              Generated by WHealth Calculator | https://whealthcalculator.com
+            </div>
+          </body>
+          </html>
+        `;
+
+        try {
+          const printWin = window.open('', '_blank');
+          if (printWin) {
+            printWin.document.write(htmlContent);
+            printWin.document.close();
+            printWin.focus();
+            setTimeout(() => {
+              try { printWin.print(); } catch (e) {}
+            }, 300);
+            return;
+          }
+        } catch (err) {
+          console.warn('Pop-up not available, downloading HTML report', err);
+        }
+
+        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `WHealth_Diet_Plan_${new Date().toISOString().slice(0, 10)}.html`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+
       if (printDietBtn) printDietBtn.addEventListener('click', () => {
-        window.print();
+        exportDietPlan();
       });
 
       if (resetDietBtn) resetDietBtn.addEventListener('click', () => {
@@ -2130,9 +2236,9 @@ const DIET_DATABASE = window.DIET_DATABASE;
           { name: "Vitamin D", val: "10 mcg" }
         ];
         healthMicrosGrid.innerHTML = micros.map(m => `
-          <div class="flex justify-between border-b border-hairline/40 py-1 font-mono text-[9.5px]">
-            <span class="text-mute">${m.name}</span>
-            <span class="font-semibold text-ink">${m.val}</span>
+          <div class="flex justify-between p-2 rounded bg-canvas-soft border border-hairline">
+            <span>${m.name}</span>
+            <strong class="font-bold text-ink">${m.val}</strong>
           </div>
         `).join('');
       }
@@ -2155,9 +2261,9 @@ const DIET_DATABASE = window.DIET_DATABASE;
           { name: "Purine Level Estimate", val: purineVal + " mg" }
         ];
         healthBiochemicalsGrid.innerHTML = biochemicals.map(b => `
-          <div class="flex justify-between border-b border-hairline/40 py-1 font-mono text-[9.5px]">
-            <span class="text-mute">${b.name}</span>
-            <span class="font-semibold text-ink">${b.val}</span>
+          <div class="flex justify-between p-2 rounded bg-canvas-soft border border-hairline">
+            <span>${b.name}</span>
+            <strong class="font-bold text-ink">${b.val}</strong>
           </div>
         `).join('');
       }
