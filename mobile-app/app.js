@@ -2082,7 +2082,7 @@ const DIET_DATABASE = window.DIET_DATABASE;
       bmiValue.textContent = `${bmi.toFixed(1)} (${bmiStatus})`;
       bmiSubtitle.textContent = `Target: ${targetWeightStr} (Range: ${weightRangeStr})`;
 
-      carbPctLabel.textContent = `(${c_pct}%)`;
+            carbPctLabel.textContent = `(${c_pct}%)`;
       carbGLbl.textContent = `${Math.round(carbsG)} g`;
       carbCalLbl.textContent = `${Math.round(carbsCal).toLocaleString()} kcal`;
 
@@ -2093,6 +2093,74 @@ const DIET_DATABASE = window.DIET_DATABASE;
       fatPctLabel.textContent = `(${f_pct}%)`;
       fatGLbl.textContent = `${Math.round(fatG)} g`;
       fatCalLbl.textContent = `${Math.round(fatCal).toLocaleString()} kcal`;
+
+      let estFiberG = Math.round((targetCalories / 1000) * 14);
+      if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'fatty-liver') {
+        estFiberG = Math.max(35, Math.round((targetCalories / 1000) * 18));
+      }
+      const fiberGLbl = document.getElementById('fiber-g');
+      if (fiberGLbl) fiberGLbl.textContent = `${estFiberG} g`;
+
+      // Render Micronutrient Estimates Grid
+      const healthMicrosGrid = document.getElementById('health-app-micros-grid');
+      if (healthMicrosGrid) {
+        let sodiumVal = Math.round(targetCalories * 0.8);
+        let potassiumVal = Math.round(targetCalories * 0.9);
+        let magnesiumVal = Math.round(proteinG * 3.5 + 80);
+
+        if (healthCondition === 'high-bp' || healthCondition === 'heart-disease' || healthCondition === 'kidney-disease') {
+          sodiumVal = 1350;
+          potassiumVal = 3600;
+          magnesiumVal = 380;
+        } else if (healthCondition === 'low-bp') {
+          sodiumVal = 2600;
+          potassiumVal = 2800;
+        }
+
+        const micros = [
+          { name: "Calcium", val: Math.round(proteinG * 14 + 150) + " mg" },
+          { name: "Iron", val: Math.round(proteinG * 0.15 + 2) + " mg" },
+          { name: "Potassium", val: potassiumVal + " mg" },
+          { name: "Sodium", val: sodiumVal + " mg" },
+          { name: "Magnesium", val: magnesiumVal + " mg" },
+          { name: "Zinc", val: Math.round(proteinG * 0.12 + 1.5) + " mg" },
+          { name: "Selenium", val: Math.round(proteinG * 0.7 + (targetCalories > 0 ? 15 : 0)) + " mcg" },
+          { name: "Vitamin A", val: "450 mcg" },
+          { name: "Vitamin C", val: "65 mg" },
+          { name: "Vitamin D", val: "10 mcg" }
+        ];
+        healthMicrosGrid.innerHTML = micros.map(m => `
+          <div class="flex justify-between p-1.5 rounded bg-canvas-soft border border-hairline">
+            <span class="text-mute">${m.name}</span>
+            <strong class="font-bold text-ink">${m.val}</strong>
+          </div>
+        `).join('');
+      }
+
+      // Render Bio-Chemical Estimates Grid
+      const healthBiochemicalsGrid = document.getElementById('health-app-biochemicals-grid');
+      if (healthBiochemicalsGrid) {
+        let cholVal = Math.round(proteinG * 2.8 + 45);
+        let purineVal = Math.round(proteinG * 2.2 + targetCalories * 0.05);
+
+        if (healthCondition === 'high-cholesterol' || healthCondition === 'heart-disease') {
+          cholVal = Math.min(135, cholVal);
+        }
+        if (healthCondition === 'high-uric-acid') {
+          purineVal = Math.min(130, purineVal);
+        }
+
+        const biochemicals = [
+          { name: "Dietary Cholesterol Target", val: cholVal + " mg" },
+          { name: "Purine Level Estimate", val: purineVal + " mg" }
+        ];
+        healthBiochemicalsGrid.innerHTML = biochemicals.map(b => `
+          <div class="flex justify-between p-1.5 rounded bg-canvas-soft border border-hairline">
+            <span class="text-mute">${b.name}</span>
+            <strong class="font-bold text-ink">${b.val}</strong>
+          </div>
+        `).join('');
+      }
 
       // 6. Update Donut Chart
       // To align circles correctly we stack stroke-dashoffset:

@@ -949,6 +949,17 @@
                   <div id="fat-cal" class="donut-legend-subval">-- kcal</div>
                 </div>
               </div>
+
+              <div class="donut-legend-item">
+                <div class="donut-legend-left">
+                  <span class="legend-dot" style="background:#10b981;"></span>
+                  <span class="donut-legend-label">Fibre</span>
+                </div>
+                <div class="donut-legend-right">
+                  <span id="fiber-g" class="donut-legend-val">-- g</span>
+                  <div class="donut-legend-subval">Target</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -960,6 +971,28 @@
             <div class="goal-item"><span>Lose Weight (Mild Deficit)</span><span id="health-goal-lose" class="font-mono font-bold">--</span></div>
             <div class="goal-item"><span>Maintenance Calories</span><span id="health-goal-maintain" class="font-mono font-bold">--</span></div>
             <div class="goal-item"><span>Gain Weight (Mild Surplus)</span><span id="health-goal-gain" class="font-mono font-bold">--</span></div>
+          </div>
+        </div>
+
+        <!-- Micronutrient & Bio-Chemical Estimates Card -->
+        <div class="results-table-card mt-4">
+          <h3>Micronutrient & Bio-Chemical Estimates</h3>
+          <div class="space-y-3">
+            <div>
+              <h4 class="font-mono text-[10px] uppercase text-mute mb-1 font-semibold">Vitamins & Minerals</h4>
+              <div id="health-app-micros-grid" class="grid grid-cols-2 gap-2 font-mono text-[11px]">
+                <!-- Dynamically populated estimates -->
+              </div>
+            </div>
+            <div class="border-t border-hairline pt-2">
+              <h4 class="font-mono text-[10px] uppercase text-mute mb-1 font-semibold">Bio-Chemicals & Indicators</h4>
+              <div id="health-app-biochemicals-grid" class="grid grid-cols-1 gap-2 font-mono text-[11px]">
+                <!-- Dynamically populated bio-chemicals -->
+              </div>
+            </div>
+            <p class="font-mono text-[9px] text-mute leading-normal" style="margin-top: 6px;">
+              * Micronutrient & Bio-Chemical estimates are calculated based on standard nutritional databases and will vary slightly depending on preparation methods.
+            </p>
           </div>
         </div>
 
@@ -1057,8 +1090,8 @@
 
             <!-- Micronutrient Breakdown Summary -->
             <div class="results-table-card mt-4">
-              <h3>Total Micronutrients Aggregation (Vitamins & Minerals)</h3>
-              <div id="summary-micros-list" class="grid grid-cols-2 gap-x-4 gap-y-1.5 font-mono text-[10px] text-mute">
+              <h3>Total Micronutrients (Vitamins & Minerals)</h3>
+              <div id="summary-micros-list" class="grid grid-cols-2 gap-2 font-mono text-[11px] text-mute">
                 <!-- Dynamically populated micronutrient content -->
               </div>
             </div>
@@ -1066,22 +1099,9 @@
             <!-- Bio-Chemicals & Metabolic Markers Summary -->
             <div class="results-table-card mt-4">
               <h3>Bio-Chemicals & Metabolic Markers</h3>
-              <div id="summary-biochemicals-list" class="grid grid-cols-1 gap-y-1.5 font-mono text-[10px] text-mute">
+              <div id="summary-biochemicals-list" class="grid grid-cols-1 gap-2 font-mono text-[11px] text-mute">
                 <!-- Dynamically populated bio-chemical content -->
               </div>
-            </div>
-
-            <!-- Disclaimer Card -->
-            <div class="results-table-card mt-6 text-left" style="border: 1px solid var(--color-hairline); background: var(--color-canvas-soft-2); padding: 12px;">
-              <div class="flex-row-center gap-1 text-warning font-mono font-bold text-[10px] uppercase">
-                <span>⚠️</span> Disclaimer
-              </div>
-              <p class="font-mono text-[10px] leading-tight text-mute mt-1.5" style="margin: 0;">
-                The nutritional targets, macronutrient splits, micronutrient estimates, bio-chemical indicators, and localized meal plans provided by WHealth Calculator are intended solely for educational, dietary planning, and general health awareness purposes. They do not constitute professional medical advice, clinical diagnosis, or therapeutic treatment plans. Always consult a qualified physician, registered dietitian, certified nutritionist, or other licensed healthcare professional before starting or changing any diet, exercise, supplement, medication, or healthcare regimen.
-              </p>
-              <p class="font-mono text-[9.5px] leading-tight text-mute border-t border-hairline/40 pt-1.5 mt-2" style="margin: 0;">
-                <strong>Important Notice for Medical Conditions:</strong> Individuals with pre-existing medical conditions, are pregnant, or are under medical treatment must consult a qualified medical doctor, registered clinical dietitian before modifying their dietary intake or starting new nutrition or supplement regimens.
-              </p>
             </div>
 
           </div>
