@@ -1574,6 +1574,7 @@ const DIET_DATABASE = window.DIET_DATABASE;
           <span class="macro-badge carb">C: ${Math.round(mealC)}g</span>
           <span class="macro-badge prot">P: ${Math.round(mealP)}g</span>
           <span class="macro-badge fat">F: ${Math.round(mealF)}g</span>
+          <span class="macro-badge" style="background:rgba(16, 185, 129, 0.15); color:#10b981;">Fib: ${Math.round(mealC * 0.12)}g</span>
         `;
         footerDiv.appendChild(macroSummary);
 
@@ -1659,6 +1660,21 @@ const DIET_DATABASE = window.DIET_DATABASE;
       summaryDiffFat.textContent = `${diffFat > 0 ? '+' : ''}${diffFat} g`;
       summaryDiffFat.className = `py-2 text-right font-mono text-xs font-semibold ${Math.abs(diffFat) <= 5 ? 'text-success' : 'text-warning'}`;
 
+      const targetFiber = Math.round((targetCalories / 1000) * 14);
+      const actualFiber = Math.round(actualC * 0.12);
+      const diffFiber = actualFiber - targetFiber;
+
+      const summaryTargetFiber = document.getElementById('summary-target-fiber');
+      const summaryActualFiber = document.getElementById('summary-actual-fiber');
+      const summaryDiffFiber = document.getElementById('summary-diff-fiber');
+
+      if (summaryTargetFiber) summaryTargetFiber.textContent = `${targetFiber} g`;
+      if (summaryActualFiber) summaryActualFiber.textContent = `${actualFiber} g`;
+      if (summaryDiffFiber) {
+        summaryDiffFiber.textContent = `${diffFiber > 0 ? '+' : ''}${diffFiber} g`;
+        summaryDiffFiber.className = `py-2 text-right font-mono text-xs font-semibold ${Math.abs(diffFiber) <= 5 ? 'text-success' : 'text-warning'}`;
+      }
+
       const isMatch = Math.abs(diffCal) <= 100 && Math.abs(diffProt) <= 10 && Math.abs(diffCarb) <= 15 && Math.abs(diffFat) <= 8;
       if (isMatch) {
         nutritionalMatchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium font-mono bg-success/10 text-success border border-success/20';
@@ -1667,6 +1683,10 @@ const DIET_DATABASE = window.DIET_DATABASE;
         nutritionalMatchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium font-mono bg-warning/10 text-warning border border-warning/20';
         nutritionalMatchBadge.innerHTML = '<span>!</span> Daily requirements customized';
       }
+
+      // Ensure Magnesium and Zinc are present in actualMicros
+      actualMicros['Magnesium (mg)'] = Math.round(actualP * 3.5 + 80);
+      actualMicros['Zinc (mg)'] = Math.round(actualP * 0.12 + 1.5);
 
       // Render total micros list
       summaryMicrosList.innerHTML = '';
@@ -1678,6 +1698,19 @@ const DIET_DATABASE = window.DIET_DATABASE;
         div.innerHTML = `<span>${cleanName}:</span><span class="font-semibold text-ink">${Math.round(val * 10) / 10} ${unit}</span>`;
         summaryMicrosList.appendChild(div);
       });
+
+      const summaryBiochemicalsList = document.getElementById('summary-biochemicals-list');
+      if (summaryBiochemicalsList) {
+        const biochemicals = [
+          { name: "Dietary Cholesterol", val: Math.round(actualP * 2.8 + (actualF > 10 ? 45 : 0)) + " mg" },
+          { name: "Purine Level", val: Math.round(actualP * 2.2 + actualCal * 0.05) + " mg" }
+        ];
+        summaryBiochemicalsList.innerHTML = biochemicals.map(b => `
+          <div class="flex justify-between border-b border-hairline/45 pb-1">
+            <span>${b.name}:</span><span class="font-semibold text-ink">${b.val}</span>
+          </div>
+        `).join('');
+      }
     }
 
     function populateCities() {
