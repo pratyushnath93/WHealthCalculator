@@ -2236,9 +2236,9 @@ const DIET_DATABASE = window.DIET_DATABASE;
           { name: "Vitamin D", val: "10 mcg" }
         ];
         healthMicrosGrid.innerHTML = micros.map(m => `
-          <div class="flex justify-between p-2 rounded bg-canvas-soft border border-hairline">
+          <div class="estimate-item-card">
             <span>${m.name}</span>
-            <strong class="font-bold text-ink">${m.val}</strong>
+            <strong>${m.val}</strong>
           </div>
         `).join('');
       }
@@ -2261,9 +2261,9 @@ const DIET_DATABASE = window.DIET_DATABASE;
           { name: "Purine Level Estimate", val: purineVal + " mg" }
         ];
         healthBiochemicalsGrid.innerHTML = biochemicals.map(b => `
-          <div class="flex justify-between p-2 rounded bg-canvas-soft border border-hairline">
+          <div class="estimate-item-card">
             <span>${b.name}</span>
-            <strong class="font-bold text-ink">${b.val}</strong>
+            <strong>${b.val}</strong>
           </div>
         `).join('');
       }
