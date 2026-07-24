@@ -2435,14 +2435,27 @@ function initTrackFood() {
 function initTrackFoodDateInput() {
   const dateInput = document.getElementById('tf-log-date');
   if (dateInput) {
+    if (!selectedTrackFoodDate) selectedTrackFoodDate = getTodayDateString();
     dateInput.value = selectedTrackFoodDate;
+    dateInput.dataset.autoToday = "true";
+    if (!dateInput.dataset.pickerAttached) {
+      dateInput.dataset.pickerAttached = "true";
+      dateInput.addEventListener('click', () => {
+        if (typeof dateInput.showPicker === 'function') {
+          try { dateInput.showPicker(); } catch (e) {}
+        }
+      });
+    }
   }
 }
 
 function setTrackFoodDateToday() {
   selectedTrackFoodDate = getTodayDateString();
   const dateInput = document.getElementById('tf-log-date');
-  if (dateInput) dateInput.value = selectedTrackFoodDate;
+  if (dateInput) {
+    dateInput.value = selectedTrackFoodDate;
+    dateInput.dataset.autoToday = "true";
+  }
   onTrackFoodDateChange();
 }
 window.setTrackFoodDateToday = setTrackFoodDateToday;
@@ -2451,12 +2464,33 @@ function onTrackFoodDateChange() {
   const dateInput = document.getElementById('tf-log-date');
   if (dateInput && dateInput.value) {
     selectedTrackFoodDate = dateInput.value;
+    dateInput.dataset.autoToday = (dateInput.value === getTodayDateString()) ? "true" : "false";
+  } else {
+    selectedTrackFoodDate = getTodayDateString();
   }
   renderTrackFoodAll();
   renderTrackFoodInsights();
   render7DayTrendsChart();
 }
 window.onTrackFoodDateChange = onTrackFoodDateChange;
+
+function autoCheckMobileDateOnFocus() {
+  const dateInput = document.getElementById('tf-log-date');
+  if (dateInput && dateInput.dataset.autoToday !== "false") {
+    const today = getTodayDateString();
+    if (selectedTrackFoodDate !== today) {
+      selectedTrackFoodDate = today;
+      dateInput.value = today;
+      onTrackFoodDateChange();
+    }
+  }
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') autoCheckMobileDateOnFocus();
+});
+window.addEventListener('pageshow', autoCheckMobileDateOnFocus);
+window.addEventListener('focus', autoCheckMobileDateOnFocus);
 
 function loadTrackFoodData() {
   try {

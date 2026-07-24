@@ -46,55 +46,49 @@ import MeshGradient from '../components/MeshGradient.astro';
   <section id="health" class="mb-20 scroll-mt-24">
     <div class="border-b border-hairline pb-4 mb-8">
       <div class="font-mono text-xs uppercase tracking-wider text-mute mb-2">01. Fitness & Health</div>
-      <h2 class="font-sans text-2xl md:text-3xl font-semibold tracking-tight text-ink">Body Metrics</h2>
+      <h2 class="font-sans text-2xl md:text-3xl font-semibold tracking-tight text-ink">Body Metrics, Diet Plans & Food Tracking</h2>
     </div>
     
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-2 bg-canvas border border-hairline rounded-lg p-6 md:p-8 flex flex-col justify-between shadow-vercel-md hover:border-hairline-strong transition-all group">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <!-- Card 1: Health Metrics & Diet Planner -->
+      <div class="bg-canvas border border-hairline rounded-lg p-6 md:p-8 flex flex-col justify-between shadow-vercel-sm hover:border-hairline-strong transition-all group">
         <div>
-          <div class="font-mono text-xs uppercase tracking-wider text-link mb-4">Core Calculator</div>
-          <h3 class="font-sans text-xl md:text-2xl font-semibold tracking-tight text-ink mb-3 group-hover:text-link transition-colors">
-            Health Parameters Calculator
+          <div class="font-mono text-xs uppercase tracking-wider text-mute mb-4">Parameters & Custom Diet Plans</div>
+          <h3 class="font-sans text-lg md:text-xl font-semibold tracking-tight text-ink mb-2 group-hover:text-link transition-colors">
+            Health Metrics & Diet Planner
           </h3>
-          <p class="text-body text-sm leading-relaxed max-w-[500px]">
-            Compute your Basal Metabolic Rate (BMR) and Total Daily Energy Expenditure (TDEE) with mixed unit support (kg/lbs, ft/in/cm). Break down exact daily calorie targets and macronutrient weight targets (Protein, Fat, Carbohydrates) specifically adjusted for weight loss, weight gain, bodybuilding, fat loss, and lean mass building.
+          <p class="text-body text-sm leading-relaxed">
+            Compute your Basal Metabolic Rate (BMR), Total Daily Energy Expenditure (TDEE), and BMI with mixed units (kg/lbs, ft/in/cm). Break down exact caloric goals and macro targets (Protein, Fat, Carbs) with customized diet plans for weight loss, muscle building, keto, and mediterranean profiles.
           </p>
         </div>
         <div class="mt-8 flex items-center justify-between">
-          <span class="font-mono text-xs text-mute uppercase">age height weight activity</span>
+          <span class="font-mono text-xs text-mute uppercase">bmr tdee diet-plans macros</span>
           <a href="/health" class="px-4 py-2 rounded-md bg-canvas border border-hairline font-mono text-xs font-semibold hover:bg-link hover:text-white hover:border-link active:bg-link-deep active:text-white shadow-vercel-sm flex items-center gap-2 group-hover:bg-primary group-hover:text-on-primary transition-all">
-            Open Calculator <span class="group-hover:translate-x-1 transition-transform">→</span>
+            Open Planner <span class="group-hover:translate-x-1 transition-transform">→</span>
           </a>
         </div>
       </div>
-      
-      <!-- Side Info Box -->
-      <div class="bg-canvas-soft-2 border border-hairline rounded-lg p-6 md:p-8 flex flex-col justify-between shadow-vercel-sm">
+
+      <!-- Card 2: Track Food & Meal Log -->
+      <div class="bg-canvas border border-hairline rounded-lg p-6 md:p-8 flex flex-col justify-between shadow-vercel-sm hover:border-hairline-strong transition-all group">
         <div>
-          <h4 class="font-mono text-xs uppercase tracking-wider text-body mb-4">Supported Targets</h4>
-          <ul class="space-y-3 font-sans text-sm text-body">
-            <li class="flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-              Weight loss / Fat loss
-            </li>
-            <li class="flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-              Weight gain / Body building
-            </li>
-            <li class="flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-              Lean mass building
-            </li>
-            <li class="flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-              Healthy lifestyle maintenance
-            </li>
-          </ul>
+          <div class="font-mono text-xs uppercase tracking-wider text-mute mb-4">Daily Nutrition & Meal Tracking</div>
+          <h3 class="font-sans text-lg md:text-xl font-semibold tracking-tight text-ink mb-2 group-hover:text-link transition-colors">
+            Track Food & Meal Log
+          </h3>
+          <p class="text-body text-sm leading-relaxed">
+            Log daily meals and monitor real-time caloric, macronutrient, and micronutrient totals. Search an extensive food database, analyze 7-day nutrition insights and trends, and manage your saved custom meal templates.
+          </p>
         </div>
-        <div class="text-xs text-mute font-mono leading-relaxed mt-6">
-          Formulas based on the Mifflin-St Jeor equation and standard exercise multipliers for TDEE estimations.
+        <div class="mt-8 flex items-center justify-between">
+          <span class="font-mono text-xs text-mute uppercase">meal-log database 7-day-insights</span>
+          <a href="/health/track-food" class="px-4 py-2 rounded-md bg-canvas border border-hairline font-mono text-xs font-semibold hover:bg-link hover:text-white hover:border-link active:bg-link-deep active:text-white shadow-vercel-sm flex items-center gap-2 group-hover:bg-primary group-hover:text-on-primary transition-all">
+            Open Log <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </a>
         </div>
       </div>
+
     </div>
   </section>
 
