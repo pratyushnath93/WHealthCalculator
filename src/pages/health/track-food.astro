@@ -44,7 +44,7 @@ import MetricCard from '../../components/MetricCard.astro';
         </div>
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div class="bg-canvas-soft p-4 border border-hairline rounded-md text-center">
           <span class="font-mono text-[11px] uppercase tracking-wider text-mute block mb-1">Total Calories</span>
           <span id="web-sum-cal" class="font-mono text-xl font-bold text-accent">0 kcal</span>
@@ -60,6 +60,10 @@ import MetricCard from '../../components/MetricCard.astro';
         <div class="bg-canvas-soft p-4 border border-hairline rounded-md text-center">
           <span class="font-mono text-[11px] uppercase tracking-wider text-mute block mb-1">Fat</span>
           <span id="web-sum-fat" class="font-mono text-xl font-bold text-warning">0 g</span>
+        </div>
+        <div class="bg-canvas-soft p-4 border border-hairline rounded-md text-center col-span-2 md:col-span-1">
+          <span class="font-mono text-[11px] uppercase tracking-wider text-mute block mb-1">Dietary Fibre</span>
+          <span id="web-sum-fiber" class="font-mono text-xl font-bold text-success">0 g</span>
         </div>
       </div>
     </div>
@@ -214,15 +218,30 @@ import MetricCard from '../../components/MetricCard.astro';
               </div>
               <span id="web-fat-g" class="font-bold">0g</span>
             </div>
+            <div class="flex items-center justify-between p-1.5 rounded bg-canvas-soft border border-hairline">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#10b981]"></span>
+                <span>Dietary Fibre <span class="text-mute">(Carb Sub-type)</span></span>
+              </div>
+              <span id="web-fiber-g" class="font-bold">0g</span>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Micronutrient Breakdown Grid -->
       <div class="bg-canvas border border-hairline rounded-lg p-6 shadow-vercel-sm space-y-4">
-        <h3 class="font-sans text-base font-semibold text-ink border-b border-hairline pb-2">Estimated Micronutrients Breakdown</h3>
+        <h3 class="font-sans text-base font-semibold text-ink border-b border-hairline pb-2">Estimated Micronutrients Breakdown (Vitamins & Minerals)</h3>
         <div id="web-micros-grid" class="grid grid-cols-2 gap-3 font-mono text-xs text-mute pt-2">
           <!-- Dynamic micros -->
+        </div>
+      </div>
+
+      <!-- Bio-Chemicals & Metabolic Markers Grid -->
+      <div class="bg-canvas border border-hairline rounded-lg p-6 shadow-vercel-sm space-y-4">
+        <h3 class="font-sans text-base font-semibold text-ink border-b border-hairline pb-2">Bio-Chemicals & Metabolic Markers</h3>
+        <div id="web-biochemicals-grid" class="grid grid-cols-2 gap-3 font-mono text-xs text-mute pt-2">
+          <!-- Dynamic Bio-Chemicals -->
         </div>
       </div>
     </div>
@@ -542,6 +561,10 @@ import MetricCard from '../../components/MetricCard.astro';
     document.getElementById('web-sum-prot').innerText = `${totalProt} g`;
     document.getElementById('web-sum-carb').innerText = `${totalCarb} g`;
     document.getElementById('web-sum-fat').innerText = `${totalFat} g`;
+    const totalFiberSum = Math.round(totalCarb * 0.12);
+    if (document.getElementById('web-sum-fiber')) {
+      document.getElementById('web-sum-fiber').innerText = `${totalFiberSum} g`;
+    }
   }
 
   function deleteWebLogItem(cat, idx) {
@@ -643,6 +666,10 @@ import MetricCard from '../../components/MetricCard.astro';
     document.getElementById('web-protein-g').innerText = `${totalProt}g`;
     document.getElementById('web-carb-g').innerText = `${totalCarb}g`;
     document.getElementById('web-fat-g').innerText = `${totalFat}g`;
+    const totalFiberG = Math.round(totalCarb * 0.12);
+    if (document.getElementById('web-fiber-g')) {
+      document.getElementById('web-fiber-g').innerText = `${totalFiberG}g`;
+    }
 
     const totalG = totalProt + totalCarb + totalFat || 1;
     const pPct = Math.round((totalProt / totalG) * 100);
@@ -653,23 +680,40 @@ import MetricCard from '../../components/MetricCard.astro';
     document.getElementById('web-carb-pct').innerText = `(${cPct}%)`;
     document.getElementById('web-fat-pct').innerText = `(${fPct}%)`;
 
-    // Micronutrients breakdown
+    // Micronutrients breakdown (Vitamins & Minerals)
     const micros = [
-      { name: "Dietary Fibre", val: Math.round(totalCarb * 0.12) + " g" },
-      { name: "Calcium", val: Math.round(totalProt * 14 + 150) + " mg" },
-      { name: "Iron", val: Math.round(totalProt * 0.15 + 2) + " mg" },
+      { name: "Calcium", val: Math.round(totalProt * 14 + (totalCal > 0 ? 150 : 0)) + " mg" },
+      { name: "Iron", val: Math.round(totalProt * 0.15 + (totalCal > 0 ? 2 : 0)) + " mg" },
       { name: "Potassium", val: Math.round(totalCal * 0.9) + " mg" },
       { name: "Sodium", val: Math.round(totalCal * 0.8) + " mg" },
-      { name: "Vitamin A", val: "450 mcg" },
-      { name: "Vitamin C", val: "65 mg" },
-      { name: "Vitamin D", val: "10 mcg" }
+      { name: "Magnesium", val: Math.round(totalProt * 3.5 + (totalCal > 0 ? 80 : 0)) + " mg" },
+      { name: "Zinc", val: Math.round(totalProt * 0.12 + (totalCal > 0 ? 1.5 : 0)) + " mg" },
+      { name: "Vitamin A", val: totalCal > 0 ? "450 mcg" : "0 mcg" },
+      { name: "Vitamin C", val: totalCal > 0 ? "65 mg" : "0 mg" },
+      { name: "Vitamin D", val: totalCal > 0 ? "10 mcg" : "0 mcg" }
     ];
-    document.getElementById('web-micros-grid').innerHTML = micros.map(m => `
-      <div class="flex justify-between p-2 rounded bg-canvas-soft border border-hairline">
-        <span>${m.name}</span>
-        <span class="font-bold text-ink">${m.val}</span>
-      </div>
-    `).join('');
+    if (document.getElementById('web-micros-grid')) {
+      document.getElementById('web-micros-grid').innerHTML = micros.map(m => `
+        <div class="flex justify-between p-2 rounded bg-canvas-soft border border-hairline">
+          <span>${m.name}</span>
+          <span class="font-bold text-ink">${m.val}</span>
+        </div>
+      `).join('');
+    }
+
+    // Bio-Chemicals breakdown (Cholesterol & Purine)
+    const biochemicals = [
+      { name: "Dietary Cholesterol", val: Math.round(totalProt * 2.8 + (totalFat > 10 ? 45 : 0)) + " mg" },
+      { name: "Purine Level", val: Math.round(totalProt * 2.2 + totalCal * 0.05) + " mg" }
+    ];
+    if (document.getElementById('web-biochemicals-grid')) {
+      document.getElementById('web-biochemicals-grid').innerHTML = biochemicals.map(b => `
+        <div class="flex justify-between p-2 rounded bg-canvas-soft border border-hairline">
+          <span>${b.name}</span>
+          <span class="font-bold text-ink">${b.val}</span>
+        </div>
+      `).join('');
+    }
 
     renderWeb7DayTrendsChart();
   }

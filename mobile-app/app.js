@@ -2918,11 +2918,13 @@ function renderTrackFoodAll() {
   const sumProtEl = document.getElementById('tf-sum-prot');
   const sumCarbEl = document.getElementById('tf-sum-carb');
   const sumFatEl = document.getElementById('tf-sum-fat');
+  const sumFiberEl = document.getElementById('tf-sum-fiber');
 
   if (sumCalEl) sumCalEl.textContent = totalCal + ' kcal';
   if (sumProtEl) sumProtEl.textContent = Math.round(totalProt) + 'g';
   if (sumCarbEl) sumCarbEl.textContent = Math.round(totalCarb) + 'g';
   if (sumFatEl) sumFatEl.textContent = Math.round(totalFat) + 'g';
+  if (sumFiberEl) sumFiberEl.textContent = Math.round(totalCarb * 0.12) + 'g';
 
   let html = '';
   tfCategories.forEach(cat => {
@@ -2981,6 +2983,7 @@ function renderTrackFoodInsights() {
   const carbG = document.getElementById('tf-carb-g');
   const protG = document.getElementById('tf-protein-g');
   const fatG = document.getElementById('tf-fat-g');
+  const fiberG = document.getElementById('tf-fiber-g');
   const carbPct = document.getElementById('tf-carb-pct');
   const protPct = document.getElementById('tf-protein-pct');
   const fatPct = document.getElementById('tf-fat-pct');
@@ -2989,6 +2992,7 @@ function renderTrackFoodInsights() {
   if (carbG) carbG.textContent = Math.round(totalCarb) + 'g';
   if (protG) protG.textContent = Math.round(totalProt) + 'g';
   if (fatG) fatG.textContent = Math.round(totalFat) + 'g';
+  if (fiberG) fiberG.textContent = Math.round(totalCarb * 0.12) + 'g';
 
   const totalMacroGrams = (totalProt * 4) + (totalCarb * 4) + (totalFat * 9) || 1;
   const cPctVal = Math.round(((totalCarb * 4) / totalMacroGrams) * 100);
@@ -3021,19 +3025,34 @@ function renderTrackFoodInsights() {
   const microsGrid = document.getElementById('tf-micros-grid');
   if (microsGrid) {
     const micros = [
-      { name: "Dietary Fibre", val: Math.round(totalCarb * 0.12) + " g" },
-      { name: "Calcium", val: Math.round(totalProt * 14 + 150) + " mg" },
-      { name: "Iron", val: Math.round(totalProt * 0.15 + 2) + " mg" },
+      { name: "Calcium", val: Math.round(totalProt * 14 + (totalCal > 0 ? 150 : 0)) + " mg" },
+      { name: "Iron", val: Math.round(totalProt * 0.15 + (totalCal > 0 ? 2 : 0)) + " mg" },
       { name: "Potassium", val: Math.round(totalCal * 0.9) + " mg" },
       { name: "Sodium", val: Math.round(totalCal * 0.8) + " mg" },
-      { name: "Vitamin A", val: "450 mcg" },
-      { name: "Vitamin C", val: "65 mg" },
-      { name: "Vitamin D", val: "10 mcg" }
+      { name: "Magnesium", val: Math.round(totalProt * 3.5 + (totalCal > 0 ? 80 : 0)) + " mg" },
+      { name: "Zinc", val: Math.round(totalProt * 0.12 + (totalCal > 0 ? 1.5 : 0)) + " mg" },
+      { name: "Vitamin A", val: totalCal > 0 ? "450 mcg" : "0 mcg" },
+      { name: "Vitamin C", val: totalCal > 0 ? "65 mg" : "0 mg" },
+      { name: "Vitamin D", val: totalCal > 0 ? "10 mcg" : "0 mcg" }
     ];
     microsGrid.innerHTML = micros.map(m => `
       <div style="display:flex; justify-content:space-between; padding:6px 8px; border-radius:6px; background:var(--color-canvas-soft-2); border:1px solid var(--color-hairline); font-size:11px;">
         <span>${m.name}</span>
         <strong class="font-bold text-ink">${m.val}</strong>
+      </div>
+    `).join('');
+  }
+
+  const biochemicalsGrid = document.getElementById('tf-biochemicals-grid');
+  if (biochemicalsGrid) {
+    const biochemicals = [
+      { name: "Dietary Cholesterol", val: Math.round(totalProt * 2.8 + (totalFat > 10 ? 45 : 0)) + " mg" },
+      { name: "Purine Level", val: Math.round(totalProt * 2.2 + totalCal * 0.05) + " mg" }
+    ];
+    biochemicalsGrid.innerHTML = biochemicals.map(b => `
+      <div style="display:flex; justify-content:space-between; padding:6px 8px; border-radius:6px; background:var(--color-canvas-soft-2); border:1px solid var(--color-hairline); font-size:11px;">
+        <span>${b.name}</span>
+        <strong class="font-bold text-ink">${b.val}</strong>
       </div>
     `).join('');
   }
