@@ -244,6 +244,14 @@ import MetricCard from '../../components/MetricCard.astro';
           <!-- Dynamic Bio-Chemicals -->
         </div>
       </div>
+
+      <!-- Per-Meal Macro & Energy Breakdown Card -->
+      <div class="bg-canvas border border-hairline rounded-lg p-6 shadow-vercel-sm space-y-4">
+        <h3 class="font-sans text-base font-semibold text-ink border-b border-hairline pb-2">Per-Meal Macro & Energy Breakdown</h3>
+        <div id="web-per-meal-breakdown" class="space-y-3 pt-2">
+          <!-- Dynamic per-meal cards -->
+        </div>
+      </div>
     </div>
 
     <!-- Last 7 Days Nutrition Trends Card -->
@@ -715,6 +723,52 @@ import MetricCard from '../../components/MetricCard.astro';
       `).join('');
     }
 
+    // Per-Meal Macro & Energy Breakdown
+    const webMealBreakdown = document.getElementById('web-per-meal-breakdown');
+    if (webMealBreakdown) {
+      let html = '';
+      webMealCategories.forEach(cat => {
+        const items = dayData[cat] || [];
+        let catCal = 0, catP = 0, catC = 0, catF = 0;
+        items.forEach(i => {
+          catCal += i.cal; catP += i.prot; catC += i.carb; catF += i.fat;
+        });
+        const pct = totalCal > 0 ? Math.round((catCal / totalCal) * 100) : 0;
+        const catFib = Math.round(catC * 0.12);
+
+        html += `
+          <div class="bg-canvas-soft border border-hairline rounded-lg p-4 font-mono text-xs space-y-2">
+            <div class="flex justify-between items-center pb-1">
+              <span class="font-sans font-bold text-ink text-sm">${cat}</span>
+              <span class="font-bold text-accent">${catCal} kcal (${pct}% of day)</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+              <div class="bg-canvas p-2 rounded border border-hairline">
+                <span class="text-[10px] text-[#ff0080] font-bold block">Protein</span>
+                <strong class="text-xs text-ink">${Math.round(catP)}g</strong>
+              </div>
+              <div class="bg-canvas p-2 rounded border border-hairline">
+                <span class="text-[10px] text-[#0070f3] font-bold block">Carbs</span>
+                <strong class="text-xs text-ink">${Math.round(catC)}g</strong>
+              </div>
+              <div class="bg-canvas p-2 rounded border border-hairline">
+                <span class="text-[10px] text-[#f9cb28] font-bold block">Fat</span>
+                <strong class="text-xs text-ink">${Math.round(catF)}g</strong>
+              </div>
+              <div class="bg-canvas p-2 rounded border border-hairline">
+                <span class="text-[10px] text-[#10b981] font-bold block">Fibre</span>
+                <strong class="text-xs text-ink">${catFib}g</strong>
+              </div>
+            </div>
+            <div class="w-full bg-canvas h-1.5 rounded-full overflow-hidden">
+              <div class="bg-link h-full" style="width: ${pct}%;"></div>
+            </div>
+          </div>
+        `;
+      });
+      webMealBreakdown.innerHTML = html;
+    }
+
     renderWeb7DayTrendsChart();
   }
 
@@ -725,7 +779,11 @@ import MetricCard from '../../components/MetricCard.astro';
     for (let i = 6; i >= 0; i--) {
       const d = new Date();
       d.setDate(d.getDate() - i);
-      const dateStr = d.toISOString().split('T')[0];
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const dayNum = String(d.getDate()).padStart(2, '0');
+      const dateStr = `${year}-${month}-${dayNum}`;
+      
       const dayLogs = webLogs[dateStr] || {};
       let val = 0;
       Object.values(dayLogs).forEach(items => {
@@ -737,7 +795,9 @@ import MetricCard from '../../components/MetricCard.astro';
           if (metric === 'fiber') val += Math.round(item.carb * 0.12);
         });
       });
-      days.push({ label: d.toLocaleDateString('en-US', { weekday: 'short' }), val, dateStr });
+      const dayName = d.toLocaleDateString('en-US', { weekday: 'short' });
+      const label = `${dayName} ${d.getDate()}`;
+      days.push({ label, val, dateStr });
     }
 
     const maxVal = Math.max(...days.map(d => d.val), 10);
