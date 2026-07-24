@@ -2955,7 +2955,7 @@ function renderTrackFoodAll() {
           <div style="display:flex; align-items:center; justify-content:space-between; background:var(--color-canvas-soft-2); padding: 8px 10px; border-radius: 8px; font-size:11px;">
             <div style="display:flex; flex-direction:column;">
               <span class="font-bold text-ink">${item.name}</span>
-              <span style="font-size:9px; color:var(--color-mute);" class="font-mono">${item.cal} kcal | ${item.prot}g P | ${item.carb}g C | ${item.fat}g F</span>
+              <span style="font-size:9px; color:var(--color-mute);" class="font-mono">${item.cal} kcal | ${item.prot}g P | ${item.carb}g C | ${item.fat}g F | ${Math.round(item.carb * 0.12)}g Fib</span>
             </div>
             <button class="icon-btn" onclick="deleteLoggedItem('${item.id}')" title="Delete Item" style="color: #ef4444; font-size: 14px;">🗑</button>
           </div>
@@ -3070,6 +3070,7 @@ function renderTrackFoodInsights() {
         catF += i.fat;
       });
       const pct = totalCal > 0 ? Math.round((catCal / totalCal) * 100) : 0;
+      const catFib = Math.round(catC * 0.12);
 
       html += `
         <div style="background:var(--color-canvas-soft-2); border-radius:10px; padding:10px; font-size:11px; margin-bottom:8px; border: 1px solid var(--color-hairline);">
@@ -3078,7 +3079,7 @@ function renderTrackFoodInsights() {
             <span class="font-mono font-bold text-accent">${catCal} kcal (${pct}% of day)</span>
           </div>
           
-          <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:6px; margin-bottom:6px; text-align:center;">
+          <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px; margin-bottom:6px; text-align:center;">
             <div style="background:var(--color-canvas); padding:4px 6px; border-radius:6px; border: 1px solid var(--color-hairline);">
               <span style="font-size:9px; color:#ff0080; display:block; font-weight:bold;">Protein</span>
               <strong class="font-mono text-xs">${Math.round(catP)}g</strong>
@@ -3090,6 +3091,10 @@ function renderTrackFoodInsights() {
             <div style="background:var(--color-canvas); padding:4px 6px; border-radius:6px; border: 1px solid var(--color-hairline);">
               <span style="font-size:9px; color:#f9cb28; display:block; font-weight:bold;">Fat</span>
               <strong class="font-mono text-xs">${Math.round(catF)}g</strong>
+            </div>
+            <div style="background:var(--color-canvas); padding:4px 6px; border-radius:6px; border: 1px solid var(--color-hairline);">
+              <span style="font-size:9px; color:#10b981; display:block; font-weight:bold;">Fibre</span>
+              <strong class="font-mono text-xs">${catFib}g</strong>
             </div>
           </div>
 
