@@ -1703,9 +1703,9 @@ const DIET_DATABASE = window.DIET_DATABASE;
         if (cleanName === 'Fluoride' || cleanName === 'Vitamin E') return; // Filter out Fluoride & Vitamin E
 
         const div = document.createElement('div');
-        div.className = 'flex justify-between border-b border-hairline/45 pb-1';
+        div.className = 'estimate-item-card';
         const unit = name.includes('mg') ? 'mg' : name.includes('mcg') ? 'mcg' : 'g';
-        div.innerHTML = `<span>${cleanName}:</span><span class="font-semibold text-ink">${Math.round(val * 10) / 10} ${unit}</span>`;
+        div.innerHTML = `<span>${cleanName}</span><strong>${Math.round(val * 10) / 10} ${unit}</strong>`;
         summaryMicrosList.appendChild(div);
       });
 
@@ -1716,8 +1716,9 @@ const DIET_DATABASE = window.DIET_DATABASE;
           { name: "Purine Level", val: Math.round(actualP * 2.2 + actualCal * 0.05) + " mg" }
         ];
         summaryBiochemicalsList.innerHTML = biochemicals.map(b => `
-          <div class="flex justify-between border-b border-hairline/45 pb-1">
-            <span>${b.name}:</span><span class="font-semibold text-ink">${b.val}</span>
+          <div class="estimate-item-card">
+            <span>${b.name}</span>
+            <strong>${b.val}</strong>
           </div>
         `).join('');
       }
