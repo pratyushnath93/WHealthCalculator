@@ -1054,8 +1054,10 @@ const DIET_DATABASE = window.DIET_DATABASE;
 
       const cityInfo = citiesMap[country].find(c => c.id === cityId);
       if (cityInfo) {
-        dietHabitsText.textContent = cityInfo.habits;
-        dietTimezoneText.textContent = cityInfo.tz;
+        const dietHabitsText = document.getElementById('diet-habits-text');
+        const dietTimezoneText = document.getElementById('diet-timezone-text');
+        if (dietHabitsText) dietHabitsText.textContent = cityInfo.habits;
+        if (dietTimezoneText) dietTimezoneText.textContent = cityInfo.tz;
       }
 
       targetCaloriesVar = targetCalories;
