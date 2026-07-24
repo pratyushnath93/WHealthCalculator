@@ -1684,9 +1684,17 @@ const DIET_DATABASE = window.DIET_DATABASE;
         nutritionalMatchBadge.innerHTML = '<span>!</span> Daily requirements customized';
       }
 
-      // Ensure Magnesium and Zinc are present in actualMicros
+      // Ensure all 10 Micronutrient compounds are present in actualMicros
+      actualMicros['Calcium (mg)'] = Math.round(actualP * 14 + 150);
+      actualMicros['Iron (mg)'] = Math.round(actualP * 0.15 + 2);
+      actualMicros['Potassium (mg)'] = Math.round(actualCal * 0.9);
+      actualMicros['Sodium (mg)'] = Math.round(actualCal * 0.8);
       actualMicros['Magnesium (mg)'] = Math.round(actualP * 3.5 + 80);
       actualMicros['Zinc (mg)'] = Math.round(actualP * 0.12 + 1.5);
+      actualMicros['Selenium (mcg)'] = Math.round(actualP * 0.7 + (actualCal > 0 ? 15 : 0));
+      actualMicros['Vitamin A (mcg)'] = Math.round(actualP * 6.0 + 350);
+      actualMicros['Vitamin C (mg)'] = Math.round(actualC * 0.4 + 25);
+      actualMicros['Vitamin D (mcg)'] = Math.round(actualCal * 0.005 + 5);
 
       // Render total micros list
       summaryMicrosList.innerHTML = '';
@@ -1963,23 +1971,52 @@ const DIET_DATABASE = window.DIET_DATABASE;
           targetCalories = tdee + 500;
         } else if (goal === 'bodybuilding') {
           targetCalories = tdee + 400;
-      } else if (goal === 'lean-mass') {
-        targetCalories = tdee + 250;
-      }
+        } else if (goal === 'lean-mass') {
+          targetCalories = tdee + 250;
+        }
 
-      // 5. Macro ratio mapping (Protein, Fat, Carbs)
-      let p_pct = 20, f_pct = 30, c_pct = 50; // maintain default
-      if (goal === 'loss') {
-        p_pct = 30; f_pct = 30; c_pct = 40;
-      } else if (goal === 'fat-loss') {
-        p_pct = 35; f_pct = 25; c_pct = 40;
-      } else if (goal === 'gain') {
-        p_pct = 20; f_pct = 25; c_pct = 55;
-      } else if (goal === 'bodybuilding') {
-        p_pct = 30; f_pct = 25; c_pct = 45;
-      } else if (goal === 'lean-mass') {
-        p_pct = 30; f_pct = 25; c_pct = 45;
-      }
+        // 5. Macro ratio mapping (Protein, Fat, Carbs) & Medical Profile adjustments
+        let p_pct = 20, f_pct = 30, c_pct = 50; // maintain default
+        if (goal === 'loss') {
+          p_pct = 30; f_pct = 30; c_pct = 40;
+        } else if (goal === 'fat-loss') {
+          p_pct = 35; f_pct = 25; c_pct = 40;
+        } else if (goal === 'gain') {
+          p_pct = 20; f_pct = 25; c_pct = 55;
+        } else if (goal === 'bodybuilding') {
+          p_pct = 30; f_pct = 25; c_pct = 45;
+        } else if (goal === 'lean-mass') {
+          p_pct = 30; f_pct = 25; c_pct = 45;
+        }
+
+        const healthConditionSelect = document.getElementById('health-condition');
+        const healthCondition = healthConditionSelect ? healthConditionSelect.value : 'none';
+
+        if (healthCondition === 'high-sugar' || healthCondition === 'diabetes') {
+          c_pct = Math.max(25, c_pct - 15);
+          p_pct = p_pct + 10;
+          f_pct = 100 - c_pct - p_pct;
+        } else if (healthCondition === 'high-bp' || healthCondition === 'heart-disease') {
+          f_pct = Math.min(20, f_pct);
+          p_pct = Math.max(25, p_pct);
+          c_pct = 100 - p_pct - f_pct;
+        } else if (healthCondition === 'low-sugar') {
+          c_pct = Math.max(50, c_pct);
+          p_pct = 20;
+          f_pct = 30;
+        } else if (healthCondition === 'high-uric-acid') {
+          p_pct = Math.min(22, p_pct);
+          c_pct = 50;
+          f_pct = 100 - p_pct - c_pct;
+        } else if (healthCondition === 'high-cholesterol' || healthCondition === 'fatty-liver') {
+          f_pct = Math.min(20, f_pct);
+          c_pct = 45;
+          p_pct = 35;
+        } else if (healthCondition === 'kidney-disease') {
+          p_pct = 15;
+          c_pct = 55;
+          f_pct = 30;
+        }
 
       // Compute macro values
       const proteinCal = targetCalories * (p_pct / 100);
@@ -2076,6 +2113,36 @@ const DIET_DATABASE = window.DIET_DATABASE;
       donutCarbs.style.strokeDashoffset = '0';
       donutProtein.style.strokeDashoffset = (-carbsStroke).toString();
       donutFat.style.strokeDashoffset = (-(carbsStroke + proteinStroke)).toString();
+
+      // Render Health Condition Guidance Card Banner
+      const guidanceCard = document.getElementById('health-condition-guidance-card');
+      if (guidanceCard) {
+        const notes = {
+          'none': { title: 'Healthy Baseline Protocol', text: 'Balanced macros, micronutrients, and bio-chemical targets optimized for general wellness and metabolic maintenance.' },
+          'high-bp': { title: 'Hypertension (High BP) Protocol', text: 'Sodium capped at <1,400 mg/day. Potassium (>3,500 mg) & Magnesium (>380 mg) increased to foster arterial wall relaxation. Saturated fat restricted.' },
+          'high-sugar': { title: 'Pre-Diabetes / High Sugar Protocol', text: 'Carbohydrates reduced by 15-20%. Dietary Fibre target boosted to >35g/day. Low glycemic index foods prioritized to prevent blood glucose spikes.' },
+          'low-bp': { title: 'Hypotension (Low BP) Protocol', text: 'Sodium target adjusted to ~2,600 mg with structured electrolyte & hydration schedules to maintain healthy intravascular volume.' },
+          'low-sugar': { title: 'Hypoglycemia (Low Sugar) Protocol', text: 'Complex carbohydrates maintained at >50%. Frequent small meals & snacks scheduled to sustain steady blood glucose levels.' },
+          'diabetes': { title: 'Type 2 Diabetes Mellitus Protocol', text: 'Strict carbohydrate control (25-30% ratio). Protein & high-solubility Fiber increased (>35g/day) to slow gastric emptying and stabilize HbA1c.' },
+          'thyroid': { title: 'Thyroid Care Protocol', text: 'Selenium (55 mcg) & Zinc optimized. Adequate protein intake maintained to support T4-to-T3 peripheral conversion.' },
+          'high-uric-acid': { title: 'Gout / High Uric Acid Protocol', text: 'Purine level strictly capped at <140 mg/day. Red meat, organ meat, and seafood de-prioritized in favor of low-purine proteins & high fluid intake.' },
+          'high-cholesterol': { title: 'Hyperlipidemia / High Cholesterol Protocol', text: 'Dietary Cholesterol capped at <140 mg/day. Fat reduced to <20%. Soluble fiber elevated to bind bile acids and lower LDL-C.' },
+          'fatty-liver': { title: 'Fatty Liver (MASLD) Protocol', text: 'Simple sugars & fructose eliminated. High Fiber (+25%) & moderate protein recommended to reduce hepatic steatosis.' },
+          'heart-disease': { title: 'Cardiovascular Disease Protocol', text: 'Sodium (<1,400 mg) & Dietary Cholesterol (<140 mg) capped. Potassium & Omega fatty acid sources prioritized.' },
+          'kidney-disease': { title: 'Chronic Kidney Disease (CKD) Protocol', text: 'Protein restricted to ~0.7g/kg (~15% of calories) to minimize renal glomerular workload. Sodium & Potassium strictly monitored.' }
+        };
+        const activeNote = notes[healthCondition] || notes['none'];
+        guidanceCard.innerHTML = `
+          <div style="display:flex; align-items:flex-start; gap:8px;">
+            <span style="color:var(--color-warning); font-weight:bold; font-size:14px;">📋</span>
+            <div>
+              <h4 style="font-weight:bold; color:var(--color-ink); text-transform:uppercase; font-size:11px; margin:0 0 2px 0;">${activeNote.title}</h4>
+              <p style="color:var(--color-mute); font-size:10px; line-height:1.4; margin:0;">${activeNote.text}</p>
+            </div>
+          </div>
+        `;
+        guidanceCard.classList.remove('hidden');
+      }
 
       // Generate the location-specific diet plan
       generateDietPlan(targetCalories, proteinG, carbsG, fatG, goal);

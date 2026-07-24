@@ -850,6 +850,25 @@
           </select>
         </div>
 
+        <!-- Health Condition / Medical Profile -->
+        <div class="input-group">
+          <span class="input-title">Health Condition / Medical Profile</span>
+          <select id="health-condition" class="app-select">
+            <option value="none" selected>None (Healthy Baseline)</option>
+            <option value="high-bp">High BP (Hypertension)</option>
+            <option value="high-sugar">High Sugar / Pre-Diabetes</option>
+            <option value="low-bp">Low BP (Hypotension)</option>
+            <option value="low-sugar">Low Sugar (Hypoglycemia)</option>
+            <option value="diabetes">Type 2 Diabetes Mellitus</option>
+            <option value="thyroid">Thyroid Condition</option>
+            <option value="high-uric-acid">High Uric Acid (Gout)</option>
+            <option value="high-cholesterol">High Cholesterol (Hyperlipidemia)</option>
+            <option value="fatty-liver">Fatty Liver Disease</option>
+            <option value="heart-disease">Heart Disease (Cardiovascular)</option>
+            <option value="kidney-disease">Kidney Disease (CKD)</option>
+          </select>
+        </div>
+
         <!-- Action Button -->
         <button id="health-calculate-btn" class="action-btn mt-4">
           ⚡ Calculate & Generate Plan
@@ -942,6 +961,11 @@
             <div class="goal-item"><span>Maintenance Calories</span><span id="health-goal-maintain" class="font-mono font-bold">--</span></div>
             <div class="goal-item"><span>Gain Weight (Mild Surplus)</span><span id="health-goal-gain" class="font-mono font-bold">--</span></div>
           </div>
+        </div>
+
+        <!-- Medical Condition Guidance Banner Card -->
+        <div id="health-condition-guidance-card" class="results-table-card mt-4 hidden" style="border: 1px solid rgba(245, 158, 11, 0.3); background: var(--color-canvas-soft); padding: 12px;">
+          <!-- Dynamically populated therapeutic protocol notes -->
         </div>
 
         <!-- 2. Personalised Diet Chart Plan -->
@@ -1045,6 +1069,19 @@
               <div id="summary-biochemicals-list" class="grid grid-cols-1 gap-y-1.5 font-mono text-[10px] text-mute">
                 <!-- Dynamically populated bio-chemical content -->
               </div>
+            </div>
+
+            <!-- Disclaimer Card -->
+            <div class="results-table-card mt-6 text-left" style="border: 1px solid var(--color-hairline); background: var(--color-canvas-soft-2); padding: 12px;">
+              <div class="flex-row-center gap-1 text-warning font-mono font-bold text-[10px] uppercase">
+                <span>⚠️</span> Disclaimer
+              </div>
+              <p class="font-mono text-[10px] leading-tight text-mute mt-1.5" style="margin: 0;">
+                The nutritional targets, macronutrient splits, micronutrient estimates, bio-chemical indicators, and localized meal plans provided by WHealth Calculator are intended solely for educational, dietary planning, and general health awareness purposes. They do not constitute professional medical advice, clinical diagnosis, or therapeutic treatment plans. Always consult a qualified physician, registered dietitian, certified nutritionist, or other licensed healthcare professional before starting or changing any diet, exercise, supplement, medication, or healthcare regimen.
+              </p>
+              <p class="font-mono text-[9.5px] leading-tight text-mute border-t border-hairline/40 pt-1.5 mt-2" style="margin: 0;">
+                <strong>Important Notice for Medical Conditions:</strong> Individuals with pre-existing medical conditions, are pregnant, or are under medical treatment must consult a qualified medical doctor, registered clinical dietitian before modifying their dietary intake or starting new nutrition or supplement regimens.
+              </p>
             </div>
 
           </div>
