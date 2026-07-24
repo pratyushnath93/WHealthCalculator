@@ -1571,12 +1571,17 @@ tr:last-child td {
 .text-ink { color: var(--color-ink) !important; }
 .text-body { color: var(--color-ink) !important; }
 .font-mono { font-family: var(--font-mono) !important; }
+.text-success { color: #10b981 !important; font-weight: 700 !important; }
+.text-warning { color: #f59e0b !important; font-weight: 700 !important; }
+.text-error { color: #ef4444 !important; font-weight: 700 !important; }
+.bg-success\/10 { background-color: rgba(16, 185, 129, 0.1) !important; }
+.border-success\/20 { border-color: rgba(16, 185, 129, 0.2) !important; }
+.bg-warning\/10 { background-color: rgba(245, 158, 11, 0.1) !important; }
+.border-warning\/20 { border-color: rgba(245, 158, 11, 0.2) !important; }
 .font-bold { font-weight: 700 !important; }
 .font-semibold { font-weight: 600 !important; }
 .bg-canvas-soft { background-color: var(--color-canvas-soft) !important; }
 .border-hairline { border-color: var(--color-hairline) !important; }
 .rounded { border-radius: 6px !important; }
 .p-2 { padding: 8px !important; }
-.p-1\.5 { padding: 6px !important; }
-
 

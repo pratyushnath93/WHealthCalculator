@@ -1640,25 +1640,49 @@ const DIET_DATABASE = window.DIET_DATABASE;
       summaryActualCal.textContent = `${Math.round(actualCal).toLocaleString()} kcal`;
       const diffCal = Math.round(actualCal - targetCalories);
       summaryDiffCal.textContent = `${diffCal > 0 ? '+' : ''}${diffCal} kcal`;
-      summaryDiffCal.className = `py-2 text-right font-mono text-xs font-semibold ${Math.abs(diffCal) <= 50 ? 'text-success' : 'text-warning'}`;
+      if (Math.abs(diffCal) <= 50) {
+        summaryDiffCal.className = 'text-right font-bold text-success';
+      } else if (diffCal > 0) {
+        summaryDiffCal.className = 'text-right font-bold text-warning';
+      } else {
+        summaryDiffCal.className = 'text-right font-bold text-error';
+      }
 
       summaryTargetProt.textContent = `${Math.round(targetP)} g`;
       summaryActualProt.textContent = `${Math.round(actualP)} g`;
       const diffProt = Math.round(actualP - targetP);
       summaryDiffProt.textContent = `${diffProt > 0 ? '+' : ''}${diffProt} g`;
-      summaryDiffProt.className = `py-2 text-right font-mono text-xs font-semibold ${Math.abs(diffProt) <= 5 ? 'text-success' : 'text-warning'}`;
+      if (Math.abs(diffProt) <= 5) {
+        summaryDiffProt.className = 'text-right font-bold text-success';
+      } else if (diffProt > 0) {
+        summaryDiffProt.className = 'text-right font-bold text-success';
+      } else {
+        summaryDiffProt.className = 'text-right font-bold text-warning';
+      }
 
       summaryTargetCarb.textContent = `${Math.round(targetC)} g`;
       summaryActualCarb.textContent = `${Math.round(actualC)} g`;
       const diffCarb = Math.round(actualC - targetC);
       summaryDiffCarb.textContent = `${diffCarb > 0 ? '+' : ''}${diffCarb} g`;
-      summaryDiffCarb.className = `py-2 text-right font-mono text-xs font-semibold ${Math.abs(diffCarb) <= 10 ? 'text-success' : 'text-warning'}`;
+      if (Math.abs(diffCarb) <= 10) {
+        summaryDiffCarb.className = 'text-right font-bold text-success';
+      } else if (diffCarb > 0) {
+        summaryDiffCarb.className = 'text-right font-bold text-warning';
+      } else {
+        summaryDiffCarb.className = 'text-right font-bold text-error';
+      }
 
       summaryTargetFat.textContent = `${Math.round(targetF)} g`;
       summaryActualFat.textContent = `${Math.round(actualF)} g`;
       const diffFat = Math.round(actualF - targetF);
       summaryDiffFat.textContent = `${diffFat > 0 ? '+' : ''}${diffFat} g`;
-      summaryDiffFat.className = `py-2 text-right font-mono text-xs font-semibold ${Math.abs(diffFat) <= 5 ? 'text-success' : 'text-warning'}`;
+      if (Math.abs(diffFat) <= 5) {
+        summaryDiffFat.className = 'text-right font-bold text-success';
+      } else if (diffFat > 0) {
+        summaryDiffFat.className = 'text-right font-bold text-warning';
+      } else {
+        summaryDiffFat.className = 'text-right font-bold text-error';
+      }
 
       const targetFiber = Math.round((targetCalories / 1000) * 14);
       const actualFiber = Math.round(actualC * 0.12);
@@ -1672,7 +1696,13 @@ const DIET_DATABASE = window.DIET_DATABASE;
       if (summaryActualFiber) summaryActualFiber.textContent = `${actualFiber} g`;
       if (summaryDiffFiber) {
         summaryDiffFiber.textContent = `${diffFiber > 0 ? '+' : ''}${diffFiber} g`;
-        summaryDiffFiber.className = `py-2 text-right font-mono text-xs font-semibold ${Math.abs(diffFiber) <= 5 ? 'text-success' : 'text-warning'}`;
+        if (Math.abs(diffFiber) <= 5) {
+          summaryDiffFiber.className = 'text-right font-bold text-success';
+        } else if (diffFiber > 0) {
+          summaryDiffFiber.className = 'text-right font-bold text-success';
+        } else {
+          summaryDiffFiber.className = 'text-right font-bold text-warning';
+        }
       }
 
       const isMatch = Math.abs(diffCal) <= 100 && Math.abs(diffProt) <= 10 && Math.abs(diffCarb) <= 15 && Math.abs(diffFat) <= 8;
