@@ -3108,18 +3108,33 @@ function populateSavedMealDropdown() {
 }
 
 function calculateFoodNutritionFromQty() {
-  const name = document.getElementById('tf-add-name').value.trim().toLowerCase();
-  const dbKey = Object.keys(FOOD_DATABASE).find(k => FOOD_DATABASE[k].name.toLowerCase() === name || k === name) || (activeFoodItem ? Object.keys(FOOD_DATABASE).find(k => FOOD_DATABASE[k] === activeFoodItem) : null);
+  const nameInput = document.getElementById('tf-add-name');
+  if (!nameInput) return;
+  const name = nameInput.value.trim().toLowerCase();
+  if (!name) return;
 
-  if (!dbKey || !FOOD_DATABASE[dbKey]) return;
-  const food = FOOD_DATABASE[dbKey];
-  const qty = parseFloat(document.getElementById('tf-add-qty').value) || food.baseQty;
-  const ratio = qty / food.baseQty;
+  const masterList = getMasterMobileFoodList();
+  let food = masterList.find(f => f.name.toLowerCase() === name);
+  if (!food && activeFoodItem) food = activeFoodItem;
+  if (!food) {
+    const key = Object.keys(FOOD_DATABASE).find(k => FOOD_DATABASE[k].name.toLowerCase() === name || k.toLowerCase() === name);
+    if (key) food = FOOD_DATABASE[key];
+  }
 
-  document.getElementById('tf-add-cal').value = Math.round(food.cal * ratio);
-  document.getElementById('tf-add-prot').value = (food.prot * ratio).toFixed(1);
-  document.getElementById('tf-add-carb').value = (food.carb * ratio).toFixed(1);
-  document.getElementById('tf-add-fat').value = (food.fat * ratio).toFixed(1);
+  if (!food) return;
+  const baseQty = food.baseQty || 100;
+  const qty = parseFloat(document.getElementById('tf-add-qty').value) || baseQty;
+  const ratio = qty / baseQty;
+
+  const calEl = document.getElementById('tf-add-cal');
+  const protEl = document.getElementById('tf-add-prot');
+  const carbEl = document.getElementById('tf-add-carb');
+  const fatEl = document.getElementById('tf-add-fat');
+
+  if (calEl) calEl.value = Math.round((food.cal || 0) * ratio);
+  if (protEl) protEl.value = ((food.prot || 0) * ratio).toFixed(1);
+  if (carbEl) carbEl.value = ((food.carb || 0) * ratio).toFixed(1);
+  if (fatEl) fatEl.value = ((food.fat || 0) * ratio).toFixed(1);
 }
 window.calculateFoodNutritionFromQty = calculateFoodNutritionFromQty;
 
@@ -3332,77 +3347,91 @@ function deleteSavedMeal(id) {
 window.deleteSavedMeal = deleteSavedMeal;
 
 function renderTrackFoodAll() {
-  const container = document.getElementById('tf-meals-log-container');
-  if (!container) return;
+  try {
+    const container = document.getElementById('tf-meals-log-container');
+    if (!container) return;
 
-  const loggedItems = getLoggedItemsForSelectedDate();
-  const defaultIcons = { Breakfast: '🌅', Lunch: '☀️', Dinner: '🌙', Snacks: '🍎' };
-
-  let totalCal = 0, totalProt = 0, totalCarb = 0, totalFat = 0;
-  loggedItems.forEach(item => {
-    totalCal += item.cal;
-    totalProt += item.prot;
-    totalCarb += item.carb;
-    totalFat += item.fat;
-  });
-
-  const sumCalEl = document.getElementById('tf-sum-cal');
-  const sumProtEl = document.getElementById('tf-sum-prot');
-  const sumCarbEl = document.getElementById('tf-sum-carb');
-  const sumFatEl = document.getElementById('tf-sum-fat');
-  const sumFiberEl = document.getElementById('tf-sum-fiber');
-
-  if (sumCalEl) sumCalEl.textContent = totalCal + ' kcal';
-  if (sumProtEl) sumProtEl.textContent = Math.round(totalProt) + 'g';
-  if (sumCarbEl) sumCarbEl.textContent = Math.round(totalCarb) + 'g';
-  if (sumFatEl) sumFatEl.textContent = Math.round(totalFat) + 'g';
-  if (sumFiberEl) sumFiberEl.textContent = Math.round(totalCarb * 0.12) + 'g';
-
-  if (!Array.isArray(tfCategories) || tfCategories.length === 0) {
-    tfCategories = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
-  }
-
-  let html = '';
-  tfCategories.forEach(cat => {
-    const items = loggedItems.filter(i => i.category === cat);
-    let catCal = 0;
-    items.forEach(i => catCal += i.cal);
-    const icon = defaultIcons[cat] || '🍽️';
-    const isCustom = !['Breakfast', 'Lunch', 'Dinner', 'Snacks'].includes(cat);
-
-    html += `
-      <div class="results-table-card">
-        <div class="flex-row-center" style="justify-content: space-between; border-bottom: 1px solid var(--color-hairline); padding-bottom: 6px;">
-          <div style="display:flex; align-items:center; gap:6px;">
-            <span>${icon}</span>
-            <span class="font-bold text-ink text-sm">${cat}</span>
-            ${isCustom ? `<button onclick="deleteCustomCategory('${cat}')" style="font-size:10px; color:#ef4444; background:none; border:none; cursor:pointer;" title="Delete Category">🗑</button>` : ''}
-          </div>
-          <span class="font-mono text-xs font-bold text-mute">${catCal} kcal</span>
-        </div>
-    `;
-
-    if (items.length === 0) {
-      html += `<p style="font-size:11px; color:var(--color-mute); padding: 8px 0 2px 0; margin:0;">No foods logged for ${cat}.</p>`;
-    } else {
-      html += `<div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">`;
-      items.forEach(item => {
-        html += `
-          <div style="display:flex; align-items:center; justify-content:space-between; background:var(--color-canvas-soft-2); padding: 8px 10px; border-radius: 8px; font-size:11px;">
-            <div style="display:flex; flex-direction:column;">
-              <span class="font-bold text-ink">${item.name}</span>
-              <span style="font-size:9px; color:var(--color-mute);" class="font-mono">${item.cal} kcal | ${item.prot}g P | ${item.carb}g C | ${item.fat}g F | ${Math.round(item.carb * 0.12)}g Fib</span>
-            </div>
-            <button class="icon-btn" onclick="deleteLoggedItem('${item.id}')" title="Delete Item" style="color: #ef4444; font-size: 14px;">🗑</button>
-          </div>
-        `;
-      });
-      html += `</div>`;
+    if (!selectedTrackFoodDate) selectedTrackFoodDate = getTodayDateString();
+    const dateInput = document.getElementById('tf-log-date');
+    if (dateInput) {
+      dateInput.value = selectedTrackFoodDate;
     }
-    html += `</div>`;
-  });
 
-  container.innerHTML = html;
+    const loggedItems = getLoggedItemsForSelectedDate();
+    const defaultIcons = { Breakfast: '🌅', Lunch: '☀️', Dinner: '🌙', Snacks: '🍎' };
+
+    let totalCal = 0, totalProt = 0, totalCarb = 0, totalFat = 0;
+    if (Array.isArray(loggedItems)) {
+      loggedItems.forEach(item => {
+        if (item) {
+          totalCal += Number(item.cal) || 0;
+          totalProt += Number(item.prot) || 0;
+          totalCarb += Number(item.carb) || 0;
+          totalFat += Number(item.fat) || 0;
+        }
+      });
+    }
+
+    const sumCalEl = document.getElementById('tf-sum-cal');
+    const sumProtEl = document.getElementById('tf-sum-prot');
+    const sumCarbEl = document.getElementById('tf-sum-carb');
+    const sumFatEl = document.getElementById('tf-sum-fat');
+    const sumFiberEl = document.getElementById('tf-sum-fiber');
+
+    if (sumCalEl) sumCalEl.textContent = totalCal + ' kcal';
+    if (sumProtEl) sumProtEl.textContent = Math.round(totalProt) + 'g';
+    if (sumCarbEl) sumCarbEl.textContent = Math.round(totalCarb) + 'g';
+    if (sumFatEl) sumFatEl.textContent = Math.round(totalFat) + 'g';
+    if (sumFiberEl) sumFiberEl.textContent = Math.round(totalCarb * 0.12) + 'g';
+
+    if (!Array.isArray(tfCategories) || tfCategories.length === 0) {
+      tfCategories = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
+    }
+
+    let html = '';
+    tfCategories.forEach(cat => {
+      const items = Array.isArray(loggedItems) ? loggedItems.filter(i => i && i.category === cat) : [];
+      let catCal = 0;
+      items.forEach(i => catCal += Number(i.cal) || 0);
+      const icon = defaultIcons[cat] || '🍽️';
+      const isCustom = !['Breakfast', 'Lunch', 'Dinner', 'Snacks'].includes(cat);
+
+      html += `
+        <div class="results-table-card">
+          <div class="flex-row-center" style="justify-content: space-between; border-bottom: 1px solid var(--color-hairline); padding-bottom: 6px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span>${icon}</span>
+              <span class="font-bold text-ink text-sm">${cat}</span>
+              ${isCustom ? `<button onclick="deleteCustomCategory('${cat}')" style="font-size:10px; color:#ef4444; background:none; border:none; cursor:pointer;" title="Delete Category">🗑</button>` : ''}
+            </div>
+            <span class="font-mono text-xs font-bold text-mute">${catCal} kcal</span>
+          </div>
+      `;
+
+      if (items.length === 0) {
+        html += `<p style="font-size:11px; color:var(--color-mute); padding: 8px 0 2px 0; margin:0;">No foods logged for ${cat}.</p>`;
+      } else {
+        html += `<div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">`;
+        items.forEach(item => {
+          html += `
+            <div style="display:flex; align-items:center; justify-content:space-between; background:var(--color-canvas-soft-2); padding: 8px 10px; border-radius: 8px; font-size:11px;">
+              <div style="display:flex; flex-direction:column;">
+                <span class="font-bold text-ink">${item.name || 'Food Item'}</span>
+                <span style="font-size:9px; color:var(--color-mute);" class="font-mono">${item.cal || 0} kcal | ${item.prot || 0}g P | ${item.carb || 0}g C | ${item.fat || 0}g F</span>
+              </div>
+              <button class="icon-btn" onclick="deleteLoggedItem('${item.id}')" title="Delete Item" style="color: #ef4444; font-size: 14px;">🗑</button>
+            </div>
+          `;
+        });
+        html += `</div>`;
+      }
+      html += `</div>`;
+    });
+
+    container.innerHTML = html;
+  } catch (err) {
+    console.error('Error rendering Track Food All:', err);
+  }
 }
 
 function renderTrackFoodInsights() {
