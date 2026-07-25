@@ -178,7 +178,8 @@
     let compiledDirectory = {};
     
     function compileFoodsDirectory() {
-      compiledDirectory = { ...COMMON_FOODS_DIRECTORY };
+      const baseDir = (typeof window !== 'undefined' && window.COMMON_FOODS_DIRECTORY && Object.keys(window.COMMON_FOODS_DIRECTORY).length > 0) ? window.COMMON_FOODS_DIRECTORY : COMMON_FOODS_DIRECTORY;
+      compiledDirectory = { ...baseDir };
       
       // Traverse DIET_DATABASE
       if (typeof DIET_DATABASE !== 'undefined' && DIET_DATABASE) {
@@ -212,24 +213,48 @@
         });
       }
 
-      // Merge Central Database foods
-      const cachedCentral = JSON.parse(localStorage.getItem('whealth_central_foods') || 'null');
-      if (Array.isArray(cachedCentral)) {
-        cachedCentral.forEach(item => {
-          const k = item.name.toLowerCase().trim();
-          if (!compiledDirectory[k]) {
-            compiledDirectory[k] = {
-              baseQty: 100,
-              unit: item.unit || 'g',
-              cal: item.cal || 0,
-              p: item.prot || 0,
-              c: item.carb || 0,
-              f: item.fat || 0,
-              micros: {}
-            };
+      // Merge FOODS_JSON_ARRAY
+      if (typeof window !== 'undefined' && window.FOODS_JSON_ARRAY && Array.isArray(window.FOODS_JSON_ARRAY)) {
+        window.FOODS_JSON_ARRAY.forEach(item => {
+          if (item && item.name) {
+            const k = item.name.toLowerCase().trim();
+            if (!compiledDirectory[k]) {
+              compiledDirectory[k] = {
+                baseQty: 100,
+                unit: item.unit || 'g',
+                cal: item.cal || 0,
+                p: item.prot || 0,
+                c: item.carb || 0,
+                f: item.fat || 0,
+                micros: {}
+              };
+            }
           }
         });
       }
+
+      // Merge Central Database foods from localStorage
+      try {
+        const cachedCentral = JSON.parse(localStorage.getItem('whealth_central_foods') || 'null');
+        if (Array.isArray(cachedCentral)) {
+          cachedCentral.forEach(item => {
+            if (item && item.name) {
+              const k = item.name.toLowerCase().trim();
+              if (!compiledDirectory[k]) {
+                compiledDirectory[k] = {
+                  baseQty: 100,
+                  unit: item.unit || 'g',
+                  cal: item.cal || 0,
+                  p: item.prot || 0,
+                  c: item.carb || 0,
+                  f: item.fat || 0,
+                  micros: {}
+                };
+              }
+            }
+          });
+        }
+      } catch (e) {}
     }
 
     async function syncCentralFoodsMobile() {

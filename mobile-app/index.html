@@ -18,7 +18,7 @@
   <div id="sidebar-drawer" class="sidebar-drawer closed">
     <div class="sidebar-header">
       <span class="logo-text">WHealth <span class="text-link">Menu</span></span>
-      <button id="close-menu" class="icon-btn" aria-label="Close Menu">
+      <button id="close-menu" class="icon-btn" aria-label="Close Menu" onclick="if(document.getElementById('sidebar-overlay')) document.getElementById('sidebar-overlay').classList.add('hidden'); if(document.getElementById('sidebar-drawer')) document.getElementById('sidebar-drawer').classList.add('closed');">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -29,49 +29,49 @@
     <nav class="sidebar-nav">
       <!-- Main Menu Section -->
       <div class="nav-section">Main Menu</div>
-      <button class="nav-link-btn" data-view="view-home">
+      <button class="nav-link-btn" data-view="view-home" onclick="showView('view-home'); if(document.getElementById('sidebar-overlay')) document.getElementById('sidebar-overlay').classList.add('hidden'); if(document.getElementById('sidebar-drawer')) document.getElementById('sidebar-drawer').classList.add('closed');">
         <span>🏠 Home</span>
       </button>
       
       <!-- Health Planners Section -->
       <div class="nav-section">Health Planners</div>
-      <button class="nav-link-btn" data-view="view-health">
+      <button class="nav-link-btn" data-view="view-health" onclick="showView('view-health'); if(document.getElementById('sidebar-overlay')) document.getElementById('sidebar-overlay').classList.add('hidden'); if(document.getElementById('sidebar-drawer')) document.getElementById('sidebar-drawer').classList.add('closed');">
         <span>❤️ Health Metrices & Diet Planner</span>
       </button>
-      <button class="nav-link-btn" data-view="view-track-food">
+      <button class="nav-link-btn" data-view="view-track-food" onclick="showView('view-track-food'); if(document.getElementById('sidebar-overlay')) document.getElementById('sidebar-overlay').classList.add('hidden'); if(document.getElementById('sidebar-drawer')) document.getElementById('sidebar-drawer').classList.add('closed');">
         <span>🥗 Track Food</span>
       </button>
       
       <!-- Finance Submenus Section -->
       <div class="nav-section">Finance Planners</div>
-      <button class="nav-link-btn" data-view="view-sip">
+      <button class="nav-link-btn" data-view="view-sip" onclick="showView('view-sip'); if(document.getElementById('sidebar-overlay')) document.getElementById('sidebar-overlay').classList.add('hidden'); if(document.getElementById('sidebar-drawer')) document.getElementById('sidebar-drawer').classList.add('closed');">
         <span>📈 SIP & Lumpsum</span>
       </button>
-      <button class="nav-link-btn" data-view="view-swp">
+      <button class="nav-link-btn" data-view="view-swp" onclick="showView('view-swp'); if(document.getElementById('sidebar-overlay')) document.getElementById('sidebar-overlay').classList.add('hidden'); if(document.getElementById('sidebar-drawer')) document.getElementById('sidebar-drawer').classList.add('closed');">
         <span>🔄 SWP Calculator</span>
       </button>
-      <button class="nav-link-btn" data-view="view-loan">
+      <button class="nav-link-btn" data-view="view-loan" onclick="showView('view-loan'); if(document.getElementById('sidebar-overlay')) document.getElementById('sidebar-overlay').classList.add('hidden'); if(document.getElementById('sidebar-drawer')) document.getElementById('sidebar-drawer').classList.add('closed');">
         <span>💳 Loan EMI</span>
       </button>
-      <button class="nav-link-btn" data-view="view-retirement">
+      <button class="nav-link-btn" data-view="view-retirement" onclick="showView('view-retirement'); if(document.getElementById('sidebar-overlay')) document.getElementById('sidebar-overlay').classList.add('hidden'); if(document.getElementById('sidebar-drawer')) document.getElementById('sidebar-drawer').classList.add('closed');">
         <span>👵 Retirement Goal</span>
       </button>
-      <button class="nav-link-btn" data-view="view-risk">
+      <button class="nav-link-btn" data-view="view-risk" onclick="showView('view-risk'); if(document.getElementById('sidebar-overlay')) document.getElementById('sidebar-overlay').classList.add('hidden'); if(document.getElementById('sidebar-drawer')) document.getElementById('sidebar-drawer').classList.add('closed');">
         <span>📊 Risk Allocation</span>
       </button>
       
       <!-- Information Section -->
       <div class="nav-section">Information</div>
-      <button class="nav-link-btn" data-view="view-about">
+      <button class="nav-link-btn" data-view="view-about" onclick="showView('view-about'); if(document.getElementById('sidebar-overlay')) document.getElementById('sidebar-overlay').classList.add('hidden'); if(document.getElementById('sidebar-drawer')) document.getElementById('sidebar-drawer').classList.add('closed');">
         <span>ℹ️ About Us</span>
       </button>
-      <button class="nav-link-btn" data-view="view-contact">
+      <button class="nav-link-btn" data-view="view-contact" onclick="showView('view-contact'); if(document.getElementById('sidebar-overlay')) document.getElementById('sidebar-overlay').classList.add('hidden'); if(document.getElementById('sidebar-drawer')) document.getElementById('sidebar-drawer').classList.add('closed');">
         <span>📧 Contact Us</span>
       </button>
-      <button class="nav-link-btn" data-view="view-privacy">
+      <button class="nav-link-btn" data-view="view-privacy" onclick="showView('view-privacy'); if(document.getElementById('sidebar-overlay')) document.getElementById('sidebar-overlay').classList.add('hidden'); if(document.getElementById('sidebar-drawer')) document.getElementById('sidebar-drawer').classList.add('closed');">
         <span>🔒 Privacy Policy</span>
       </button>
-      <button class="nav-link-btn" data-view="view-terms">
+      <button class="nav-link-btn" data-view="view-terms" onclick="showView('view-terms'); if(document.getElementById('sidebar-overlay')) document.getElementById('sidebar-overlay').classList.add('hidden'); if(document.getElementById('sidebar-drawer')) document.getElementById('sidebar-drawer').classList.add('closed');">
         <span>📄 Terms & Conditions</span>
       </button>
     </nav>
@@ -81,7 +81,7 @@
   <header class="app-header">
     <div class="header-inner">
       <div style="display: flex; align-items: center; gap: 8px;">
-        <button id="menu-toggle" class="icon-btn" aria-label="Open Menu">
+        <button id="menu-toggle" class="icon-btn" aria-label="Open Menu" onclick="if(document.getElementById('sidebar-overlay')) document.getElementById('sidebar-overlay').classList.remove('hidden'); if(document.getElementById('sidebar-drawer')) document.getElementById('sidebar-drawer').classList.remove('closed');">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="3" y1="12" x2="21" y2="12"></line>
             <line x1="3" y1="6" x2="21" y2="6"></line>

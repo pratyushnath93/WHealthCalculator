@@ -29046,8 +29046,30 @@ var citiesMap = {
 if (typeof window !== "undefined") {
   window.FOODS_JSON_ARRAY = FOODS_JSON_ARRAY;
   window.DIET_DATABASE = DIET_DATABASE;
-  window.COMMON_FOODS_DIRECTORY = COMMON_FOODS_DIRECTORY;
+  window.COMMON_FOODS_DIRECTORY = window.COMMON_FOODS_DIRECTORY || {};
   window.citiesMap = citiesMap;
+
+  // Synchronously populate COMMON_FOODS_DIRECTORY from static bundled FOODS_JSON_ARRAY
+  if (Array.isArray(FOODS_JSON_ARRAY)) {
+    FOODS_JSON_ARRAY.forEach(function(item) {
+      if (item && item.name) {
+        var k = item.name.toLowerCase().trim();
+        window.COMMON_FOODS_DIRECTORY[k] = {
+          baseQty: item.baseQty || 100,
+          unit: item.unit || 'g',
+          cal: item.cal || 0,
+          p: item.prot || 0,
+          c: item.carb || 0,
+          f: item.fat || 0,
+          micros: {
+            fiber: item.fiber || 0,
+            calcium: item.calcium || 0,
+            iron: item.iron || 0
+          }
+        };
+      }
+    });
+  }
 
   // Live Automatic Fetch from GitHub Master Database
   if (typeof fetch === "function") {
@@ -29061,20 +29083,22 @@ if (typeof window !== "undefined") {
         if (Array.isArray(data)) {
           window.FOODS_JSON_ARRAY = data;
           data.forEach(function(item) {
-            var k = item.name.toLowerCase().trim();
-            window.COMMON_FOODS_DIRECTORY[k] = {
-              baseQty: item.baseQty || 100,
-              unit: item.unit || 'g',
-              cal: item.cal || 0,
-              p: item.prot || 0,
-              c: item.carb || 0,
-              f: item.fat || 0,
-              micros: {
-                fiber: item.fiber || 0,
-                calcium: item.calcium || 0,
-                iron: item.iron || 0
-              }
-            };
+            if (item && item.name) {
+              var k = item.name.toLowerCase().trim();
+              window.COMMON_FOODS_DIRECTORY[k] = {
+                baseQty: item.baseQty || 100,
+                unit: item.unit || 'g',
+                cal: item.cal || 0,
+                p: item.prot || 0,
+                c: item.carb || 0,
+                f: item.fat || 0,
+                micros: {
+                  fiber: item.fiber || 0,
+                  calcium: item.calcium || 0,
+                  iron: item.iron || 0
+                }
+              };
+            }
           });
           if (typeof window.compileFoodsDirectory === 'function') {
             window.compileFoodsDirectory();

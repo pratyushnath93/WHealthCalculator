@@ -17,7 +17,7 @@ var tfStagedAddItems = [];
 var activeFoodItem = null;
 var activeModalSavedMealId = null;
 
-var COMMON_FOODS_DIRECTORY = {
+var COMMON_FOODS_DIRECTORY = (typeof window !== 'undefined' && window.COMMON_FOODS_DIRECTORY && Object.keys(window.COMMON_FOODS_DIRECTORY).length > 0) ? window.COMMON_FOODS_DIRECTORY : {
   "oatmeal": { baseQty: 100, unit: "g", cal: 389, p: 16.9, c: 66.3, f: 6.9 },
   "whole eggs": { baseQty: 2, unit: "eggs", cal: 140, p: 12.0, c: 0.6, f: 9.8 },
   "boiled egg whites": { baseQty: 4, unit: "eggs", cal: 68, p: 14.5, c: 1.0, f: 0.2 },
@@ -100,7 +100,8 @@ var COMMON_FOODS_DIRECTORY = {
 };
 
 function compileFoodsDirectory() {
-  compiledDirectory = { ...COMMON_FOODS_DIRECTORY };
+  const baseDir = (typeof window !== 'undefined' && window.COMMON_FOODS_DIRECTORY && Object.keys(window.COMMON_FOODS_DIRECTORY).length > 0) ? window.COMMON_FOODS_DIRECTORY : COMMON_FOODS_DIRECTORY;
+  compiledDirectory = { ...baseDir };
   
   if (typeof DIET_DATABASE !== 'undefined' && DIET_DATABASE) {
     Object.keys(DIET_DATABASE).forEach(cCode => {
@@ -133,10 +134,10 @@ function compileFoodsDirectory() {
     });
   }
 
-  try {
-    const cachedCentral = JSON.parse(localStorage.getItem('whealth_central_foods') || 'null');
-    if (Array.isArray(cachedCentral)) {
-      cachedCentral.forEach(item => {
+  // Merge FOODS_JSON_ARRAY
+  if (typeof window !== 'undefined' && window.FOODS_JSON_ARRAY && Array.isArray(window.FOODS_JSON_ARRAY)) {
+    window.FOODS_JSON_ARRAY.forEach(item => {
+      if (item && item.name) {
         const k = item.name.toLowerCase().trim();
         if (!compiledDirectory[k]) {
           compiledDirectory[k] = {
