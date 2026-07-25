@@ -1121,25 +1121,6 @@ function drawLoanPieChart(principal, interest) {
           }
         });
       }
-
-      // Merge Central Database foods from getMasterMobileFoodList()
-      const masterList = getMasterMobileFoodList();
-      if (Array.isArray(masterList)) {
-        masterList.forEach(item => {
-          const k = item.name.toLowerCase().trim();
-          if (!compiledDirectory[k]) {
-            compiledDirectory[k] = {
-              baseQty: item.baseQty || 100,
-              unit: item.unit || 'g',
-              cal: item.cal || 0,
-              p: item.prot || 0,
-              c: item.carb || 0,
-              f: item.fat || 0,
-              micros: {}
-            };
-          }
-        });
-      };
       
       // Merge Central Database foods
       try {
