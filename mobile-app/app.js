@@ -2867,41 +2867,43 @@ function loadTrackFoodData() {
   try {
     const rawLoggedByDate = localStorage.getItem('tf_logged_items_by_date');
     if (rawLoggedByDate) {
-      tfLoggedItemsByDate = JSON.parse(rawLoggedByDate);
+      const parsed = JSON.parse(rawLoggedByDate);
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        tfLoggedItemsByDate = parsed;
+      } else {
+        tfLoggedItemsByDate = {};
+      }
     } else {
-      const rawLegacy = localStorage.getItem('tf_logged_items');
-      const legacyItems = rawLegacy ? JSON.parse(rawLegacy) : [
-        { id: '1', category: 'Breakfast', name: 'Oatmeal & Milk with Berries', cal: 350, prot: 14, carb: 52, fat: 6 },
-        { id: '2', category: 'Lunch', name: 'Grilled Chicken & Rice Bowl', cal: 520, prot: 45, carb: 48, fat: 12 }
-      ];
-      tfLoggedItemsByDate = {
-        [selectedTrackFoodDate]: legacyItems
-      };
-      saveTrackFoodLogged();
+      tfLoggedItemsByDate = {};
     }
 
     const rawSaved = localStorage.getItem('tf_saved_meals');
     if (rawSaved) {
-      tfSavedMeals = JSON.parse(rawSaved).filter(m => m.id !== 's1' && m.id !== 's2');
-      saveTrackFoodSaved();
+      const parsed = JSON.parse(rawSaved);
+      if (Array.isArray(parsed)) {
+        tfSavedMeals = parsed;
+      } else {
+        tfSavedMeals = [];
+      }
     } else {
       tfSavedMeals = [];
-      saveTrackFoodSaved();
     }
 
     const rawCats = localStorage.getItem('tf_custom_categories');
+    let cats = null;
     if (rawCats) {
-      const parsed = JSON.parse(rawCats);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        tfCategories = parsed;
-      } else {
-        tfCategories = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
-      }
-    } else {
-      tfCategories = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
+      try { cats = JSON.parse(rawCats); } catch (e) {}
     }
+    if (!Array.isArray(cats) || cats.length === 0) {
+      cats = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
+      localStorage.setItem('tf_custom_categories', JSON.stringify(cats));
+    }
+    tfCategories = cats;
   } catch (e) {
     console.error('Error loading Track Food data:', e);
+    tfCategories = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
+    tfLoggedItemsByDate = {};
+    tfSavedMeals = [];
   }
 }
 

@@ -40,11 +40,11 @@ while (-not $booted -and $elapsed -lt $timeout) {
 }
 
 if ($booted) {
-    Write-Host "`nVirtual device is ready!" -ForegroundColor Green
-    Write-Host "Installing WHealth Calculator app (whealth-calculator.apk)..." -ForegroundColor Green
+    Write-Host "Clearing previous app data & installing updated WHealth Calculator app..." -ForegroundColor Green
+    & $adb -s emulator-5554 shell pm clear com.whealthcalculator.app 2>$null
     
-    # 3. Install the APK
-    $installResult = & $adb -s emulator-5554 install $apkPath
+    # 3. Install the APK with force replace flag
+    $installResult = & $adb -s emulator-5554 install -r -d $apkPath
     Write-Host $installResult
     
     # 4. Launch the App
