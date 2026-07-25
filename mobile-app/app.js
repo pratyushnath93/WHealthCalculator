@@ -3137,24 +3137,33 @@ function getMasterMobileFoodList() {
     console.error('Error compiling master food list for search:', e);
   }
 
+  // Fallback: try localStorage cache from GitHub live fetch
   let list = [];
   try {
     list = JSON.parse(localStorage.getItem('whealth_central_foods') || '[]');
   } catch(e) {}
 
   if (!Array.isArray(list) || list.length === 0) {
-    list = Object.keys(FOOD_DATABASE).map(k => ({
-      name: FOOD_DATABASE[k].name,
-      cal: FOOD_DATABASE[k].cal,
-      prot: FOOD_DATABASE[k].prot,
-      carb: FOOD_DATABASE[k].carb,
-      fat: FOOD_DATABASE[k].fat,
-      unit: FOOD_DATABASE[k].unit || '100g',
-      baseQty: FOOD_DATABASE[k].baseQty || 100
-    }));
+    // Last resort: use COMMON_FOODS_DIRECTORY keys (includes Jelabi/Jalebi)
+    const baseDir = (typeof window !== 'undefined' && window.COMMON_FOODS_DIRECTORY &&
+      Object.keys(window.COMMON_FOODS_DIRECTORY).length > 0) ? window.COMMON_FOODS_DIRECTORY : COMMON_FOODS_DIRECTORY;
+    list = Object.keys(baseDir).map(k => {
+      const item = baseDir[k];
+      const capitalized = k.replace(/\b\w/g, c => c.toUpperCase());
+      return {
+        name: capitalized,
+        cal: item.cal || 0,
+        prot: item.p || 0,
+        carb: item.c || 0,
+        fat: item.f || 0,
+        unit: item.unit || 'g',
+        baseQty: item.baseQty || 100
+      };
+    });
   }
   return list;
 }
+
 
 function onFoodSearchInput(mode) {
   const inputId = mode === 'add' ? 'tf-add-name' : 'tf-save-food-input';
@@ -3205,8 +3214,13 @@ function selectFoodSuggestionItem(name, mode) {
   const masterList = getMasterMobileFoodList();
   let food = masterList.find(f => f.name === name);
   if (!food) {
-    const key = Object.keys(FOOD_DATABASE).find(k => FOOD_DATABASE[k].name === name);
-    if (key) food = FOOD_DATABASE[key];
+    // Fallback: search compiledDirectory directly
+    const nameLower = name.toLowerCase().trim();
+    const cd = (typeof window !== 'undefined' && window.compiledDirectory) ? window.compiledDirectory : (typeof compiledDirectory !== 'undefined' ? compiledDirectory : null);
+    if (cd && cd[nameLower]) {
+      const item = cd[nameLower];
+      food = { name: name, cal: item.cal || 0, prot: item.p || 0, carb: item.c || 0, fat: item.f || 0, unit: item.unit || 'g', baseQty: item.baseQty || 100 };
+    }
   }
   if (!food) return;
 
@@ -3239,7 +3253,14 @@ function selectFoodSuggestionItem(name, mode) {
 }
 window.selectFoodSuggestionItem = selectFoodSuggestionItem;
 window.selectFoodSuggestion = function(key, mode) {
-  if (FOOD_DATABASE[key]) selectFoodSuggestionItem(FOOD_DATABASE[key].name, mode);
+  // Try compiledDirectory first, then FOOD_DATABASE
+  const cd = (typeof window !== 'undefined' && window.compiledDirectory) ? window.compiledDirectory : (typeof compiledDirectory !== 'undefined' ? compiledDirectory : null);
+  if (cd && cd[key]) {
+    const cap = key.replace(/\b\w/g, c => c.toUpperCase());
+    selectFoodSuggestionItem(cap, mode);
+  } else if (FOOD_DATABASE[key]) {
+    selectFoodSuggestionItem(FOOD_DATABASE[key].name, mode);
+  }
 };
 
 function onSelectSavedMealInAddFood() {
@@ -3278,8 +3299,12 @@ function calculateFoodNutritionFromQty() {
   let food = masterList.find(f => f.name.toLowerCase() === name);
   if (!food && activeFoodItem) food = activeFoodItem;
   if (!food) {
-    const key = Object.keys(FOOD_DATABASE).find(k => FOOD_DATABASE[k].name.toLowerCase() === name || k.toLowerCase() === name);
-    if (key) food = FOOD_DATABASE[key];
+    // Fallback: search compiledDirectory directly
+    const cd = (typeof window !== 'undefined' && window.compiledDirectory) ? window.compiledDirectory : (typeof compiledDirectory !== 'undefined' ? compiledDirectory : null);
+    if (cd && cd[name]) {
+      const item = cd[name];
+      food = { name: name, cal: item.cal || 0, prot: item.p || 0, carb: item.c || 0, fat: item.f || 0, unit: item.unit || 'g', baseQty: item.baseQty || 100 };
+    }
   }
 
   if (!food) return;
