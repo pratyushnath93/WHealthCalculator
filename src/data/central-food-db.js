@@ -13,16 +13,16 @@ var FOODS_JSON_ARRAY = [
     "country": "IN"
   },
   {
-    "name": "Dadaboudi Mutton Biriyani",
-    "cal": 180,
-    "prot": 4.5,
-    "carb": 28,
-    "fat": 5.5,
-    "fiber": 0,
-    "calcium": 0,
-    "iron": 0,
-    "unit": "Bowl",
-    "country": "AE"
+    "name": "Jelabi",
+    "cal": 300,
+  "prot": 4.2,
+  "carb": 62.4,
+  "fat": 4.3,
+  "fiber": 1.0,
+  "calcium": 15.0,
+  "iron": 1.0,
+  "unit": "100 grams",
+    "country": "IN"
   },
   {
     "name": "1 Whole, 2 Whites",
@@ -18358,17 +18358,17 @@ var COMMON_FOODS_DIRECTORY = {
       "iron": 0
     }
   },
-  "dadaboudi mutton biriyani": {
+  "jelabi": {
     "baseQty": 100,
-    "unit": "Bowl",
-    "cal": 180,
-    "p": 4.5,
-    "c": 28,
-    "f": 5.5,
+    "unit": "100 grams",
+    "cal": 300,
+    "p": 4.2,
+    "c": 62.4,
+    "f": 4.3,
     "micros": {
-      "fiber": 0,
-      "calcium": 0,
-      "iron": 0
+      "fiber": 1,
+      "calcium": 15,
+      "iron": 1
     }
   },
   "1 whole, 2 whites": {
