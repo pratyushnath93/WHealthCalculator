@@ -2882,7 +2882,14 @@ function loadTrackFoodData() {
 
     const rawCats = localStorage.getItem('tf_custom_categories');
     if (rawCats) {
-      tfCategories = JSON.parse(rawCats);
+      const parsed = JSON.parse(rawCats);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        tfCategories = parsed;
+      } else {
+        tfCategories = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
+      }
+    } else {
+      tfCategories = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
     }
   } catch (e) {
     console.error('Error loading Track Food data:', e);
@@ -2902,6 +2909,7 @@ function saveTrackFoodCategories() {
 }
 
 function getLoggedItemsForSelectedDate() {
+  if (!selectedTrackFoodDate) selectedTrackFoodDate = getTodayDateString();
   if (!tfLoggedItemsByDate[selectedTrackFoodDate]) {
     tfLoggedItemsByDate[selectedTrackFoodDate] = [];
   }
@@ -3343,6 +3351,10 @@ function renderTrackFoodAll() {
   if (sumCarbEl) sumCarbEl.textContent = Math.round(totalCarb) + 'g';
   if (sumFatEl) sumFatEl.textContent = Math.round(totalFat) + 'g';
   if (sumFiberEl) sumFiberEl.textContent = Math.round(totalCarb * 0.12) + 'g';
+
+  if (!Array.isArray(tfCategories) || tfCategories.length === 0) {
+    tfCategories = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
+  }
 
   let html = '';
   tfCategories.forEach(cat => {
