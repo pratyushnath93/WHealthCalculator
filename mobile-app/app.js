@@ -2806,6 +2806,7 @@ function initTrackFoodDateInput() {
           try { dateInput.showPicker(); } catch (e) {}
         }
       });
+      dateInput.addEventListener('change', onTrackFoodDateChange);
     }
   }
 }
@@ -2908,6 +2909,9 @@ function getLoggedItemsForSelectedDate() {
 }
 
 function populateCategorySelects() {
+  if (!Array.isArray(tfCategories) || tfCategories.length === 0) {
+    tfCategories = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
+  }
   const addSel = document.getElementById('tf-add-category');
   const modalSel = document.getElementById('modal-cat-select');
 
@@ -3687,6 +3691,14 @@ function renderTrackFoodSaved() {
   container.innerHTML = html;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  if (typeof initTrackFood === 'function') initTrackFood();
-});
+function runInitialTrackFoodSetup() {
+  if (typeof initTrackFood === 'function') {
+    initTrackFood();
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', runInitialTrackFoodSetup);
+} else {
+  runInitialTrackFoodSetup();
+}
