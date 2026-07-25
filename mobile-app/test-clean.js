@@ -181,29 +181,70 @@
       compiledDirectory = { ...COMMON_FOODS_DIRECTORY };
       
       // Traverse DIET_DATABASE
-      Object.keys(DIET_DATABASE).forEach(cCode => {
-        const country = DIET_DATABASE[cCode];
-        Object.keys(country.meals).forEach(mKey => {
-          const meal = country.meals[mKey];
-          meal.options.forEach(opt => {
-            opt.ingredients.forEach(ing => {
-              const nameLower = ing.name.toLowerCase().trim();
-              if (!compiledDirectory[nameLower]) {
-                compiledDirectory[nameLower] = {
-                  baseQty: ing.baseQty,
-                  unit: ing.unit,
-                  cal: ing.cal,
-                  p: ing.p,
-                  c: ing.c,
-                  f: ing.f,
-                  micros: ing.micros || {}
-                };
+      if (typeof DIET_DATABASE !== 'undefined' && DIET_DATABASE) {
+        Object.keys(DIET_DATABASE).forEach(cCode => {
+          const country = DIET_DATABASE[cCode];
+          if (country && country.meals) {
+            Object.keys(country.meals).forEach(mKey => {
+              const meal = country.meals[mKey];
+              if (meal && meal.options) {
+                meal.options.forEach(opt => {
+                  if (opt && opt.ingredients) {
+                    opt.ingredients.forEach(ing => {
+                      const nameLower = ing.name.toLowerCase().trim();
+                      if (!compiledDirectory[nameLower]) {
+                        compiledDirectory[nameLower] = {
+                          baseQty: ing.baseQty,
+                          unit: ing.unit,
+                          cal: ing.cal,
+                          p: ing.p,
+                          c: ing.c,
+                          f: ing.f,
+                          micros: ing.micros || {}
+                        };
+                      }
+                    });
+                  }
+                });
               }
             });
-          });
+          }
         });
-      });
+      }
+
+      // Merge Central Database foods
+      const cachedCentral = JSON.parse(localStorage.getItem('whealth_central_foods') || 'null');
+      if (Array.isArray(cachedCentral)) {
+        cachedCentral.forEach(item => {
+          const k = item.name.toLowerCase().trim();
+          if (!compiledDirectory[k]) {
+            compiledDirectory[k] = {
+              baseQty: 100,
+              unit: item.unit || 'g',
+              cal: item.cal || 0,
+              p: item.prot || 0,
+              c: item.carb || 0,
+              f: item.fat || 0,
+              micros: {}
+            };
+          }
+        });
+      }
     }
+
+    async function syncCentralFoodsMobile() {
+      try {
+        const res = await fetch('/data/foods.json');
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            localStorage.setItem('whealth_central_foods', JSON.stringify(data));
+            compileFoodsDirectory();
+          }
+        }
+      } catch (e) {}
+    }
+    syncCentralFoodsMobile();
 
     
 
