@@ -96,7 +96,9 @@ var COMMON_FOODS_DIRECTORY = (typeof window !== 'undefined' && window.COMMON_FOO
   "mochar chop": { baseQty: 2, unit: "pcs", cal: 180, p: 4.0, c: 22.0, f: 8.5 },
   "ghugni": { baseQty: 150, unit: "g", cal: 160, p: 7.5, c: 24.0, f: 4.0 },
   "rasgulla": { baseQty: 1, unit: "pc", cal: 120, p: 2.0, c: 26.0, f: 1.0 },
-  "sandesh": { baseQty: 1, unit: "pc", cal: 80, p: 2.5, c: 11.0, f: 3.0 }
+  "sandesh": { baseQty: 1, unit: "pc", cal: 80, p: 2.5, c: 11.0, f: 3.0 },
+  "jelabi": { baseQty: 100, unit: "g", cal: 300, p: 4.2, c: 62.4, f: 4.3 },
+  "jalebi": { baseQty: 100, unit: "g", cal: 300, p: 4.2, c: 62.4, f: 4.3 }
 };
 
 function compileFoodsDirectory() {
@@ -1083,7 +1085,9 @@ function drawLoanPieChart(principal, interest) {
       "mochar chop": { baseQty: 2, unit: "pcs", cal: 180, p: 4.0, c: 22.0, f: 8.5 },
       "ghugni": { baseQty: 150, unit: "g", cal: 160, p: 7.5, c: 24.0, f: 4.0 },
       "rasgulla": { baseQty: 1, unit: "pc", cal: 120, p: 2.0, c: 26.0, f: 1.0 },
-      "sandesh": { baseQty: 1, unit: "pc", cal: 80, p: 2.5, c: 11.0, f: 3.0 }
+      "sandesh": { baseQty: 1, unit: "pc", cal: 80, p: 2.5, c: 11.0, f: 3.0 },
+      "jelabi": { baseQty: 100, unit: "g", cal: 300, p: 4.2, c: 62.4, f: 4.3 },
+      "jalebi": { baseQty: 100, unit: "g", cal: 300, p: 4.2, c: 62.4, f: 4.3 }
     };
 
     window.compiledDirectory = {};
