@@ -923,30 +923,55 @@ function drawLoanPieChart(principal, interest) {
       compiledDirectory = { ...COMMON_FOODS_DIRECTORY };
       
       // Traverse DIET_DATABASE
-      Object.keys(DIET_DATABASE).forEach(cCode => {
-        const country = DIET_DATABASE[cCode];
-        Object.keys(country.meals).forEach(mKey => {
-          const meal = country.meals[mKey];
-          meal.options.forEach(opt => {
-            opt.ingredients.forEach(ing => {
-              const nameLower = ing.name.toLowerCase().trim();
-              if (!compiledDirectory[nameLower]) {
-                compiledDirectory[nameLower] = {
-                  baseQty: ing.baseQty,
-                  unit: ing.unit,
-                  cal: ing.cal,
-                  p: ing.p,
-                  c: ing.c,
-                  f: ing.f,
-                  micros: ing.micros || {}
-                };
+      if (typeof DIET_DATABASE !== 'undefined' && DIET_DATABASE) {
+        Object.keys(DIET_DATABASE).forEach(cCode => {
+          const country = DIET_DATABASE[cCode];
+          if (country && country.meals) {
+            Object.keys(country.meals).forEach(mKey => {
+              const meal = country.meals[mKey];
+              if (meal && meal.options) {
+                meal.options.forEach(opt => {
+                  if (opt && opt.ingredients) {
+                    opt.ingredients.forEach(ing => {
+                      const nameLower = ing.name.toLowerCase().trim();
+                      if (!compiledDirectory[nameLower]) {
+                        compiledDirectory[nameLower] = {
+                          baseQty: ing.baseQty,
+                          unit: ing.unit,
+                          cal: ing.cal,
+                          p: ing.p,
+                          c: ing.c,
+                          f: ing.f,
+                          micros: ing.micros || {}
+                        };
+                      }
+                    });
+                  }
+                });
               }
             });
-          });
+          }
         });
-      });
-    }
+      }
 
+      // Merge Central Database foods
+      try {
+        const cachedCentral = JSON.parse(localStorage.getItem('whealth_central_foods') || 'null');
+        if (Array.isArray(cachedCentral)) {
+          cachedCentral.forEach(item => {
+            const k = item.name.toLowerCase().trim();
+            if (!compiledDirectory[k]) {
+              compiledDirectory[k] = {
+                baseQty: 100,
+                unit: item.unit || 'g',
+                cal: item.cal || 0,
+                p: item.prot || 0,
+                c: item.carb || 0,
+                f: item.fat || 0,
+                micros: {}
+              };
+            }
+          });
     
 
     
@@ -2899,6 +2924,30 @@ function toggleTrackFoodAction(action) {
 }
 window.toggleTrackFoodAction = toggleTrackFoodAction;
 
+function cleanSearchTermMobile(str) {
+  return (str || '').toLowerCase().replace(/[\(\),\-/\&]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function getMasterMobileFoodList() {
+  let list = [];
+  try {
+    list = JSON.parse(localStorage.getItem('whealth_central_foods') || '[]');
+  } catch(e) {}
+
+  if (!Array.isArray(list) || list.length === 0) {
+    list = Object.keys(FOOD_DATABASE).map(k => ({
+      name: FOOD_DATABASE[k].name,
+      cal: FOOD_DATABASE[k].cal,
+      prot: FOOD_DATABASE[k].prot,
+      carb: FOOD_DATABASE[k].carb,
+      fat: FOOD_DATABASE[k].fat,
+      unit: FOOD_DATABASE[k].unit || '100g',
+      baseQty: FOOD_DATABASE[k].baseQty || 100
+    }));
+  }
+  return list;
+}
+
 function onFoodSearchInput(mode) {
   const inputId = mode === 'add' ? 'tf-add-name' : 'tf-save-food-input';
   const sugId = mode === 'add' ? 'tf-search-suggestions-add' : 'tf-search-suggestions-save';
@@ -2906,16 +2955,22 @@ function onFoodSearchInput(mode) {
   const sugBox = document.getElementById(sugId);
 
   if (!input || !sugBox) return;
-  const query = input.value.trim().toLowerCase();
+  const rawQuery = input.value.trim();
 
-  if (query.length === 0) {
+  if (rawQuery.length === 0) {
     sugBox.classList.add('hidden');
     return;
   }
 
-  const matches = Object.keys(FOOD_DATABASE).filter(key => {
-    return FOOD_DATABASE[key].name.toLowerCase().includes(query) || key.includes(query);
-  });
+  const cleanQuery = cleanSearchTermMobile(rawQuery);
+  const tokens = cleanQuery.split(' ').filter(t => t.length > 0);
+  const masterList = getMasterMobileFoodList();
+
+  const matches = masterList.filter(item => {
+    const cleanName = cleanSearchTermMobile(item.name);
+    if (cleanName.includes(cleanQuery)) return true;
+    return tokens.every(token => cleanName.includes(token));
+  }).slice(0, 15);
 
   if (matches.length === 0) {
     sugBox.classList.add('hidden');
@@ -2923,12 +2978,12 @@ function onFoodSearchInput(mode) {
   }
 
   let html = '';
-  matches.forEach(key => {
-    const food = FOOD_DATABASE[key];
+  matches.forEach(item => {
+    const escapedName = item.name.replace(/'/g, "\\'");
     html += `
-      <div style="padding: 8px 12px; font-size:11px; cursor:pointer; border-bottom:1px solid var(--color-hairline);" onclick="selectFoodSuggestion('${key}', '${mode}')">
-        <div class="font-bold text-ink">${food.name}</div>
-        <div style="font-size:9px; color:var(--color-mute);" class="font-mono">${food.cal} kcal per ${food.baseQty}${food.unit} (${food.prot}g P | ${food.carb}g C | ${food.fat}g F)</div>
+      <div style="padding: 8px 12px; font-size:11px; cursor:pointer; border-bottom:1px solid var(--color-hairline);" onclick="selectFoodSuggestionItem('${escapedName}', '${mode}')">
+        <div class="font-bold text-ink">${item.name}</div>
+        <div style="font-size:9px; color:var(--color-mute);" class="font-mono">${item.cal} kcal (${item.unit || '100g'}) (${item.prot || 0}g P | ${item.carb || 0}g C | ${item.fat || 0}g F)</div>
       </div>
     `;
   });
@@ -2938,11 +2993,46 @@ function onFoodSearchInput(mode) {
 }
 window.onFoodSearchInput = onFoodSearchInput;
 
-function selectFoodSuggestion(key, mode) {
-  const food = FOOD_DATABASE[key];
+function selectFoodSuggestionItem(name, mode) {
+  const masterList = getMasterMobileFoodList();
+  let food = masterList.find(f => f.name === name);
+  if (!food) {
+    const key = Object.keys(FOOD_DATABASE).find(k => FOOD_DATABASE[k].name === name);
+    if (key) food = FOOD_DATABASE[key];
+  }
   if (!food) return;
 
-  const sugAdd = document.getElementById('tf-search-suggestions-add');
+  const inputId = mode === 'add' ? 'tf-add-name' : 'tf-save-food-input';
+  const sugId = mode === 'add' ? 'tf-search-suggestions-add' : 'tf-search-suggestions-save';
+
+  const input = document.getElementById(inputId);
+  if (input) input.value = food.name;
+
+  const sugBox = document.getElementById(sugId);
+  if (sugBox) sugBox.classList.add('hidden');
+
+  if (mode === 'add') {
+    const unitLabel = document.getElementById('tf-add-unit-label');
+    if (unitLabel) unitLabel.innerText = food.unit || 'grams (g)';
+    const qtyInput = document.getElementById('tf-add-qty');
+    const qty = parseFloat(qtyInput ? qtyInput.value : 100) || 100;
+    const ratio = qty / 100;
+    
+    const calEl = document.getElementById('tf-add-cal');
+    const protEl = document.getElementById('tf-add-prot');
+    const carbEl = document.getElementById('tf-add-carb');
+    const fatEl = document.getElementById('tf-add-fat');
+    
+    if (calEl) calEl.value = Math.round((food.cal || 0) * ratio);
+    if (protEl) protEl.value = Math.round((food.prot || 0) * ratio * 10) / 10;
+    if (carbEl) carbEl.value = Math.round((food.carb || 0) * ratio * 10) / 10;
+    if (fatEl) fatEl.value = Math.round((food.fat || 0) * ratio * 10) / 10;
+  }
+}
+window.selectFoodSuggestionItem = selectFoodSuggestionItem;
+window.selectFoodSuggestion = function(key, mode) {
+  if (FOOD_DATABASE[key]) selectFoodSuggestionItem(FOOD_DATABASE[key].name, mode);
+};
   if (sugAdd) sugAdd.classList.add('hidden');
 
   activeFoodItem = food;
