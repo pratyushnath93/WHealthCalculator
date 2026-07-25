@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import MetricCard from '../../components/MetricCard.astro';
+import foodsData from '../../../public/data/foods.json';
 ---
 
 <Layout 
@@ -288,35 +289,18 @@ import MetricCard from '../../components/MetricCard.astro';
   </p>
 </Layout>
 
-<script is:inline>
-  // Centralized Food Database with LocalStorage Caching
-  const DEFAULT_FALLBACK_FOODS = [
-    { name: "Chicken Breast (Cooked)", cal: 165, prot: 31, carb: 0, fat: 3.6, fiber: 0, calcium: 15, iron: 1, unit: "grams (g)", country: "GLOBAL" },
-    { name: "Oats (Raw)", cal: 389, prot: 16.9, carb: 66.3, fat: 6.9, fiber: 10.6, calcium: 54, iron: 4.7, unit: "grams (g)", country: "GLOBAL" },
-    { name: "Paneer (Cottage Cheese)", cal: 265, prot: 18.3, carb: 1.2, fat: 20.8, fiber: 0, calcium: 480, iron: 0.2, unit: "grams (g)", country: "GLOBAL" },
-    { name: "Whole Eggs (Boiled)", cal: 155, prot: 12.6, carb: 1.1, fat: 10.6, fiber: 0, calcium: 50, iron: 1.2, unit: "grams (g)", country: "GLOBAL" },
-    { name: "White Rice (Cooked)", cal: 130, prot: 2.7, carb: 28.2, fat: 0.3, fiber: 0.4, calcium: 10, iron: 0.2, unit: "grams (g)", country: "GLOBAL" },
-    { name: "Brown Rice (Cooked)", cal: 111, prot: 2.6, carb: 23, fat: 0.9, fiber: 1.8, calcium: 10, iron: 0.4, unit: "grams (g)", country: "GLOBAL" },
-    { name: "Wheat Roti / Chapati", cal: 120, prot: 3.1, carb: 22.4, fat: 2.2, fiber: 2.8, calcium: 12, iron: 0.9, unit: "pieces", country: "GLOBAL" },
-    { name: "Yellow Toor Dal (Cooked)", cal: 116, prot: 6.8, carb: 19.8, fat: 1.2, fiber: 3.5, calcium: 24, iron: 1.1, unit: "grams (g)", country: "GLOBAL" },
-    { name: "Whey Protein Isolate", cal: 120, prot: 25, carb: 1.5, fat: 1, fiber: 0, calcium: 120, iron: 0.5, unit: "scoop (30g)", country: "GLOBAL" },
-    { name: "Apple", cal: 52, prot: 0.3, carb: 13.8, fat: 0.2, fiber: 2.4, calcium: 6, iron: 0.1, unit: "medium fruit", country: "GLOBAL" },
-    { name: "Banana", cal: 89, prot: 1.1, carb: 22.8, fat: 0.3, fiber: 2.6, calcium: 5, iron: 0.3, unit: "medium fruit", country: "GLOBAL" },
-    { name: "Almonds (Raw)", cal: 579, prot: 21.2, carb: 21.7, fat: 49.9, fiber: 12.5, calcium: 269, iron: 3.7, unit: "grams (g)", country: "GLOBAL" },
-    { name: "Whole Milk (Cow)", cal: 61, prot: 3.2, carb: 4.8, fat: 3.3, fiber: 0, calcium: 113, iron: 0.1, unit: "ml", country: "GLOBAL" },
-    { name: "Greek Yogurt", cal: 59, prot: 10, carb: 3.6, fat: 0.4, fiber: 0, calcium: 110, iron: 0.1, unit: "grams (g)", country: "GLOBAL" },
-    { name: "Salmon (Cooked)", cal: 206, prot: 22.1, carb: 0, fat: 12.3, fiber: 0, calcium: 12, iron: 0.8, unit: "grams (g)", country: "GLOBAL" },
-    { name: "Broccoli (Steam)", cal: 35, prot: 2.4, carb: 7.2, fat: 0.4, fiber: 3.3, calcium: 47, iron: 0.7, unit: "grams (g)", country: "GLOBAL" }
-  ];
+<script define:vars={{ foodsData }}>
+  // Centralized Food Database bundled statically from foods.json
+  const DEFAULT_FALLBACK_FOODS = foodsData || [];
 
-  const CURRENT_DB_VERSION = '1.0.2';
+  const CURRENT_DB_VERSION = '1.0.3';
   const cachedVersion = localStorage.getItem('whealth_db_version');
   if (cachedVersion !== CURRENT_DB_VERSION) {
     localStorage.removeItem('whealth_central_foods');
     localStorage.setItem('whealth_db_version', CURRENT_DB_VERSION);
   }
 
-  let WEB_FOOD_DB = JSON.parse(localStorage.getItem('whealth_central_foods') || 'null') || DEFAULT_FALLBACK_FOODS;
+  let WEB_FOOD_DB = (Array.isArray(foodsData) && foodsData.length > 0) ? foodsData : (JSON.parse(localStorage.getItem('whealth_central_foods') || 'null') || DEFAULT_FALLBACK_FOODS);
 
   // Asynchronously fetch latest central food database and sync cache
   async function fetchCentralFoodDatabase() {
