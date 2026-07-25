@@ -710,7 +710,8 @@ import MetricCard from '../components/MetricCard.astro';
     let compiledDirectory: Record<string, { baseQty: number; unit: string; cal: number; p: number; c: number; f: number; micros?: Record<string, number> }> = {};
     
     function compileFoodsDirectory() {
-      compiledDirectory = { ...COMMON_FOODS_DIRECTORY };
+      const baseDir = (typeof window !== 'undefined' && (window as any).COMMON_FOODS_DIRECTORY && Object.keys((window as any).COMMON_FOODS_DIRECTORY).length > 0) ? (window as any).COMMON_FOODS_DIRECTORY : COMMON_FOODS_DIRECTORY;
+      compiledDirectory = { ...baseDir };
       
       // Traverse DIET_DATABASE
       if (typeof DIET_DATABASE !== 'undefined' && DIET_DATABASE) {
@@ -744,11 +745,10 @@ import MetricCard from '../components/MetricCard.astro';
         });
       }
 
-      // Merge Central Database foods
-      try {
-        const cachedCentral = JSON.parse(localStorage.getItem('whealth_central_foods') || 'null');
-        if (Array.isArray(cachedCentral)) {
-          cachedCentral.forEach((item: any) => {
+      // Merge FOODS_JSON_ARRAY
+      if (typeof window !== 'undefined' && (window as any).FOODS_JSON_ARRAY && Array.isArray((window as any).FOODS_JSON_ARRAY)) {
+        (window as any).FOODS_JSON_ARRAY.forEach((item: any) => {
+          if (item && item.name) {
             const k = item.name.toLowerCase().trim();
             if (!compiledDirectory[k]) {
               compiledDirectory[k] = {
@@ -760,6 +760,29 @@ import MetricCard from '../components/MetricCard.astro';
                 f: item.fat || 0,
                 micros: {}
               };
+            }
+          }
+        });
+      }
+
+      // Merge Central Database foods
+      try {
+        const cachedCentral = JSON.parse(localStorage.getItem('whealth_central_foods') || 'null');
+        if (Array.isArray(cachedCentral)) {
+          cachedCentral.forEach((item: any) => {
+            if (item && item.name) {
+              const k = item.name.toLowerCase().trim();
+              if (!compiledDirectory[k]) {
+                compiledDirectory[k] = {
+                  baseQty: 100,
+                  unit: item.unit || 'g',
+                  cal: item.cal || 0,
+                  p: item.prot || 0,
+                  c: item.carb || 0,
+                  f: item.fat || 0,
+                  micros: {}
+                };
+              }
             }
           });
         }

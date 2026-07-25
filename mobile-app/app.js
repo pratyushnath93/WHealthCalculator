@@ -1089,7 +1089,8 @@ function drawLoanPieChart(principal, interest) {
     window.compiledDirectory = {};
     
     function compileFoodsDirectory() {
-      window.compiledDirectory = { ...COMMON_FOODS_DIRECTORY };
+      const baseDir = (typeof window !== 'undefined' && window.COMMON_FOODS_DIRECTORY && Object.keys(window.COMMON_FOODS_DIRECTORY).length > 0) ? window.COMMON_FOODS_DIRECTORY : COMMON_FOODS_DIRECTORY;
+      const targetDir = { ...baseDir };
       
       // Traverse DIET_DATABASE
       if (typeof DIET_DATABASE !== 'undefined' && DIET_DATABASE) {
@@ -1103,8 +1104,8 @@ function drawLoanPieChart(principal, interest) {
                   if (opt && opt.ingredients) {
                     opt.ingredients.forEach(ing => {
                       const nameLower = ing.name.toLowerCase().trim();
-                      if (!compiledDirectory[nameLower]) {
-                        compiledDirectory[nameLower] = {
+                      if (!targetDir[nameLower]) {
+                        targetDir[nameLower] = {
                           baseQty: ing.baseQty,
                           unit: ing.unit,
                           cal: ing.cal,
@@ -1122,15 +1123,14 @@ function drawLoanPieChart(principal, interest) {
           }
         });
       }
-      
-      // Merge Central Database foods
-      try {
-        const cachedCentral = JSON.parse(localStorage.getItem('whealth_central_foods') || 'null');
-        if (Array.isArray(cachedCentral)) {
-          cachedCentral.forEach(item => {
+
+      // Merge FOODS_JSON_ARRAY
+      if (typeof window !== 'undefined' && window.FOODS_JSON_ARRAY && Array.isArray(window.FOODS_JSON_ARRAY)) {
+        window.FOODS_JSON_ARRAY.forEach(item => {
+          if (item && item.name) {
             const k = item.name.toLowerCase().trim();
-            if (!compiledDirectory[k]) {
-              compiledDirectory[k] = {
+            if (!targetDir[k]) {
+              targetDir[k] = {
                 baseQty: 100,
                 unit: item.unit || 'g',
                 cal: item.cal || 0,
