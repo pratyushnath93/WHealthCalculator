@@ -15,13 +15,25 @@ var FOODS_JSON_ARRAY = [
   {
     "name": "Jelabi",
     "cal": 300,
-  "prot": 4.2,
-  "carb": 62.4,
-  "fat": 4.3,
-  "fiber": 1.0,
-  "calcium": 15.0,
-  "iron": 1.0,
-  "unit": "100 grams",
+    "prot": 4.2,
+    "carb": 62.4,
+    "fat": 4.3,
+    "fiber": 1.0,
+    "calcium": 15.0,
+    "iron": 1.0,
+    "unit": "100 grams",
+    "country": "IN"
+  },
+  {
+    "name": "Jalebi",
+    "cal": 300,
+    "prot": 4.2,
+    "carb": 62.4,
+    "fat": 4.3,
+    "fiber": 1.0,
+    "calcium": 15.0,
+    "iron": 1.0,
+    "unit": "100 grams",
     "country": "IN"
   },
   {
