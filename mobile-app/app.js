@@ -1144,9 +1144,9 @@ function drawLoanPieChart(principal, interest) {
                 micros: {}
               };
             }
-          });
-        }
-      } catch (e) {}
+          }
+        });
+      }
     }
     window.compileFoodsDirectory = compileFoodsDirectory;
 

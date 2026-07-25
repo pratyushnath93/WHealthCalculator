@@ -3,7 +3,7 @@
 
 $androidCli = "C:\Users\praty\AppData\Local\Microsoft\WinGet\Packages\Google.AndroidCLI_Microsoft.Winget.Source_8wekyb3d8bbwe\android.exe"
 $adb = "C:\Users\praty\AppData\Local\Android\Sdk\platform-tools\adb.exe"
-$apkPath = "d:\My Project\whealth-calculator.apk"
+$apkPath = "d:\My Project\Calculator\whealth-calculator.apk"
 
 Write-Host "==========================================" -ForegroundColor Green
 Write-Host "Starting WHealth Calculator Android Emulator..." -ForegroundColor Green
