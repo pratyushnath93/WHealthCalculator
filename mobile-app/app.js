@@ -2981,6 +2981,29 @@ function cleanSearchTermMobile(str) {
 }
 
 function getMasterMobileFoodList() {
+  try {
+    if (typeof compileFoodsDirectory === 'function') {
+      compileFoodsDirectory();
+    }
+    if (typeof compiledDirectory === 'object' && compiledDirectory !== null && Object.keys(compiledDirectory).length > 0) {
+      return Object.keys(compiledDirectory).map(k => {
+        const item = compiledDirectory[k];
+        const capitalized = k.replace(/\b\w/g, c => c.toUpperCase());
+        return {
+          name: capitalized,
+          cal: item.cal || 0,
+          prot: item.p || 0,
+          carb: item.c || 0,
+          fat: item.f || 0,
+          unit: item.unit || 'g',
+          baseQty: item.baseQty || 100
+        };
+      });
+    }
+  } catch (e) {
+    console.error('Error compiling master food list for search:', e);
+  }
+
   let list = [];
   try {
     list = JSON.parse(localStorage.getItem('whealth_central_foods') || '[]');
