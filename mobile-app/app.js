@@ -972,9 +972,9 @@ function drawLoanPieChart(principal, interest) {
               };
             }
           });
-    
-
-    
+        }
+      } catch (e) {}
+    }
 
     let activeDietPlan = [];
     let targetCaloriesVar = 2000;
@@ -3033,18 +3033,6 @@ window.selectFoodSuggestionItem = selectFoodSuggestionItem;
 window.selectFoodSuggestion = function(key, mode) {
   if (FOOD_DATABASE[key]) selectFoodSuggestionItem(FOOD_DATABASE[key].name, mode);
 };
-  if (sugAdd) sugAdd.classList.add('hidden');
-
-  activeFoodItem = food;
-
-  if (mode === 'add') {
-    document.getElementById('tf-add-name').value = food.name;
-    document.getElementById('tf-add-qty').value = food.baseQty;
-    document.getElementById('tf-add-unit-label').textContent = food.unit;
-    calculateFoodNutritionFromQty();
-  }
-}
-window.selectFoodSuggestion = selectFoodSuggestion;
 
 function onSelectSavedMealInAddFood() {
   const selectedId = document.getElementById('tf-add-saved-meal-select').value;
