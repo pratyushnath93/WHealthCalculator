@@ -29087,7 +29087,7 @@ if (typeof window !== "undefined") {
   if (typeof fetch === "function") {
     var rawUrl = '/data/foods.json';
     if (window.location.protocol === 'file:' || window.location.protocol === 'capacitor:' || window.location.protocol === 'http:' || window.location.protocol === 'https:') {
-      rawUrl = 'https://raw.githubusercontent.com/pratyushnath93/WHealthCalculator/main/public/data/foods.json';
+      rawUrl = 'https://raw.githubusercontent.com/pratyushnath93/WHealthCalculator/main/public/data/foods.json?t=' + Date.now();
     }
     fetch(rawUrl)
       .then(function(res) { return res.json(); })
