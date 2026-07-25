@@ -17,8 +17,149 @@ var tfStagedAddItems = [];
 var activeFoodItem = null;
 var activeModalSavedMealId = null;
 
+var COMMON_FOODS_DIRECTORY = {
+  "oatmeal": { baseQty: 100, unit: "g", cal: 389, p: 16.9, c: 66.3, f: 6.9 },
+  "whole eggs": { baseQty: 2, unit: "eggs", cal: 140, p: 12.0, c: 0.6, f: 9.8 },
+  "boiled egg whites": { baseQty: 4, unit: "eggs", cal: 68, p: 14.5, c: 1.0, f: 0.2 },
+  "whole wheat bread toast": { baseQty: 2, unit: "slices", cal: 160, p: 8.0, c: 30.0, f: 2.0 },
+  "milk": { baseQty: 200, unit: "ml", cal: 120, p: 6.8, c: 9.6, f: 6.5 },
+  "grilled chicken breast": { baseQty: 100, unit: "g", cal: 165, p: 31.0, c: 0, f: 3.6 },
+  "basmati rice": { baseQty: 100, unit: "g", cal: 130, p: 2.7, c: 28.0, f: 0.3 },
+  "brown rice": { baseQty: 100, unit: "g", cal: 112, p: 2.6, c: 23.5, f: 0.9 },
+  "banana": { baseQty: 1, unit: "pc", cal: 105, p: 1.3, c: 27.0, f: 0.3 },
+  "apple": { baseQty: 1, unit: "pc", cal: 95, p: 0.5, c: 25.0, f: 0.3 },
+  "mashed avocado": { baseQty: 50, unit: "g", cal: 80, p: 1.0, c: 4.3, f: 7.3 },
+  "organic tofu": { baseQty: 100, unit: "g", cal: 76, p: 8.0, c: 1.9, f: 4.8 },
+  "greek yogurt": { baseQty: 100, unit: "g", cal: 59, p: 10.0, c: 3.6, f: 0.4 },
+  "grilled paneer": { baseQty: 100, unit: "g", cal: 265, p: 18.3, c: 1.2, f: 20.8 },
+  "raw almonds": { baseQty: 30, unit: "g", cal: 173, p: 6.3, c: 6.1, f: 15.0 },
+  "peanut butter": { baseQty: 16, unit: "g", cal: 95, p: 4.0, c: 3.0, f: 8.0 },
+  "salmon fillet": { baseQty: 100, unit: "g", cal: 206, p: 22.0, c: 0, f: 13.0 },
+  "canned tuna": { baseQty: 100, unit: "g", cal: 116, p: 26.0, c: 0, f: 1.0 },
+  "cottage cheese": { baseQty: 100, unit: "g", cal: 98, p: 11.0, c: 3.4, f: 4.3 },
+  "whey protein": { baseQty: 1, unit: "scoop", cal: 120, p: 24.0, c: 3.0, f: 1.5 },
+  "sweet potato": { baseQty: 100, unit: "g", cal: 86, p: 1.6, c: 20.0, f: 0.1 },
+  "baby spinach": { baseQty: 100, unit: "g", cal: 23, p: 2.9, c: 3.6, f: 0.4 },
+  "cucumber slices": { baseQty: 100, unit: "g", cal: 15, p: 0.7, c: 3.6, f: 0.1 },
+  "butter": { baseQty: 10, unit: "g", cal: 72, p: 0.1, c: 0.1, f: 8.1 },
+  "ghee": { baseQty: 5, unit: "ml", cal: 45, p: 0, c: 0, f: 5.0 },
+  "dates": { baseQty: 3, unit: "pcs", cal: 60, p: 0.4, c: 16.0, f: 0.1 },
+  "hummus dip": { baseQty: 30, unit: "g", cal: 50, p: 1.5, c: 4.3, f: 3.0 },
+  "baked falafel": { baseQty: 3, unit: "pcs", cal: 160, p: 5.0, c: 18.0, f: 8.0 },
+  "roasted makhana": { baseQty: 20, unit: "g", cal: 70, p: 2.0, c: 14.5, f: 0.1 },
+  "sattu protein drink": { baseQty: 30, unit: "g", cal: 120, p: 6.0, c: 19.5, f: 1.5 },
+  "maize porridge (pap)": { baseQty: 100, unit: "g", cal: 110, p: 2.3, c: 25.0, f: 0.2 },
+  "beef biltong": { baseQty: 30, unit: "g", cal: 90, p: 15.0, c: 0.6, f: 3.0 },
+  "labneh dip": { baseQty: 40, unit: "g", cal: 80, p: 3.0, c: 2.4, f: 6.8 },
+  "puri sabji": { baseQty: 1, unit: "plate", cal: 350, p: 8.0, c: 45.0, f: 16.0 },
+  "steamed white rice": { baseQty: 100, unit: "g", cal: 130, p: 2.7, c: 28.0, f: 0.3 },
+  "masala dosa": { baseQty: 1, unit: "pc", cal: 220, p: 4.5, c: 38.0, f: 6.0 },
+  "paneer butter masala": { baseQty: 150, unit: "g", cal: 320, p: 12.0, c: 10.0, f: 26.0 },
+  "samosa": { baseQty: 1, unit: "pc", cal: 260, p: 3.5, c: 32.0, f: 13.0 },
+  "gulab jamun": { baseQty: 1, unit: "pc", cal: 150, p: 2.0, c: 26.0, f: 5.0 },
+  "aloo paratha": { baseQty: 1, unit: "pc", cal: 210, p: 4.5, c: 33.0, f: 7.0 },
+  "dal tadka": { baseQty: 150, unit: "ml", cal: 120, p: 6.5, c: 18.0, f: 3.0 },
+  "roti / chapati": { baseQty: 1, unit: "pc", cal: 80, p: 3.0, c: 16.0, f: 0.5 },
+  "yellow moong dal": { baseQty: 150, unit: "ml", cal: 110, p: 7.0, c: 20.0, f: 1.0 },
+  "chole bhature": { baseQty: 1, unit: "plate", cal: 450, p: 12.0, c: 60.0, f: 18.0 },
+  "idli & sambhar": { baseQty: 1, unit: "plate", cal: 210, p: 7.0, c: 40.0, f: 2.0 },
+  "butter chicken": { baseQty: 150, unit: "g", cal: 340, p: 22.0, c: 8.0, f: 24.0 },
+  "chicken biryani": { baseQty: 200, unit: "g", cal: 360, p: 24.0, c: 45.0, f: 9.0 },
+  "fish fry": { baseQty: 100, unit: "g", cal: 220, p: 18.0, c: 8.0, f: 13.0 },
+  "egg bhurji": { baseQty: 1, unit: "plate", cal: 190, p: 14.0, c: 4.0, f: 13.0 },
+  "pizza slice (cheese)": { baseQty: 1, unit: "slice", cal: 280, p: 12.0, c: 32.0, f: 10.0 },
+  "burger (veg)": { baseQty: 1, unit: "pc", cal: 290, p: 9.0, c: 38.0, f: 11.0 },
+  "burger (chicken)": { baseQty: 1, unit: "pc", cal: 350, p: 22.0, c: 36.0, f: 13.0 },
+  "french fries": { baseQty: 100, unit: "g", cal: 312, p: 3.4, c: 41.0, f: 15.0 },
+  "egg roll": { baseQty: 1, unit: "roll", cal: 320, p: 9.5, c: 38.0, f: 14.5 },
+  "kolkata egg roll": { baseQty: 1, unit: "roll", cal: 320, p: 9.5, c: 38.0, f: 14.5 },
+  "double egg roll": { baseQty: 1, unit: "roll", cal: 410, p: 15.0, c: 38.0, f: 20.0 },
+  "chicken roll": { baseQty: 1, unit: "roll", cal: 360, p: 18.0, c: 36.0, f: 16.0 },
+  "chicken egg roll": { baseQty: 1, unit: "roll", cal: 450, p: 22.0, c: 40.0, f: 22.0 },
+  "puchka": { baseQty: 5, unit: "pcs", cal: 150, p: 2.5, c: 24.0, f: 4.5 },
+  "pani puri": { baseQty: 5, unit: "pcs", cal: 150, p: 2.5, c: 24.0, f: 4.5 },
+  "luchi": { baseQty: 2, unit: "pcs", cal: 180, p: 3.5, c: 24.0, f: 8.0 },
+  "alur dom": { baseQty: 100, unit: "g", cal: 120, p: 2.0, c: 18.0, f: 5.0 },
+  "chapatis": { baseQty: 2, unit: "pcs", cal: 160, p: 6.0, c: 32.0, f: 1.0 },
+  "paratha": { baseQty: 1, unit: "pc", cal: 260, p: 4.5, c: 38.0, f: 10.0 },
+  "white rice": { baseQty: 150, unit: "g", cal: 195, p: 4.0, c: 42.0, f: 0.5 },
+  "chicken curry": { baseQty: 150, unit: "g", cal: 240, p: 22.0, c: 6.0, f: 14.0 },
+  "fish curry": { baseQty: 150, unit: "g", cal: 180, p: 18.0, c: 5.0, f: 9.0 },
+  "upma": { baseQty: 150, unit: "g", cal: 210, p: 4.0, c: 36.0, f: 5.0 },
+  "poha": { baseQty: 100, unit: "g", cal: 180, p: 3.5, c: 36.0, f: 2.5 },
+  "dhokla": { baseQty: 2, unit: "pcs", cal: 150, p: 5.0, c: 26.0, f: 3.0 },
+  "samosas": { baseQty: 2, unit: "pcs", cal: 520, p: 7.0, c: 64.0, f: 26.0 },
+  "mutton curry": { baseQty: 150, unit: "g", cal: 310, p: 24.0, c: 5.0, f: 21.0 },
+  "dal fry": { baseQty: 150, unit: "ml", cal: 140, p: 7.0, c: 20.0, f: 4.0 },
+  "jeera rice": { baseQty: 150, unit: "g", cal: 210, p: 3.5, c: 44.0, f: 2.0 },
+  "kathi roll": { baseQty: 1, unit: "roll", cal: 360, p: 16.0, c: 38.0, f: 16.0 },
+  "mochar chop": { baseQty: 2, unit: "pcs", cal: 180, p: 4.0, c: 22.0, f: 8.5 },
+  "ghugni": { baseQty: 150, unit: "g", cal: 160, p: 7.5, c: 24.0, f: 4.0 },
+  "rasgulla": { baseQty: 1, unit: "pc", cal: 120, p: 2.0, c: 26.0, f: 1.0 },
+  "sandesh": { baseQty: 1, unit: "pc", cal: 80, p: 2.5, c: 11.0, f: 3.0 }
+};
+
+function compileFoodsDirectory() {
+  compiledDirectory = { ...COMMON_FOODS_DIRECTORY };
+  
+  if (typeof DIET_DATABASE !== 'undefined' && DIET_DATABASE) {
+    Object.keys(DIET_DATABASE).forEach(cCode => {
+      const country = DIET_DATABASE[cCode];
+      if (country && country.meals) {
+        Object.keys(country.meals).forEach(mKey => {
+          const meal = country.meals[mKey];
+          if (meal && meal.options) {
+            meal.options.forEach(opt => {
+              if (opt && opt.ingredients) {
+                opt.ingredients.forEach(ing => {
+                  const nameLower = ing.name.toLowerCase().trim();
+                  if (!compiledDirectory[nameLower]) {
+                    compiledDirectory[nameLower] = {
+                      baseQty: ing.baseQty,
+                      unit: ing.unit,
+                      cal: ing.cal,
+                      p: ing.p,
+                      c: ing.c,
+                      f: ing.f,
+                      micros: ing.micros || {}
+                    };
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+
+  try {
+    const cachedCentral = JSON.parse(localStorage.getItem('whealth_central_foods') || 'null');
+    if (Array.isArray(cachedCentral)) {
+      cachedCentral.forEach(item => {
+        const k = item.name.toLowerCase().trim();
+        if (!compiledDirectory[k]) {
+          compiledDirectory[k] = {
+            baseQty: 100,
+            unit: item.unit || 'g',
+            cal: item.cal || 0,
+            p: item.prot || 0,
+            c: item.carb || 0,
+            f: item.fat || 0,
+            micros: {}
+          };
+        }
+      });
+    }
+  } catch (e) {}
+
+  window.compiledDirectory = compiledDirectory;
+}
+window.compileFoodsDirectory = compileFoodsDirectory;
+
 function startAppInitialization() {
   initTheme();
+  compileFoodsDirectory();
   initNavigation();
   initCalculators();
   initHardwareBackPress();
