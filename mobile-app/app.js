@@ -96,6 +96,9 @@ function showView(viewId, pushToHistory = true) {
   const activeView = document.getElementById(viewId);
   if (activeView) {
     activeView.classList.add('active');
+    if (viewId === 'view-track-food') {
+      if (typeof initTrackFood === 'function') initTrackFood();
+    }
   }
 
   tabs.forEach(t => t.classList.remove('active'));
@@ -3683,3 +3686,7 @@ function renderTrackFoodSaved() {
 
   container.innerHTML = html;
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof initTrackFood === 'function') initTrackFood();
+});
