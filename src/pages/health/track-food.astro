@@ -309,6 +309,13 @@ import MetricCard from '../../components/MetricCard.astro';
     { name: "Broccoli (Steam)", cal: 35, prot: 2.4, carb: 7.2, fat: 0.4, fiber: 3.3, calcium: 47, iron: 0.7, unit: "grams (g)", country: "GLOBAL" }
   ];
 
+  const CURRENT_DB_VERSION = '1.0.2';
+  const cachedVersion = localStorage.getItem('whealth_db_version');
+  if (cachedVersion !== CURRENT_DB_VERSION) {
+    localStorage.removeItem('whealth_central_foods');
+    localStorage.setItem('whealth_db_version', CURRENT_DB_VERSION);
+  }
+
   let WEB_FOOD_DB = JSON.parse(localStorage.getItem('whealth_central_foods') || 'null') || DEFAULT_FALLBACK_FOODS;
 
   // Asynchronously fetch latest central food database and sync cache
@@ -320,6 +327,7 @@ import MetricCard from '../../components/MetricCard.astro';
         if (Array.isArray(data) && data.length > 0) {
           WEB_FOOD_DB = data;
           localStorage.setItem('whealth_central_foods', JSON.stringify(data));
+          localStorage.setItem('whealth_db_version', CURRENT_DB_VERSION);
         }
       }
     } catch (err) {
@@ -437,24 +445,36 @@ import MetricCard from '../../components/MetricCard.astro';
     toggleWebTrackForm('close');
   }
 
+  function cleanSearchTerm(str) {
+    return str.toLowerCase().replace(/[\(\),\-/\&]/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+
   function onWebFoodSearchInput() {
-    const query = document.getElementById('web-add-food-name').value.toLowerCase().trim();
+    const rawQuery = document.getElementById('web-add-food-name').value.trim();
     const suggestionsBox = document.getElementById('web-search-suggestions');
-    if (!query) {
+    if (!rawQuery) {
       suggestionsBox.classList.add('hidden');
       return;
     }
 
-    const matches = WEB_FOOD_DB.filter(f => f.name.toLowerCase().includes(query));
+    const cleanQuery = cleanSearchTerm(rawQuery);
+    const tokens = cleanQuery.split(' ').filter(t => t.length > 0);
+
+    const matches = WEB_FOOD_DB.filter(f => {
+      const cleanName = cleanSearchTerm(f.name);
+      if (cleanName.includes(cleanQuery)) return true;
+      return tokens.every(token => cleanName.includes(token));
+    }).slice(0, 15);
+
     if (matches.length === 0) {
       suggestionsBox.classList.add('hidden');
       return;
     }
 
     suggestionsBox.innerHTML = matches.map(f => `
-      <div class="p-2 border-b border-hairline hover:bg-canvas-soft cursor-pointer flex justify-between items-center text-xs" onclick="selectWebFoodItem('${f.name}')">
+      <div class="p-2 border-b border-hairline hover:bg-canvas-soft cursor-pointer flex justify-between items-center text-xs" onclick="selectWebFoodItem('${f.name.replace(/'/g, "\\'")}')">
         <span class="font-medium text-ink">${f.name}</span>
-        <span class="font-mono text-[10px] text-mute">${f.cal} kcal / 100g</span>
+        <span class="font-mono text-[10px] text-mute">${f.cal} kcal (${f.unit || '100g'})</span>
       </div>
     `).join('');
     suggestionsBox.classList.remove('hidden');
