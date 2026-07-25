@@ -1,6 +1,9811 @@
-// Centralized Master Food Database & Regional Cities Configuration
-// Auto-extracted Diet Database from health.astro
-const DIET_DATABASE = {
+// Centralized Master Food Database (Linked directly to public/data/foods.json & public/data/diet-db.json)
+var FOODS_JSON_ARRAY = [
+  {
+    "name": "1 tsp Sugar",
+    "cal": 40,
+    "prot": 1.2,
+    "carb": 6,
+    "fat": 1.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "IN"
+  },
+  {
+    "name": "1 Whole, 2 Whites",
+    "cal": 110,
+    "prot": 14,
+    "carb": 0.8,
+    "fat": 5.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "eggs",
+    "country": "UK"
+  },
+  {
+    "name": "2 Whole",
+    "cal": 140,
+    "prot": 12,
+    "carb": 0.6,
+    "fat": 9.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "eggs",
+    "country": "ZA"
+  },
+  {
+    "name": "2 Whole, 1 White",
+    "cal": 160,
+    "prot": 15,
+    "carb": 1,
+    "fat": 10.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "eggs",
+    "country": "IN"
+  },
+  {
+    "name": "70% Kakao",
+    "cal": 85,
+    "prot": 1,
+    "carb": 7,
+    "fat": 6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Abendbrot (Dark bread, Gouda & Ham)",
+    "cal": 340,
+    "prot": 22,
+    "carb": 33,
+    "fat": 12.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Açai bowl with banana",
+    "cal": 135,
+    "prot": 1.7,
+    "carb": 27.5,
+    "fat": 2.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Alcatra",
+    "cal": 210,
+    "prot": 26,
+    "carb": 0,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "All-Natural Peanut Butter",
+    "cal": 120,
+    "prot": 5,
+    "carb": 4,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Almonds",
+    "cal": 90,
+    "prot": 3.2,
+    "carb": 3,
+    "fat": 7.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Almonds (Raw)",
+    "cal": 579,
+    "prot": 21.2,
+    "carb": 21.7,
+    "fat": 49.9,
+    "fiber": 12.5,
+    "calcium": 269,
+    "iron": 3.7,
+    "unit": "grams (g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Almonds & Cashews",
+    "cal": 145,
+    "prot": 4.8,
+    "carb": 7.2,
+    "fat": 12,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Aloo Paratha",
+    "cal": 210,
+    "prot": 4.5,
+    "carb": 33,
+    "fat": 7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Alur Dom",
+    "cal": 120,
+    "prot": 2,
+    "carb": 18,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Apfelmus",
+    "cal": 60,
+    "prot": 0.2,
+    "carb": 15,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Apple",
+    "cal": 52,
+    "prot": 0.3,
+    "carb": 13.8,
+    "fat": 0.2,
+    "fiber": 2.4,
+    "calcium": 6,
+    "iron": 0.1,
+    "unit": "medium fruit",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Apple & Peanut Butter",
+    "cal": 200,
+    "prot": 5.5,
+    "carb": 24,
+    "fat": 10.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Apple & Quark",
+    "cal": 152,
+    "prot": 18.3,
+    "carb": 20,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Apple & Walnuts",
+    "cal": 175,
+    "prot": 2.7,
+    "carb": 21,
+    "fat": 9.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Applesauce (Apfelmus)",
+    "cal": 60,
+    "prot": 0.2,
+    "carb": 15,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Arabic Coffee (Gahwa)",
+    "cal": 2,
+    "prot": 0.1,
+    "carb": 0.4,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "AE"
+  },
+  {
+    "name": "Arabic Flatbread (Khubz)",
+    "cal": 150,
+    "prot": 5,
+    "carb": 30,
+    "fat": 1.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "AE"
+  },
+  {
+    "name": "Arabic Pita Bread",
+    "cal": 140,
+    "prot": 4.5,
+    "carb": 28,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "AE"
+  },
+  {
+    "name": "Arabic Pita Bread (Khubz)",
+    "cal": 105,
+    "prot": 3.3,
+    "carb": 22.5,
+    "fat": 0.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "AE"
+  },
+  {
+    "name": "Arabic Pita Wrap",
+    "cal": 140,
+    "prot": 4.5,
+    "carb": 28,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "AE"
+  },
+  {
+    "name": "Arnotts Salada Crackers",
+    "cal": 80,
+    "prot": 1.8,
+    "carb": 14.5,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "AU"
+  },
+  {
+    "name": "Assorted Nigiri (Tuna, Salmon, Prawn)",
+    "cal": 240,
+    "prot": 15,
+    "carb": 35,
+    "fat": 2.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "JP"
+  },
+  {
+    "name": "Australian Feta Cheese",
+    "cal": 65,
+    "prot": 3.5,
+    "carb": 1,
+    "fat": 5.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Australian Honey",
+    "cal": 22,
+    "prot": 0,
+    "carb": 6,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "tsp",
+    "country": "AU"
+  },
+  {
+    "name": "Australian Lamb Loin Chops",
+    "cal": 260,
+    "prot": 26,
+    "carb": 0,
+    "fat": 17,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Avocado Toast with Tofu Scramble",
+    "cal": 320,
+    "prot": 17.5,
+    "carb": 36,
+    "fat": 13.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Baby Carrots",
+    "cal": 40,
+    "prot": 0.9,
+    "carb": 9.5,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Baby Spinach",
+    "cal": 23,
+    "prot": 2.9,
+    "carb": 3.6,
+    "fat": 0.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Baby Spinach & Balsamic Glaze",
+    "cal": 30,
+    "prot": 1.2,
+    "carb": 4.5,
+    "fat": 0.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Baked Cod Fillet",
+    "cal": 140,
+    "prot": 30,
+    "carb": 0,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Baked Cod, Wild Rice & Green Beans",
+    "cal": 320,
+    "prot": 36.6,
+    "carb": 32,
+    "fat": 5.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Baked Eggplant with Miso glaze",
+    "cal": 120,
+    "prot": 2,
+    "carb": 22,
+    "fat": 3.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Baked Falafel",
+    "cal": 160,
+    "prot": 5,
+    "carb": 18,
+    "fat": 8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Baked Falafel Plate & Fattoush",
+    "cal": 290,
+    "prot": 9.8,
+    "carb": 37.5,
+    "fat": 13.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Baked Garlic Chicken & Sweet Potatoes",
+    "cal": 316,
+    "prot": 41,
+    "carb": 25.5,
+    "fat": 4.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Baked Garlic Chicken Breast",
+    "cal": 198,
+    "prot": 37,
+    "carb": 0,
+    "fat": 4.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Baked Heinz Beans",
+    "cal": 80,
+    "prot": 4.8,
+    "carb": 13,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Baked Jacket Potato",
+    "cal": 185,
+    "prot": 4.2,
+    "carb": 42,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Baked Japanese Sweet Potato",
+    "cal": 130,
+    "prot": 1.8,
+    "carb": 30,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Baked Potato with skin",
+    "cal": 110,
+    "prot": 2.5,
+    "carb": 25,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Baked Satsumaimo",
+    "cal": 130,
+    "prot": 1.8,
+    "carb": 30,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Baked Sweet Potato",
+    "cal": 108,
+    "prot": 2.2,
+    "carb": 24,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Baked Sweet Potato Fries",
+    "cal": 70,
+    "prot": 1.2,
+    "carb": 16,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Baked Sweet Potato Wedges",
+    "cal": 70,
+    "prot": 1.2,
+    "carb": 16,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Banana",
+    "cal": 89,
+    "prot": 1.1,
+    "carb": 22.8,
+    "fat": 0.3,
+    "fiber": 2.6,
+    "calcium": 5,
+    "iron": 0.3,
+    "unit": "medium fruit",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Banana mashed with Oat bran",
+    "cal": 145,
+    "prot": 3.2,
+    "carb": 33,
+    "fat": 1.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Barbecued Beef Picanha",
+    "cal": 330,
+    "prot": 30,
+    "carb": 0,
+    "fat": 22,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Barley Flour Wrap",
+    "cal": 140,
+    "prot": 4.5,
+    "carb": 25,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "AU"
+  },
+  {
+    "name": "Barley Tea",
+    "cal": 2,
+    "prot": 0,
+    "carb": 0.5,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "JP"
+  },
+  {
+    "name": "Barley Tea & Walnuts",
+    "cal": 102,
+    "prot": 2.2,
+    "carb": 2.5,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Basmati Rice",
+    "cal": 130,
+    "prot": 2.7,
+    "carb": 28,
+    "fat": 0.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Basmati Rice Saffron",
+    "cal": 125,
+    "prot": 2.5,
+    "carb": 27.5,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Basmati Rice with Saffron",
+    "cal": 150,
+    "prot": 3.2,
+    "carb": 32,
+    "fat": 0.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Batata Doce",
+    "cal": 108,
+    "prot": 2,
+    "carb": 24,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Beef Biltong",
+    "cal": 90,
+    "prot": 15,
+    "carb": 0.6,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Beef Bobotie (Egg/Custard topping)",
+    "cal": 320,
+    "prot": 22,
+    "carb": 16,
+    "fat": 18,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Beef Bobotie & Rice",
+    "cal": 460,
+    "prot": 24.6,
+    "carb": 46,
+    "fat": 19,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Beef Droëwors",
+    "cal": 140,
+    "prot": 12,
+    "carb": 0.5,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Beef Droëwors (Dried Sausage)",
+    "cal": 140,
+    "prot": 12,
+    "carb": 0.5,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Beef Jerky & Walnuts",
+    "cal": 216,
+    "prot": 12.2,
+    "carb": 5,
+    "fat": 17,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Beef Mince with Okra & Rice",
+    "cal": 365,
+    "prot": 26.5,
+    "carb": 33.5,
+    "fat": 12.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Beef Steak & Beans",
+    "cal": 445,
+    "prot": 34.5,
+    "carb": 46,
+    "fat": 13,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Bergkäse Mountain Cheese",
+    "cal": 140,
+    "prot": 10,
+    "carb": 0.2,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Black Coffee",
+    "cal": 2,
+    "prot": 0.1,
+    "carb": 0.4,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "BR"
+  },
+  {
+    "name": "Black Tea (No Sugar)",
+    "cal": 2,
+    "prot": 0,
+    "carb": 0.5,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "IN"
+  },
+  {
+    "name": "Black, Kidney, Pinto",
+    "cal": 240,
+    "prot": 14,
+    "carb": 42,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Boiled",
+    "cal": 155,
+    "prot": 12.6,
+    "carb": 1.1,
+    "fat": 10.6,
+    "fiber": 0,
+    "calcium": 50,
+    "iron": 1.2,
+    "unit": "grams (g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Boiled Cassava (Mandioca)",
+    "cal": 160,
+    "prot": 1.5,
+    "carb": 38,
+    "fat": 0.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Boiled Edamame",
+    "cal": 88,
+    "prot": 8.8,
+    "carb": 7.2,
+    "fat": 3.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Boiled Edamame (in pods)",
+    "cal": 110,
+    "prot": 11,
+    "carb": 9,
+    "fat": 4.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Boiled Edamame Beans",
+    "cal": 88,
+    "prot": 8.8,
+    "carb": 7.2,
+    "fat": 3.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Boiled Egg",
+    "cal": 74,
+    "prot": 6.3,
+    "carb": 0.4,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "DE"
+  },
+  {
+    "name": "Boiled Egg Whites",
+    "cal": 68,
+    "prot": 14.5,
+    "carb": 1,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "eggs",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Boiled Egg Whites & Tea",
+    "cal": 53,
+    "prot": 11,
+    "carb": 1.3,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Boiled New Potatoes",
+    "cal": 80,
+    "prot": 2,
+    "carb": 18,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Boiled Potatoes (Salzkartoffeln)",
+    "cal": 95,
+    "prot": 2.4,
+    "carb": 21,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Boiled Potatoes in stew",
+    "cal": 80,
+    "prot": 2,
+    "carb": 18,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Boiled Potatoes with parsley",
+    "cal": 95,
+    "prot": 2.4,
+    "carb": 21,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Boiled Quail Eggs",
+    "cal": 64,
+    "prot": 5.2,
+    "carb": 0.4,
+    "fat": 4.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "JP"
+  },
+  {
+    "name": "Boiled Quail Eggs & Green Tea",
+    "cal": 66,
+    "prot": 5.3,
+    "carb": 0.8,
+    "fat": 4.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Boiled Sweet Potato (Batata Doce)",
+    "cal": 108,
+    "prot": 2,
+    "carb": 24,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Braai Chicken, Chakalaka & Pap",
+    "cal": 370,
+    "prot": 38.9,
+    "carb": 36,
+    "fat": 6.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Brazil Nuts",
+    "cal": 160,
+    "prot": 3.5,
+    "carb": 3,
+    "fat": 16,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Brazilian Collard Greens (Couve)",
+    "cal": 30,
+    "prot": 1.5,
+    "carb": 4.5,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Brazilian Rump Steak (Alcatra)",
+    "cal": 210,
+    "prot": 26,
+    "carb": 0,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Breaded Chicken Schnitzel",
+    "cal": 260,
+    "prot": 28,
+    "carb": 14,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "British Gala Apple",
+    "cal": 75,
+    "prot": 0.4,
+    "carb": 19,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "UK"
+  },
+  {
+    "name": "British Honey Roast Ham",
+    "cal": 50,
+    "prot": 8,
+    "carb": 0.5,
+    "fat": 1.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Broccoli (Steam)",
+    "cal": 35,
+    "prot": 2.4,
+    "carb": 7.2,
+    "fat": 0.4,
+    "fiber": 3.3,
+    "calcium": 47,
+    "iron": 0.7,
+    "unit": "grams (g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Brown Lentil Stew with root vegetables",
+    "cal": 210,
+    "prot": 12,
+    "carb": 34,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Brown Rice",
+    "cal": 112,
+    "prot": 2.6,
+    "carb": 23.5,
+    "fat": 0.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Brown Rice (Cooked)",
+    "cal": 111,
+    "prot": 2.6,
+    "carb": 23,
+    "fat": 0.9,
+    "fiber": 1.8,
+    "calcium": 10,
+    "iron": 0.4,
+    "unit": "grams (g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Brown Rice Cakes",
+    "cal": 70,
+    "prot": 1.5,
+    "carb": 14,
+    "fat": 0.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "US"
+  },
+  {
+    "name": "Brown Rice, Paneer Bhurji & Spinach",
+    "cal": 315,
+    "prot": 22.6,
+    "carb": 29,
+    "fat": 12.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Brown Soda Bread Toast",
+    "cal": 85,
+    "prot": 3.5,
+    "carb": 16,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slice",
+    "country": "UK"
+  },
+  {
+    "name": "Buckwheat Soba Noodles",
+    "cal": 200,
+    "prot": 7.5,
+    "carb": 42,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Burger (chicken)",
+    "cal": 350,
+    "prot": 22,
+    "carb": 36,
+    "fat": 13,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Burger (veg)",
+    "cal": 290,
+    "prot": 9,
+    "carb": 38,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Butter",
+    "cal": 72,
+    "prot": 0.1,
+    "carb": 0.1,
+    "fat": 8.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Butter (for cooking)",
+    "cal": 36,
+    "prot": 0,
+    "carb": 0,
+    "fat": 4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Butter Chicken",
+    "cal": 340,
+    "prot": 22,
+    "carb": 8,
+    "fat": 24,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Butter Chicken & Garlic Naan",
+    "cal": 560,
+    "prot": 30.5,
+    "carb": 50,
+    "fat": 25,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Butternut Squash Soup & Lentil Bobotie",
+    "cal": 270,
+    "prot": 10,
+    "carb": 44,
+    "fat": 6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Camel Milk",
+    "cal": 90,
+    "prot": 6.2,
+    "carb": 9.2,
+    "fat": 3.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "AE"
+  },
+  {
+    "name": "Campanha",
+    "cal": 20,
+    "prot": 0.5,
+    "carb": 3.5,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Canned Black Beans",
+    "cal": 110,
+    "prot": 7,
+    "carb": 20,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Canned Brown Lentils",
+    "cal": 110,
+    "prot": 8,
+    "carb": 18,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Canned Chickpeas (Garbanzo)",
+    "cal": 130,
+    "prot": 7,
+    "carb": 22,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Canned Light Tuna in brine",
+    "cal": 65,
+    "prot": 15,
+    "carb": 0,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Canned Tuna",
+    "cal": 116,
+    "prot": 26,
+    "carb": 0,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Canned Tuna in water",
+    "cal": 90,
+    "prot": 20,
+    "carb": 0,
+    "fat": 0.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Cape Malay Chicken Curry",
+    "cal": 240,
+    "prot": 22,
+    "carb": 12,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Cape Malay Chicken Curry & Rice",
+    "cal": 390,
+    "prot": 25,
+    "carb": 45,
+    "fat": 11.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Cape Malay Lentil Curry & Rice",
+    "cal": 295,
+    "prot": 11.5,
+    "carb": 55.5,
+    "fat": 2.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Cape Malay Spiced Lentils",
+    "cal": 170,
+    "prot": 9,
+    "carb": 28,
+    "fat": 2.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Carne Moída com Quiabo",
+    "cal": 240,
+    "prot": 24,
+    "carb": 6,
+    "fat": 12,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Carrot Sticks",
+    "cal": 40,
+    "prot": 0.9,
+    "carb": 9.5,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Cassava Farofa",
+    "cal": 70,
+    "prot": 0.3,
+    "carb": 16,
+    "fat": 0.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Celery & Baby Carrots",
+    "cal": 30,
+    "prot": 0.7,
+    "carb": 7,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Chakalaka & Pap with Beans",
+    "cal": 290,
+    "prot": 8.5,
+    "carb": 54,
+    "fat": 3.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Chamomile Herbal Tea",
+    "cal": 2,
+    "prot": 0,
+    "carb": 0.5,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "US"
+  },
+  {
+    "name": "Chamomile Tea",
+    "cal": 2,
+    "prot": 0,
+    "carb": 0.5,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "AE"
+  },
+  {
+    "name": "Chamomile Tea & Digestive Biscuit",
+    "cal": 72,
+    "prot": 1,
+    "carb": 10.5,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Chapatis",
+    "cal": 160,
+    "prot": 6,
+    "carb": 32,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Cheese",
+    "cal": 280,
+    "prot": 12,
+    "carb": 32,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slice",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Cheese & Onion Pasty & Greens",
+    "cal": 320,
+    "prot": 10,
+    "carb": 37,
+    "fat": 15.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Chia Seeds",
+    "cal": 50,
+    "prot": 1.7,
+    "carb": 4.2,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Chicken",
+    "cal": 350,
+    "prot": 22,
+    "carb": 36,
+    "fat": 13,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Chicken & Barley Soup",
+    "cal": 210,
+    "prot": 18,
+    "carb": 22,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "UK"
+  },
+  {
+    "name": "Chicken Biryani",
+    "cal": 360,
+    "prot": 24,
+    "carb": 45,
+    "fat": 9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Chicken Biryani (Lean breast meat)",
+    "cal": 340,
+    "prot": 24,
+    "carb": 42,
+    "fat": 8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Chicken Biryani & Raita",
+    "cal": 390,
+    "prot": 26.8,
+    "carb": 46,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Chicken Breast (Cooked)",
+    "cal": 165,
+    "prot": 31,
+    "carb": 0,
+    "fat": 3.6,
+    "fiber": 0,
+    "calcium": 15,
+    "iron": 1,
+    "unit": "grams (g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Chicken breast & Avocado wrap",
+    "cal": 380,
+    "prot": 42.1,
+    "carb": 27.8,
+    "fat": 10.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Chicken Breast Filet",
+    "cal": 180,
+    "prot": 36,
+    "carb": 0,
+    "fat": 3.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Chicken Coxinha & Espresso",
+    "cal": 232,
+    "prot": 9.6,
+    "carb": 24.4,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Chicken Curry",
+    "cal": 240,
+    "prot": 22,
+    "carb": 6,
+    "fat": 14,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Chicken Curry & Basmati Rice",
+    "cal": 385,
+    "prot": 31.7,
+    "carb": 39,
+    "fat": 8.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Chicken Egg Roll",
+    "cal": 450,
+    "prot": 22,
+    "carb": 40,
+    "fat": 22,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "roll",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Chicken Empada (Pastry)",
+    "cal": 210,
+    "prot": 8.5,
+    "carb": 22,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Chicken Empada pie",
+    "cal": 210,
+    "prot": 8.5,
+    "carb": 22,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Chicken Keema Paratha",
+    "cal": 395,
+    "prot": 18,
+    "carb": 54.5,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Chicken Machboos",
+    "cal": 380,
+    "prot": 26,
+    "carb": 48,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Chicken Machboos & Saloona",
+    "cal": 415,
+    "prot": 26.8,
+    "carb": 54,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Chicken Polony slices & Cucumber",
+    "cal": 110,
+    "prot": 9.5,
+    "carb": 5.5,
+    "fat": 5.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Chicken Roll",
+    "cal": 360,
+    "prot": 18,
+    "carb": 36,
+    "fat": 16,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "roll",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Chicken Salami (Lean)",
+    "cal": 85,
+    "prot": 10,
+    "carb": 1.5,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Chicken Salami Slices",
+    "cal": 100,
+    "prot": 10.5,
+    "carb": 4.5,
+    "fat": 4.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Chicken Schnitzel, Potatoes & Sauerkraut",
+    "cal": 370,
+    "prot": 31.2,
+    "carb": 38.5,
+    "fat": 10.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Chicken Shawarma strips & Hummus",
+    "cal": 200,
+    "prot": 24.1,
+    "carb": 6.5,
+    "fat": 9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Chicken Tikka Bites & Green Tea",
+    "cal": 122,
+    "prot": 19.1,
+    "carb": 1.6,
+    "fat": 4.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Chicken, Barley & Vegetable Soup",
+    "cal": 340,
+    "prot": 23,
+    "carb": 48,
+    "fat": 5.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Chicken, Rice, Beans & Couve",
+    "cal": 400,
+    "prot": 47.5,
+    "carb": 36.5,
+    "fat": 6.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Chickpea & Spinach Curry with Rice",
+    "cal": 330,
+    "prot": 11.2,
+    "carb": 60,
+    "fat": 4.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Chickpea Spinach Masala",
+    "cal": 180,
+    "prot": 8,
+    "carb": 28,
+    "fat": 4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Chole Bhature",
+    "cal": 450,
+    "prot": 12,
+    "carb": 60,
+    "fat": 18,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "plate",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Churrasco Beef & Cassava",
+    "cal": 510,
+    "prot": 32,
+    "carb": 41.5,
+    "fat": 22.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Clear Chicken Broth",
+    "cal": 40,
+    "prot": 4.5,
+    "carb": 2,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "IN"
+  },
+  {
+    "name": "Clear Honey",
+    "cal": 60,
+    "prot": 0,
+    "carb": 15,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "tbsp",
+    "country": "UK"
+  },
+  {
+    "name": "Coconut Chutney",
+    "cal": 90,
+    "prot": 1,
+    "carb": 3,
+    "fat": 8.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Coffee with Whole Milk",
+    "cal": 45,
+    "prot": 2,
+    "carb": 3,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "BR"
+  },
+  {
+    "name": "Cold Soba Noodles & Tempura Veggies",
+    "cal": 330,
+    "prot": 9.5,
+    "carb": 61,
+    "fat": 6.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Cooked",
+    "cal": 165,
+    "prot": 31,
+    "carb": 0,
+    "fat": 3.6,
+    "fiber": 0,
+    "calcium": 15,
+    "iron": 1,
+    "unit": "grams (g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Cooked Brown Rice",
+    "cal": 110,
+    "prot": 2.6,
+    "carb": 23,
+    "fat": 0.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Cooked Quinoa",
+    "cal": 120,
+    "prot": 4.4,
+    "carb": 21.3,
+    "fat": 1.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Cooked Rice & Carioca Beans",
+    "cal": 210,
+    "prot": 8,
+    "carb": 42,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Cooked Wild Rice",
+    "cal": 120,
+    "prot": 4.8,
+    "carb": 25,
+    "fat": 0.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Cottage Cheese",
+    "cal": 265,
+    "prot": 18.3,
+    "carb": 1.2,
+    "fat": 20.8,
+    "fiber": 0,
+    "calcium": 480,
+    "iron": 0.2,
+    "unit": "grams (g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Cottage Cheese (Hüttenkäse)",
+    "cal": 72,
+    "prot": 9.6,
+    "carb": 2.2,
+    "fat": 2.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Cottage Cheese & Cherries",
+    "cal": 115,
+    "prot": 12.5,
+    "carb": 9,
+    "fat": 2.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Couve",
+    "cal": 30,
+    "prot": 1.5,
+    "carb": 4.5,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Cow",
+    "cal": 61,
+    "prot": 3.2,
+    "carb": 4.8,
+    "fat": 3.3,
+    "fiber": 0,
+    "calcium": 113,
+    "iron": 0.1,
+    "unit": "ml",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Cow Milk 1.5% Fat",
+    "cal": 96,
+    "prot": 7,
+    "carb": 9.8,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "DE"
+  },
+  {
+    "name": "Coxinha",
+    "cal": 230,
+    "prot": 9.5,
+    "carb": 24,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Crackers with Vegemite & Butter",
+    "cal": 126,
+    "prot": 3.1,
+    "carb": 15.5,
+    "fat": 5.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Creamy Butternut Squash Soup",
+    "cal": 90,
+    "prot": 1.5,
+    "carb": 18,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "ZA"
+  },
+  {
+    "name": "Creamy Mushroom Risotto",
+    "cal": 240,
+    "prot": 5,
+    "carb": 38,
+    "fat": 7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Creamy Pork/Turkey Geschnetzeltes",
+    "cal": 260,
+    "prot": 24,
+    "carb": 4,
+    "fat": 16,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Crisp Apple",
+    "cal": 80,
+    "prot": 0.5,
+    "carb": 20,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "US"
+  },
+  {
+    "name": "Crumbled Feta Cheese",
+    "cal": 78,
+    "prot": 4.2,
+    "carb": 1.2,
+    "fat": 6.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Crushed Almonds",
+    "cal": 60,
+    "prot": 2,
+    "carb": 2,
+    "fat": 5.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Cucumber & Avocado Maki Rolls",
+    "cal": 180,
+    "prot": 3.2,
+    "carb": 38,
+    "fat": 2.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "JP"
+  },
+  {
+    "name": "Cucumber & Tomato Chopped",
+    "cal": 20,
+    "prot": 0.8,
+    "carb": 4,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Cucumber Mint Raita",
+    "cal": 60,
+    "prot": 3.2,
+    "carb": 4.5,
+    "fat": 3.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Cucumber Onion Salad",
+    "cal": 15,
+    "prot": 0.5,
+    "carb": 3,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Cucumber Salad (Sunomono)",
+    "cal": 15,
+    "prot": 0.4,
+    "carb": 3,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Cucumber Slices",
+    "cal": 15,
+    "prot": 0.7,
+    "carb": 3.6,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Cured Beef Jerky",
+    "cal": 116,
+    "prot": 10,
+    "carb": 3,
+    "fat": 7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Cured Landjäger Sausage",
+    "cal": 160,
+    "prot": 11,
+    "carb": 0.5,
+    "fat": 13,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Cured Turkey Jerky",
+    "cal": 90,
+    "prot": 11,
+    "carb": 2,
+    "fat": 4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Dairy Butter",
+    "cal": 36,
+    "prot": 0,
+    "carb": 0,
+    "fat": 4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Dal Fry",
+    "cal": 140,
+    "prot": 7,
+    "carb": 20,
+    "fat": 4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Dal Tadka",
+    "cal": 120,
+    "prot": 6.5,
+    "carb": 18,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Dark Bread with Quark & Jam",
+    "cal": 250,
+    "prot": 12.8,
+    "carb": 44.4,
+    "fat": 1.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Dark bread, Gouda & Ham",
+    "cal": 340,
+    "prot": 22,
+    "carb": 33,
+    "fat": 12.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Dark Chocolate (70% Kakao)",
+    "cal": 85,
+    "prot": 1,
+    "carb": 7,
+    "fat": 6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Dark Rye",
+    "cal": 85,
+    "prot": 2.8,
+    "carb": 16,
+    "fat": 0.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slice",
+    "country": "DE"
+  },
+  {
+    "name": "Dark Rye Bread Slice",
+    "cal": 80,
+    "prot": 2.8,
+    "carb": 16,
+    "fat": 0.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slice",
+    "country": "UK"
+  },
+  {
+    "name": "Dark Rye Bread Toast",
+    "cal": 160,
+    "prot": 5.6,
+    "carb": 32,
+    "fat": 1.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slices",
+    "country": "ZA"
+  },
+  {
+    "name": "Dates",
+    "cal": 60,
+    "prot": 0.4,
+    "carb": 16,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Dates & Arabic Coffee",
+    "cal": 134,
+    "prot": 0.9,
+    "carb": 36.4,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Dhokla",
+    "cal": 150,
+    "prot": 5,
+    "carb": 26,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Digestive Biscuit",
+    "cal": 70,
+    "prot": 1,
+    "carb": 10,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "UK"
+  },
+  {
+    "name": "Digestive Biscuits & Tea",
+    "cal": 155,
+    "prot": 2.6,
+    "carb": 21,
+    "fat": 6.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Double Egg Roll",
+    "cal": 410,
+    "prot": 15,
+    "carb": 38,
+    "fat": 20,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "roll",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Dried Apricots",
+    "cal": 60,
+    "prot": 0.8,
+    "carb": 15,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Dried Sausage",
+    "cal": 140,
+    "prot": 12,
+    "carb": 0.5,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Edamame Beans",
+    "cal": 110,
+    "prot": 11,
+    "carb": 9,
+    "fat": 4.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Egg Bhurji",
+    "cal": 190,
+    "prot": 14,
+    "carb": 4,
+    "fat": 13,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "plate",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Egg Bhurji & Whole Wheat Toast",
+    "cal": 340,
+    "prot": 24,
+    "carb": 35,
+    "fat": 12.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Egg Curry & Whole Wheat Roti",
+    "cal": 370,
+    "prot": 19,
+    "carb": 40.6,
+    "fat": 14.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Egg Roll",
+    "cal": 320,
+    "prot": 9.5,
+    "carb": 38,
+    "fat": 14.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "roll",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Egg White Salad Cups",
+    "cal": 133,
+    "prot": 15.3,
+    "carb": 5,
+    "fat": 5.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Egg Whites",
+    "cal": 68,
+    "prot": 14.5,
+    "carb": 1,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "eggs",
+    "country": "US"
+  },
+  {
+    "name": "Egg/Custard topping",
+    "cal": 320,
+    "prot": 22,
+    "carb": 16,
+    "fat": 18,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Eggs (2 Whole, 1 White)",
+    "cal": 160,
+    "prot": 15,
+    "carb": 1,
+    "fat": 10.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "eggs",
+    "country": "IN"
+  },
+  {
+    "name": "Eggs Shakshuka (Tomato sauce)",
+    "cal": 170,
+    "prot": 13,
+    "carb": 5,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "eggs",
+    "country": "AE"
+  },
+  {
+    "name": "Emirati Vegetable Saloona Stew",
+    "cal": 140,
+    "prot": 3.5,
+    "carb": 22,
+    "fat": 4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Emmentaler Cheese Slices",
+    "cal": 115,
+    "prot": 8.5,
+    "carb": 0.2,
+    "fat": 9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "English Breakfast Tea with Dash Milk",
+    "cal": 15,
+    "prot": 0.6,
+    "carb": 1,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "UK"
+  },
+  {
+    "name": "English Mature Cheddar",
+    "cal": 83,
+    "prot": 5,
+    "carb": 0.3,
+    "fat": 7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Espresso Coffee",
+    "cal": 2,
+    "prot": 0.1,
+    "carb": 0.4,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "BR"
+  },
+  {
+    "name": "Falafel & Tahini",
+    "cal": 260,
+    "prot": 8.5,
+    "carb": 24,
+    "fat": 15.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Falafel Wrap with Hummus",
+    "cal": 380,
+    "prot": 12.6,
+    "carb": 54.5,
+    "fat": 13.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Fattoush Salad",
+    "cal": 70,
+    "prot": 1.8,
+    "carb": 9.5,
+    "fat": 3.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Fava Beans",
+    "cal": 165,
+    "prot": 10,
+    "carb": 24,
+    "fat": 3.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Fermented Sauerkraut",
+    "cal": 15,
+    "prot": 0.8,
+    "carb": 3.5,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Fermented Soybeans",
+    "cal": 100,
+    "prot": 9,
+    "carb": 6,
+    "fat": 5.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "File de Frango",
+    "cal": 210,
+    "prot": 40,
+    "carb": 0,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Firm Tofu cubed",
+    "cal": 90,
+    "prot": 9,
+    "carb": 2,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Fish Cake (Kamaboko) slices",
+    "cal": 80,
+    "prot": 10,
+    "carb": 8,
+    "fat": 0.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Fish Curry",
+    "cal": 180,
+    "prot": 18,
+    "carb": 5,
+    "fat": 9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Fish Curry (Machher Jhol) & Rice",
+    "cal": 375,
+    "prot": 26.2,
+    "carb": 41,
+    "fat": 10.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Fish Fry",
+    "cal": 220,
+    "prot": 18,
+    "carb": 8,
+    "fat": 13,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Fish Fry & Rice",
+    "cal": 370,
+    "prot": 25.2,
+    "carb": 34,
+    "fat": 12.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Flattened Rice (Poha)",
+    "cal": 260,
+    "prot": 4.8,
+    "carb": 58,
+    "fat": 1.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "For cooking",
+    "cal": 36,
+    "prot": 0,
+    "carb": 0,
+    "fat": 4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Foul Mudammas (Fava Beans)",
+    "cal": 165,
+    "prot": 10,
+    "carb": 24,
+    "fat": 3.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Foul Mudammas with Olive Oil & Pita",
+    "cal": 385,
+    "prot": 14.2,
+    "carb": 50,
+    "fat": 14.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Foxnuts",
+    "cal": 95,
+    "prot": 2.4,
+    "carb": 19,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "French Fries",
+    "cal": 312,
+    "prot": 3.4,
+    "carb": 41,
+    "fat": 15,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "French Roll (Pão de Sal)",
+    "cal": 140,
+    "prot": 4,
+    "carb": 28,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "BR"
+  },
+  {
+    "name": "Fresh Apple slices",
+    "cal": 25,
+    "prot": 0.2,
+    "carb": 6.5,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Fresh Avocado",
+    "cal": 65,
+    "prot": 0.8,
+    "carb": 3.5,
+    "fat": 6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Fresh Avocado slices",
+    "cal": 50,
+    "prot": 0.6,
+    "carb": 2.8,
+    "fat": 4.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Fresh Blueberries",
+    "cal": 30,
+    "prot": 0.4,
+    "carb": 7,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Fresh Cucumber slices",
+    "cal": 8,
+    "prot": 0.3,
+    "carb": 1.8,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Fresh Cucumber Tomato Salad",
+    "cal": 15,
+    "prot": 0.5,
+    "carb": 3,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Fresh Curly Kale",
+    "cal": 25,
+    "prot": 1.5,
+    "carb": 4.5,
+    "fat": 0.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Fresh Fruit Salad",
+    "cal": 75,
+    "prot": 0.8,
+    "carb": 18,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Fresh Labneh cheese dip",
+    "cal": 60,
+    "prot": 2.2,
+    "carb": 1.8,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Fresh Papaya cubes",
+    "cal": 35,
+    "prot": 0.4,
+    "carb": 9,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Fresh Passionfruit Pulp",
+    "cal": 30,
+    "prot": 0.7,
+    "carb": 7,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Fresh Plain Curd",
+    "cal": 60,
+    "prot": 3.5,
+    "carb": 4.5,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Fresh Red Apple",
+    "cal": 52,
+    "prot": 0.3,
+    "carb": 14,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Fresh Ricotta & Spinach filling",
+    "cal": 90,
+    "prot": 6,
+    "carb": 3,
+    "fat": 6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Fresh Rocket & Horseradish",
+    "cal": 15,
+    "prot": 0.5,
+    "carb": 1.5,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Fresh Salsa & Spinach",
+    "cal": 20,
+    "prot": 0.8,
+    "carb": 4,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Fresh Sashimi (Tuna & Salmon)",
+    "cal": 165,
+    "prot": 26,
+    "carb": 0,
+    "fat": 6.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Fried Atlantic Herring",
+    "cal": 240,
+    "prot": 22,
+    "carb": 0,
+    "fat": 16,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Fried Egg",
+    "cal": 80,
+    "prot": 6,
+    "carb": 0.3,
+    "fat": 6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "BR"
+  },
+  {
+    "name": "Gahwa",
+    "cal": 2,
+    "prot": 0.1,
+    "carb": 0.4,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "AE"
+  },
+  {
+    "name": "Garbanzo",
+    "cal": 130,
+    "prot": 7,
+    "carb": 22,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Garlic Butter Green Beans",
+    "cal": 60,
+    "prot": 1.8,
+    "carb": 7,
+    "fat": 3.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Garlic Naan Bread",
+    "cal": 240,
+    "prot": 6.5,
+    "carb": 42,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "IN"
+  },
+  {
+    "name": "Garlic Paste (Toum)",
+    "cal": 50,
+    "prot": 0.1,
+    "carb": 2,
+    "fat": 4.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "German Dark Bread",
+    "cal": 170,
+    "prot": 5.5,
+    "carb": 32,
+    "fat": 1.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slices",
+    "country": "DE"
+  },
+  {
+    "name": "German Dark Rye Bread (Vollkornbrot)",
+    "cal": 170,
+    "prot": 5.5,
+    "carb": 32,
+    "fat": 1.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slices",
+    "country": "DE"
+  },
+  {
+    "name": "German Grain Bread",
+    "cal": 170,
+    "prot": 5.5,
+    "carb": 32,
+    "fat": 1.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slices",
+    "country": "DE"
+  },
+  {
+    "name": "German Magerquark",
+    "cal": 100,
+    "prot": 18,
+    "carb": 6,
+    "fat": 0.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "German Pickles (Gewürzgurken)",
+    "cal": 10,
+    "prot": 0.3,
+    "carb": 2,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "German Potato Pancakes (Kartoffelpuffer)",
+    "cal": 230,
+    "prot": 3.5,
+    "carb": 32,
+    "fat": 9.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "German Potato Salad (Oil/Vinegar dressing)",
+    "cal": 150,
+    "prot": 2.2,
+    "carb": 24,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "German Smoked Ham",
+    "cal": 75,
+    "prot": 11,
+    "carb": 0.5,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "German Smoked Ham (Schinken)",
+    "cal": 60,
+    "prot": 9,
+    "carb": 0.4,
+    "fat": 2.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Geschnetzeltes & Spätzle",
+    "cal": 450,
+    "prot": 30.5,
+    "carb": 40,
+    "fat": 18,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Gewürzgurken",
+    "cal": 10,
+    "prot": 0.3,
+    "carb": 2,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Ghee",
+    "cal": 45,
+    "prot": 0,
+    "carb": 0,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Gherkin (Pickled Cucumber)",
+    "cal": 8,
+    "prot": 0.2,
+    "carb": 1.6,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Ghugni",
+    "cal": 160,
+    "prot": 7.5,
+    "carb": 24,
+    "fat": 4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Ginger Tea with Cow Milk (1 tsp Sugar)",
+    "cal": 40,
+    "prot": 1.2,
+    "carb": 6,
+    "fat": 1.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "IN"
+  },
+  {
+    "name": "Gouda Cheese Slice",
+    "cal": 110,
+    "prot": 7.5,
+    "carb": 0.6,
+    "fat": 8.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Gouda Cheese Slices",
+    "cal": 145,
+    "prot": 10,
+    "carb": 0.8,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Granary Bread Toast",
+    "cal": 90,
+    "prot": 4.5,
+    "carb": 16,
+    "fat": 1.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slice",
+    "country": "UK"
+  },
+  {
+    "name": "Grated Cheddar Cheese",
+    "cal": 83,
+    "prot": 5,
+    "carb": 0.3,
+    "fat": 7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Grated Paneer filling",
+    "cal": 110,
+    "prot": 7.5,
+    "carb": 1.2,
+    "fat": 8.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Greek Style Natural Yogurt",
+    "cal": 90,
+    "prot": 14,
+    "carb": 5.5,
+    "fat": 0.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Greek Yogurt",
+    "cal": 59,
+    "prot": 10,
+    "carb": 3.6,
+    "fat": 0.4,
+    "fiber": 0,
+    "calcium": 110,
+    "iron": 0.1,
+    "unit": "grams (g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Greek Yogurt & Passionfruit",
+    "cal": 120,
+    "prot": 14.7,
+    "carb": 12.5,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Greek Yogurt Parfait with Granola",
+    "cal": 246,
+    "prot": 20.3,
+    "carb": 32,
+    "fat": 4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Green Salad with vinaigrette",
+    "cal": 30,
+    "prot": 0.8,
+    "carb": 3,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Green Tea",
+    "cal": 2,
+    "prot": 0.1,
+    "carb": 0.4,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "IN"
+  },
+  {
+    "name": "Green Tea (No Sugar)",
+    "cal": 2,
+    "prot": 0.1,
+    "carb": 0.4,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "IN"
+  },
+  {
+    "name": "Grilled Asparagus Spears",
+    "cal": 16,
+    "prot": 1.8,
+    "carb": 3.2,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Grilled Barramundi & Sweet Potato",
+    "cal": 306,
+    "prot": 31.7,
+    "carb": 29.2,
+    "fat": 5.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Grilled Barramundi Fillet",
+    "cal": 170,
+    "prot": 28,
+    "carb": 0,
+    "fat": 5.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Grilled Braai Chicken Breast",
+    "cal": 190,
+    "prot": 35,
+    "carb": 0,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Grilled Broccoli",
+    "cal": 28,
+    "prot": 2.2,
+    "carb": 5.5,
+    "fat": 0.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Grilled Broccolini",
+    "cal": 28,
+    "prot": 2.4,
+    "carb": 4.8,
+    "fat": 0.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Grilled Cape Hake Fillet",
+    "cal": 150,
+    "prot": 32,
+    "carb": 0,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Grilled Chicken & Sweet Potato",
+    "cal": 316,
+    "prot": 40.2,
+    "carb": 29.5,
+    "fat": 4.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Grilled Chicken Breast",
+    "cal": 165,
+    "prot": 31,
+    "carb": 0,
+    "fat": 3.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Grilled Chicken Breast (File de Frango)",
+    "cal": 210,
+    "prot": 40,
+    "carb": 0,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Grilled Chicken Breast slices",
+    "cal": 190,
+    "prot": 37,
+    "carb": 0,
+    "fat": 4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Grilled Chicken Tikka",
+    "cal": 120,
+    "prot": 19,
+    "carb": 1.2,
+    "fat": 4.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Grilled Chicken, Quinoa & Broccoli",
+    "cal": 419,
+    "prot": 54.1,
+    "carb": 32.5,
+    "fat": 7.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Grilled Hake & Baked Potato",
+    "cal": 260,
+    "prot": 34.5,
+    "carb": 25,
+    "fat": 2.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Grilled Halloumi & Flatbread",
+    "cal": 348,
+    "prot": 17.8,
+    "carb": 33,
+    "fat": 16.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Grilled Halloumi & Roasted Vegetable Salad",
+    "cal": 295,
+    "prot": 15.2,
+    "carb": 20.7,
+    "fat": 17,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Grilled Halloumi Cheese",
+    "cal": 190,
+    "prot": 12.5,
+    "carb": 1.2,
+    "fat": 15,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Grilled Lamb Chops, Pumpkin & Broccolini",
+    "cal": 338,
+    "prot": 29.4,
+    "carb": 15.8,
+    "fat": 17.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Grilled Lamb Tikka",
+    "cal": 250,
+    "prot": 28,
+    "carb": 0,
+    "fat": 15,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Grilled Mackerel (Saba)",
+    "cal": 200,
+    "prot": 18,
+    "carb": 0,
+    "fat": 14,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Grilled Mackerel & Rice",
+    "cal": 340,
+    "prot": 20.9,
+    "carb": 30.5,
+    "fat": 14.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Grilled Mushroom & Tomato",
+    "cal": 20,
+    "prot": 1,
+    "carb": 3.5,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Grilled Paneer",
+    "cal": 265,
+    "prot": 18.3,
+    "carb": 1.2,
+    "fat": 20.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Grilled Paneer Cubes",
+    "cal": 140,
+    "prot": 9,
+    "carb": 1.5,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Grilled Paneer Tikka Masala Curry",
+    "cal": 240,
+    "prot": 12,
+    "carb": 8,
+    "fat": 18,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Grilled Pink Salmon",
+    "cal": 180,
+    "prot": 24,
+    "carb": 0,
+    "fat": 9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Grilled Plum Tomato halves",
+    "cal": 22,
+    "prot": 1,
+    "carb": 4.8,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Grilled Sea Bass Fillet",
+    "cal": 160,
+    "prot": 26,
+    "carb": 0,
+    "fat": 6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Grilled Shish Tawook",
+    "cal": 210,
+    "prot": 32,
+    "carb": 1,
+    "fat": 8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Grilled Tomato halves",
+    "cal": 22,
+    "prot": 1,
+    "carb": 4.8,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Gulab Jamun",
+    "cal": 150,
+    "prot": 2,
+    "carb": 26,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Ham roll-ups with Gherkin",
+    "cal": 83,
+    "prot": 11.2,
+    "carb": 2.1,
+    "fat": 3.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Hard Boiled",
+    "cal": 140,
+    "prot": 12,
+    "carb": 0.6,
+    "fat": 9.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "eggs",
+    "country": "IN"
+  },
+  {
+    "name": "Hard Boiled Egg",
+    "cal": 74,
+    "prot": 6.3,
+    "carb": 0.4,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "UK"
+  },
+  {
+    "name": "Hard Boiled Egg & Almonds",
+    "cal": 164,
+    "prot": 9.5,
+    "carb": 3.4,
+    "fat": 12.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Hard Boiled Egg & Ham slices",
+    "cal": 124,
+    "prot": 14.3,
+    "carb": 0.9,
+    "fat": 6.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Hearty Lentil Vegetable Soup",
+    "cal": 150,
+    "prot": 8,
+    "carb": 24,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "UK"
+  },
+  {
+    "name": "Heinz Baked Beans",
+    "cal": 80,
+    "prot": 4.8,
+    "carb": 13,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Honey",
+    "cal": 64,
+    "prot": 0,
+    "carb": 17,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "tbsp",
+    "country": "IN"
+  },
+  {
+    "name": "Honey Granola",
+    "cal": 130,
+    "prot": 3,
+    "carb": 22,
+    "fat": 3.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Hot Sencha Green Tea",
+    "cal": 2,
+    "prot": 0.1,
+    "carb": 0.4,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "JP"
+  },
+  {
+    "name": "Hummus",
+    "cal": 140,
+    "prot": 4.2,
+    "carb": 12,
+    "fat": 9.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Hummus & Carrot Sticks",
+    "cal": 180,
+    "prot": 5.1,
+    "carb": 20.5,
+    "fat": 9.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Hummus Dip",
+    "cal": 50,
+    "prot": 1.5,
+    "carb": 4.3,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Hummus, Celery & Carrots",
+    "cal": 170,
+    "prot": 4.7,
+    "carb": 17,
+    "fat": 10.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Hüttenkäse",
+    "cal": 72,
+    "prot": 9.6,
+    "carb": 2.2,
+    "fat": 2.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Idli & Sambhar",
+    "cal": 210,
+    "prot": 7,
+    "carb": 40,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "plate",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Idli, Sambhar & Chutney",
+    "cal": 320,
+    "prot": 8,
+    "carb": 49,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "In pods",
+    "cal": 110,
+    "prot": 11,
+    "carb": 9,
+    "fat": 4.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Italian Turkey Meatballs",
+    "cal": 210,
+    "prot": 22,
+    "carb": 4,
+    "fat": 12,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Jacket Potato with Baked Beans & Cheese",
+    "cal": 348,
+    "prot": 14,
+    "carb": 55.3,
+    "fat": 7.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Jacket Potato with Tuna Mayo",
+    "cal": 315,
+    "prot": 24.3,
+    "carb": 43,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Japanese Rolled Omelet (Tamagoyaki)",
+    "cal": 120,
+    "prot": 8.5,
+    "carb": 4,
+    "fat": 8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Jeera Rice",
+    "cal": 210,
+    "prot": 3.5,
+    "carb": 44,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Jerky",
+    "cal": 90,
+    "prot": 18,
+    "carb": 0.8,
+    "fat": 1.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Juicy Orange",
+    "cal": 60,
+    "prot": 1.2,
+    "carb": 14,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "AU"
+  },
+  {
+    "name": "Kamaboko",
+    "cal": 80,
+    "prot": 10,
+    "carb": 8,
+    "fat": 0.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Kangaroo Biltong (Jerky)",
+    "cal": 90,
+    "prot": 18,
+    "carb": 0.8,
+    "fat": 1.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Kangaroo Fillet & Sweet Potato Mash",
+    "cal": 286,
+    "prot": 42.6,
+    "carb": 23.2,
+    "fat": 2.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Kangaroo Fillet steak",
+    "cal": 180,
+    "prot": 39,
+    "carb": 0,
+    "fat": 1.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Kangaroo Steak & Eggs",
+    "cal": 280,
+    "prot": 36,
+    "carb": 17.3,
+    "fat": 7.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Kartoffelpuffer",
+    "cal": 230,
+    "prot": 3.5,
+    "carb": 32,
+    "fat": 9.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Käsespätzle & Salad",
+    "cal": 410,
+    "prot": 18.8,
+    "carb": 48.2,
+    "fat": 15.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Kathi Roll",
+    "cal": 360,
+    "prot": 16,
+    "carb": 38,
+    "fat": 16,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "roll",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Keema",
+    "cal": 90,
+    "prot": 12,
+    "carb": 0.5,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Khaman Dhokla & Tea",
+    "cal": 152,
+    "prot": 5.1,
+    "carb": 26.4,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Khichdi, Papad & Raita",
+    "cal": 325,
+    "prot": 12.8,
+    "carb": 54,
+    "fat": 5.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Khubz",
+    "cal": 150,
+    "prot": 5,
+    "carb": 30,
+    "fat": 1.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "AE"
+  },
+  {
+    "name": "Knäckebrot",
+    "cal": 70,
+    "prot": 2,
+    "carb": 14,
+    "fat": 0.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "DE"
+  },
+  {
+    "name": "Knäckebrot & Cottage Cheese",
+    "cal": 142,
+    "prot": 11.6,
+    "carb": 16.2,
+    "fat": 2.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Kolkata Egg Roll",
+    "cal": 320,
+    "prot": 9.5,
+    "carb": 38,
+    "fat": 14.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "roll",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Labneh Dip",
+    "cal": 80,
+    "prot": 3,
+    "carb": 2.4,
+    "fat": 6.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Lamb Tikka skewers & Hummus",
+    "cal": 450,
+    "prot": 33.7,
+    "carb": 20,
+    "fat": 27.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Landjäger",
+    "cal": 160,
+    "prot": 11,
+    "carb": 0.5,
+    "fat": 13,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Large British Eggs",
+    "cal": 156,
+    "prot": 13,
+    "carb": 0.8,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "eggs",
+    "country": "UK"
+  },
+  {
+    "name": "Large Poached Eggs",
+    "cal": 140,
+    "prot": 12,
+    "carb": 0.6,
+    "fat": 9.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "eggs",
+    "country": "AU"
+  },
+  {
+    "name": "Lean",
+    "cal": 85,
+    "prot": 10,
+    "carb": 1.5,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Lean Beef Biltong",
+    "cal": 120,
+    "prot": 21,
+    "carb": 0.8,
+    "fat": 3.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Lean Beef Mince with Okra (Carne Moída com Quiabo)",
+    "cal": 240,
+    "prot": 24,
+    "carb": 6,
+    "fat": 12,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Lean Beef Sirloin Steak",
+    "cal": 290,
+    "prot": 33,
+    "carb": 0,
+    "fat": 16,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Lean breast meat",
+    "cal": 340,
+    "prot": 24,
+    "carb": 42,
+    "fat": 8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Lean Chicken Curry",
+    "cal": 220,
+    "prot": 28,
+    "carb": 4,
+    "fat": 8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Lean Kangaroo Fillet",
+    "cal": 120,
+    "prot": 26,
+    "carb": 0,
+    "fat": 1.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Lean Kangaroo Jerky",
+    "cal": 90,
+    "prot": 18,
+    "carb": 0.8,
+    "fat": 1.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Lemon Olive Oil Vinaigrette",
+    "cal": 70,
+    "prot": 0,
+    "carb": 0.5,
+    "fat": 7.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "US"
+  },
+  {
+    "name": "Lemon Tea (No Sugar)",
+    "cal": 4,
+    "prot": 0.1,
+    "carb": 1,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "IN"
+  },
+  {
+    "name": "Lentil & Vegetable Soup with Rye Bread",
+    "cal": 230,
+    "prot": 10.8,
+    "carb": 40,
+    "fat": 2.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Lentil Bobotie Slice",
+    "cal": 180,
+    "prot": 8.5,
+    "carb": 26,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Lentil Burger & Beetroot Salad",
+    "cal": 315,
+    "prot": 14.8,
+    "carb": 49,
+    "fat": 6.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Lentil Potato Shepherd's Pie",
+    "cal": 260,
+    "prot": 12,
+    "carb": 42,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Lentil Potato Stew (Linseneintopf)",
+    "cal": 290,
+    "prot": 14,
+    "carb": 52,
+    "fat": 1.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Lentil Shepherd's Pie & Broccoli",
+    "cal": 295,
+    "prot": 14.8,
+    "carb": 49,
+    "fat": 4.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Lentil Soup, Hummus & Khubz",
+    "cal": 335,
+    "prot": 13.3,
+    "carb": 51.5,
+    "fat": 10.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Lettuce, Tomato, Onion",
+    "cal": 20,
+    "prot": 0.8,
+    "carb": 4,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Light Chicken Broth",
+    "cal": 90,
+    "prot": 14.5,
+    "carb": 2,
+    "fat": 2.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Light Cream Cheese",
+    "cal": 40,
+    "prot": 1.5,
+    "carb": 1.2,
+    "fat": 3.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Light Mayonnaise",
+    "cal": 40,
+    "prot": 0.1,
+    "carb": 1,
+    "fat": 4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Light Turkey Breast slices",
+    "cal": 67,
+    "prot": 13,
+    "carb": 1,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Linseneintopf",
+    "cal": 290,
+    "prot": 14,
+    "carb": 52,
+    "fat": 1.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Low-Fat Cottage Cheese",
+    "cal": 90,
+    "prot": 12,
+    "carb": 3,
+    "fat": 2.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Low-Fat Dairy Milk",
+    "cal": 90,
+    "prot": 6.8,
+    "carb": 9.8,
+    "fat": 2.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "AU"
+  },
+  {
+    "name": "Low-Fat German Quark",
+    "cal": 40,
+    "prot": 7.2,
+    "carb": 2.4,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Low-Fat Milk",
+    "cal": 90,
+    "prot": 6.8,
+    "carb": 9.6,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "IN"
+  },
+  {
+    "name": "Low-Fat Paneer Bhurji",
+    "cal": 180,
+    "prot": 18,
+    "carb": 3,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Low-Fat Paneer Stuffing",
+    "cal": 135,
+    "prot": 14,
+    "carb": 2,
+    "fat": 8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Luchi",
+    "cal": 180,
+    "prot": 3.5,
+    "carb": 24,
+    "fat": 8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Macadamia Nuts & Orange",
+    "cal": 200,
+    "prot": 2.8,
+    "carb": 16.8,
+    "fat": 15.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Machher Jhol",
+    "cal": 375,
+    "prot": 26.2,
+    "carb": 41,
+    "fat": 10.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Maize Meal Pap",
+    "cal": 150,
+    "prot": 3,
+    "carb": 32,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Maize Porridge (pap)",
+    "cal": 110,
+    "prot": 2.3,
+    "carb": 25,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Maize Porridge (Pap) with Milk & Honey",
+    "cal": 355,
+    "prot": 10.6,
+    "carb": 62.6,
+    "fat": 6.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Maize Porridge & Eggs",
+    "cal": 250,
+    "prot": 14.2,
+    "carb": 24.6,
+    "fat": 10.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Manakish",
+    "cal": 180,
+    "prot": 4.5,
+    "carb": 28,
+    "fat": 5.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "AE"
+  },
+  {
+    "name": "Mandioca",
+    "cal": 160,
+    "prot": 1.5,
+    "carb": 38,
+    "fat": 0.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Maracujá",
+    "cal": 4,
+    "prot": 0,
+    "carb": 1,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "BR"
+  },
+  {
+    "name": "Marinara Tomato Sauce",
+    "cal": 50,
+    "prot": 1.5,
+    "carb": 8,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Marinated Organic Tempeh",
+    "cal": 150,
+    "prot": 16,
+    "carb": 7,
+    "fat": 7.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Masala Dosa",
+    "cal": 220,
+    "prot": 4.5,
+    "carb": 38,
+    "fat": 6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Masala Omelet & Toast",
+    "cal": 336,
+    "prot": 20,
+    "carb": 30.6,
+    "fat": 15.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Mashed Avocado",
+    "cal": 80,
+    "prot": 1,
+    "carb": 4.3,
+    "fat": 7.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Mashed Banana",
+    "cal": 90,
+    "prot": 1,
+    "carb": 23,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Mashed Potatoes (no cream)",
+    "cal": 105,
+    "prot": 2.2,
+    "carb": 22,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Mashed Sweet Potato (no cream)",
+    "cal": 90,
+    "prot": 1.8,
+    "carb": 20,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Matcha Green Tea Powder",
+    "cal": 10,
+    "prot": 0.8,
+    "carb": 1.2,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Matcha Soy Milk",
+    "cal": 95,
+    "prot": 8.8,
+    "carb": 5.2,
+    "fat": 4.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "McVities Digestive Biscuits",
+    "cal": 140,
+    "prot": 2,
+    "carb": 20,
+    "fat": 6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "UK"
+  },
+  {
+    "name": "Medjool Date",
+    "cal": 66,
+    "prot": 0.4,
+    "carb": 18,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "AE"
+  },
+  {
+    "name": "Medjool Dates",
+    "cal": 132,
+    "prot": 0.8,
+    "carb": 36,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "AE"
+  },
+  {
+    "name": "Micellar Casein Protein",
+    "cal": 110,
+    "prot": 24,
+    "carb": 1.5,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Milk",
+    "cal": 120,
+    "prot": 6.8,
+    "carb": 9.6,
+    "fat": 6.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Minced Chicken (Keema)",
+    "cal": 90,
+    "prot": 12,
+    "carb": 0.5,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Minced Lamb Shepherd's Pie",
+    "cal": 320,
+    "prot": 20,
+    "carb": 32,
+    "fat": 12,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Mint & Coriander Chutney",
+    "cal": 15,
+    "prot": 0.5,
+    "carb": 2,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Miso Eggplant (Nasu Dengaku) & Rice",
+    "cal": 245,
+    "prot": 4.5,
+    "carb": 49.5,
+    "fat": 3.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Mixed Garden Greens",
+    "cal": 20,
+    "prot": 1.5,
+    "carb": 4,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Mixed Greens & Tomato Salad",
+    "cal": 20,
+    "prot": 0.8,
+    "carb": 4,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Mixed Nuts Portfolio",
+    "cal": 190,
+    "prot": 5.3,
+    "carb": 19,
+    "fat": 12.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Mixed Veg (Onion, Peas)",
+    "cal": 20,
+    "prot": 1,
+    "carb": 4.2,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Mixed Vegetable Raita",
+    "cal": 50,
+    "prot": 2.8,
+    "carb": 4,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Mixed Vegetable Sabzi",
+    "cal": 70,
+    "prot": 2,
+    "carb": 10,
+    "fat": 2.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Mixed Vegetable Sambhar",
+    "cal": 80,
+    "prot": 3,
+    "carb": 14,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "IN"
+  },
+  {
+    "name": "Mixed Vegetables (Onion, Tomato)",
+    "cal": 20,
+    "prot": 1,
+    "carb": 4,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Mixed Vegetables (Shiitake, Scallion, Carrot)",
+    "cal": 35,
+    "prot": 1.2,
+    "carb": 7,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Mochar Chop",
+    "cal": 180,
+    "prot": 4,
+    "carb": 22,
+    "fat": 8.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Moong Dal & Rice Khichdi",
+    "cal": 240,
+    "prot": 8.5,
+    "carb": 44,
+    "fat": 3.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Moong Dal Chilla",
+    "cal": 220,
+    "prot": 12,
+    "carb": 36,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "IN"
+  },
+  {
+    "name": "Moong Dal Chilla & Mint Chutney",
+    "cal": 345,
+    "prot": 20,
+    "carb": 39.2,
+    "fat": 12,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Moong Dal Tadka",
+    "cal": 100,
+    "prot": 6,
+    "carb": 16,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Mozzarella String Cheese",
+    "cal": 80,
+    "prot": 7,
+    "carb": 1,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "US"
+  },
+  {
+    "name": "Muesli Oats Mix",
+    "cal": 180,
+    "prot": 6,
+    "carb": 32,
+    "fat": 2.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Muesli with Apple & Walnuts",
+    "cal": 366,
+    "prot": 14.7,
+    "carb": 49.5,
+    "fat": 12.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Mugicha",
+    "cal": 2,
+    "prot": 0,
+    "carb": 0.5,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "JP"
+  },
+  {
+    "name": "Mujadara (Rice & Lentils with caramelized onions)",
+    "cal": 260,
+    "prot": 9.5,
+    "carb": 48,
+    "fat": 3.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Mujadara & Tomato Salad",
+    "cal": 285,
+    "prot": 10.3,
+    "carb": 52,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Multigrain Roll",
+    "cal": 130,
+    "prot": 4.8,
+    "carb": 24,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "AU"
+  },
+  {
+    "name": "Mushroom Risotto & Greens",
+    "cal": 260,
+    "prot": 6.8,
+    "carb": 40.8,
+    "fat": 7.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Mutton Curry",
+    "cal": 310,
+    "prot": 24,
+    "carb": 5,
+    "fat": 21,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Nairns Rough Oatcakes",
+    "cal": 90,
+    "prot": 2.2,
+    "carb": 11.5,
+    "fat": 3.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "UK"
+  },
+  {
+    "name": "Nasu Dengaku",
+    "cal": 245,
+    "prot": 4.5,
+    "carb": 49.5,
+    "fat": 3.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Natto (Fermented Soybeans)",
+    "cal": 100,
+    "prot": 9,
+    "carb": 6,
+    "fat": 5.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Natto, Rice & Pickle",
+    "cal": 230,
+    "prot": 11.6,
+    "carb": 34.5,
+    "fat": 5.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "No cream",
+    "cal": 105,
+    "prot": 2.2,
+    "carb": 22,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "No Milk",
+    "cal": 2,
+    "prot": 0,
+    "carb": 0.5,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "ZA"
+  },
+  {
+    "name": "No Sugar",
+    "cal": 4,
+    "prot": 0.1,
+    "carb": 1,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "IN"
+  },
+  {
+    "name": "Non-Fat",
+    "cal": 100,
+    "prot": 17,
+    "carb": 6,
+    "fat": 0.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Oat Bran",
+    "cal": 55,
+    "prot": 2.2,
+    "carb": 10,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Oatcakes & Cheddar Cheese",
+    "cal": 173,
+    "prot": 7.2,
+    "carb": 11.8,
+    "fat": 10.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Oatmeal",
+    "cal": 389,
+    "prot": 16.9,
+    "carb": 66.3,
+    "fat": 6.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Oatmeal Oats",
+    "cal": 150,
+    "prot": 5,
+    "carb": 26,
+    "fat": 2.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Oatmeal with Almonds & Milk",
+    "cal": 534,
+    "prot": 19,
+    "carb": 72,
+    "fat": 20,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Oatmeal with Blueberries & Chia",
+    "cal": 340,
+    "prot": 15.6,
+    "carb": 54.2,
+    "fat": 6.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Oatmeal with Papaya & Honey",
+    "cal": 237,
+    "prot": 10.6,
+    "carb": 42.5,
+    "fat": 2.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Oats (Raw)",
+    "cal": 389,
+    "prot": 16.9,
+    "carb": 66.3,
+    "fat": 6.9,
+    "fiber": 10.6,
+    "calcium": 54,
+    "iron": 4.7,
+    "unit": "grams (g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Oil/Vinegar dressing",
+    "cal": 150,
+    "prot": 2.2,
+    "carb": 24,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Olive Oil & Balsamic dressing",
+    "cal": 110,
+    "prot": 0,
+    "carb": 1.5,
+    "fat": 12,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "US"
+  },
+  {
+    "name": "Olive Oil Dressing",
+    "cal": 45,
+    "prot": 0,
+    "carb": 0,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "IN"
+  },
+  {
+    "name": "Olive Oil drizzled",
+    "cal": 90,
+    "prot": 0,
+    "carb": 0,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "AE"
+  },
+  {
+    "name": "Omelet with Spinach & Ricotta",
+    "cal": 230,
+    "prot": 18,
+    "carb": 3.6,
+    "fat": 15.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Onion Cucumber Raita",
+    "cal": 50,
+    "prot": 2.8,
+    "carb": 4,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Onion, Peas",
+    "cal": 20,
+    "prot": 1,
+    "carb": 4.2,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Onion, Tomato",
+    "cal": 20,
+    "prot": 1,
+    "carb": 4,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Organic Açai Pulp",
+    "cal": 90,
+    "prot": 1.2,
+    "carb": 16,
+    "fat": 2.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Organic Tofu",
+    "cal": 76,
+    "prot": 8,
+    "carb": 1.9,
+    "fat": 4.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Organic Tofu (Scrambled)",
+    "cal": 80,
+    "prot": 8.5,
+    "carb": 1.5,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Ouma Condensed Milk Rusk",
+    "cal": 120,
+    "prot": 2,
+    "carb": 18,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "ZA"
+  },
+  {
+    "name": "Palak",
+    "cal": 25,
+    "prot": 2,
+    "carb": 3,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Palm Oil/Dendê & Coconut",
+    "cal": 220,
+    "prot": 3.5,
+    "carb": 18,
+    "fat": 16,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Pan-Fried Herring & Potatoes",
+    "cal": 335,
+    "prot": 24.4,
+    "carb": 21,
+    "fat": 16.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Pan-Fried Teriyaki Tofu",
+    "cal": 140,
+    "prot": 11,
+    "carb": 7,
+    "fat": 7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Paneer (Cottage Cheese)",
+    "cal": 265,
+    "prot": 18.3,
+    "carb": 1.2,
+    "fat": 20.8,
+    "fiber": 0,
+    "calcium": 480,
+    "iron": 0.2,
+    "unit": "grams (g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Paneer Butter Masala",
+    "cal": 320,
+    "prot": 12,
+    "carb": 10,
+    "fat": 26,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Paneer Paratha & Curd",
+    "cal": 455,
+    "prot": 23.5,
+    "carb": 50.5,
+    "fat": 17,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Paneer Tikka Masala & Rice",
+    "cal": 365,
+    "prot": 14.5,
+    "carb": 35.5,
+    "fat": 18.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Pani Puri",
+    "cal": 150,
+    "prot": 2.5,
+    "carb": 24,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Pão de Queijo & Cafe com Leite",
+    "cal": 265,
+    "prot": 6.2,
+    "carb": 31,
+    "fat": 12,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Pão de Queijo & Espresso",
+    "cal": 152,
+    "prot": 2.9,
+    "carb": 19.4,
+    "fat": 6.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Pão de Sal",
+    "cal": 140,
+    "prot": 4,
+    "carb": 28,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "BR"
+  },
+  {
+    "name": "Pão de Sal, Eggs & Coffee",
+    "cal": 292,
+    "prot": 16.1,
+    "carb": 29,
+    "fat": 12,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Pap",
+    "cal": 110,
+    "prot": 2.3,
+    "carb": 25,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Papaya & Apple Slices",
+    "cal": 75,
+    "prot": 0.8,
+    "carb": 18,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Paratha",
+    "cal": 260,
+    "prot": 4.5,
+    "carb": 38,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Passionfruit Tea (Maracujá)",
+    "cal": 4,
+    "prot": 0,
+    "carb": 1,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "BR"
+  },
+  {
+    "name": "Passionfruit Tea & Almonds",
+    "cal": 94,
+    "prot": 3.2,
+    "carb": 4,
+    "fat": 7.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Pastry",
+    "cal": 210,
+    "prot": 8.5,
+    "carb": 22,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Peanut Butter",
+    "cal": 95,
+    "prot": 4,
+    "carb": 3,
+    "fat": 8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Peanuts & Raisins",
+    "cal": 159,
+    "prot": 5.5,
+    "carb": 15,
+    "fat": 9.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Pepper, Onion",
+    "cal": 35,
+    "prot": 1.2,
+    "carb": 7,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Peppermint Herbal Tea",
+    "cal": 2,
+    "prot": 0,
+    "carb": 0.5,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "DE"
+  },
+  {
+    "name": "Peppermint Tea & Dark Chocolate",
+    "cal": 87,
+    "prot": 1,
+    "carb": 7.5,
+    "fat": 6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Pickled Beetroot Salad",
+    "cal": 35,
+    "prot": 1,
+    "carb": 7,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Pickled Cabbage Salad",
+    "cal": 15,
+    "prot": 0.5,
+    "carb": 3,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Pickled Cucumber",
+    "cal": 5,
+    "prot": 0.1,
+    "carb": 1,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Pickled Radish (Takuan)",
+    "cal": 10,
+    "prot": 0.2,
+    "carb": 2,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Pitted Tart Cherries",
+    "cal": 25,
+    "prot": 0.5,
+    "carb": 6,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Pizza Slice (cheese)",
+    "cal": 280,
+    "prot": 12,
+    "carb": 32,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slice",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Plain Greek Yogurt (Non-Fat)",
+    "cal": 100,
+    "prot": 17,
+    "carb": 6,
+    "fat": 0.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Plain Low-fat Curd",
+    "cal": 60,
+    "prot": 3.5,
+    "carb": 4.5,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Poached Egg",
+    "cal": 70,
+    "prot": 6,
+    "carb": 0.3,
+    "fat": 4.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "egg",
+    "country": "AU"
+  },
+  {
+    "name": "Poached Eggs & Grilled Tomatoes",
+    "cal": 268,
+    "prot": 18.5,
+    "carb": 21.6,
+    "fat": 12.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Poha",
+    "cal": 180,
+    "prot": 3.5,
+    "carb": 36,
+    "fat": 2.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Poha & Green Tea",
+    "cal": 367,
+    "prot": 9.7,
+    "carb": 65,
+    "fat": 8.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Porridge with Honey & Banana",
+    "cal": 390,
+    "prot": 13.5,
+    "carb": 70,
+    "fat": 6.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Potato Pancakes & Applesauce",
+    "cal": 290,
+    "prot": 3.7,
+    "carb": 47,
+    "fat": 9.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Prato Feito (Beef Steak & Beans)",
+    "cal": 445,
+    "prot": 34.5,
+    "carb": 46,
+    "fat": 13,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Prato Feito Vegetariano",
+    "cal": 310,
+    "prot": 14.8,
+    "carb": 46.3,
+    "fat": 7.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Premium Lentil Patty",
+    "cal": 150,
+    "prot": 9,
+    "carb": 18,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "AU"
+  },
+  {
+    "name": "Puchka",
+    "cal": 150,
+    "prot": 2.5,
+    "carb": 24,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Pumpkin Lentil Salad",
+    "cal": 190,
+    "prot": 10.2,
+    "carb": 33,
+    "fat": 2.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Pumpkin Seeds & Dried Apricots",
+    "cal": 145,
+    "prot": 5.3,
+    "carb": 17,
+    "fat": 7.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Puri Sabji",
+    "cal": 350,
+    "prot": 8,
+    "carb": 45,
+    "fat": 16,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "plate",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Queijo Minas Cheese",
+    "cal": 100,
+    "prot": 7.2,
+    "carb": 1,
+    "fat": 7.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Quinoa, Chickpea & Kale Salad",
+    "cal": 345,
+    "prot": 12.9,
+    "carb": 48.3,
+    "fat": 11.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Raisins",
+    "cal": 45,
+    "prot": 0.5,
+    "carb": 11.8,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Rasgulla",
+    "cal": 120,
+    "prot": 2,
+    "carb": 26,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Raw",
+    "cal": 389,
+    "prot": 16.9,
+    "carb": 66.3,
+    "fat": 6.9,
+    "fiber": 10.6,
+    "calcium": 54,
+    "iron": 4.7,
+    "unit": "grams (g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Raw Almonds",
+    "cal": 173,
+    "prot": 6.3,
+    "carb": 6.1,
+    "fat": 15,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Raw Honey",
+    "cal": 60,
+    "prot": 0,
+    "carb": 15,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "tbsp",
+    "country": "ZA"
+  },
+  {
+    "name": "Raw Macadamia Nuts",
+    "cal": 140,
+    "prot": 1.6,
+    "carb": 2.8,
+    "fat": 15,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Raw Whole Almonds",
+    "cal": 90,
+    "prot": 3.2,
+    "carb": 3,
+    "fat": 7.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Rice & Lentils with caramelized onions",
+    "cal": 260,
+    "prot": 9.5,
+    "carb": 48,
+    "fat": 3.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Rice Cakes & Cottage Cheese",
+    "cal": 160,
+    "prot": 13.5,
+    "carb": 17,
+    "fat": 3.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Rice, Beans, Sautéed Mushrooms & Farofa",
+    "cal": 320,
+    "prot": 10.5,
+    "carb": 62.5,
+    "fat": 3.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Roast Beef & Rocket Wrap",
+    "cal": 295,
+    "prot": 28,
+    "carb": 25.5,
+    "fat": 8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Roast Chicken, Mash & Veg",
+    "cal": 345,
+    "prot": 34.6,
+    "carb": 28,
+    "fat": 10.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Roasted Barley Tea (Mugicha)",
+    "cal": 2,
+    "prot": 0,
+    "carb": 0.5,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "JP"
+  },
+  {
+    "name": "Roasted Black Chana",
+    "cal": 140,
+    "prot": 8,
+    "carb": 22,
+    "fat": 2.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Roasted Chana & Lemon tea",
+    "cal": 144,
+    "prot": 8.1,
+    "carb": 23,
+    "fat": 2.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Roasted Chicken Leg (Skinless)",
+    "cal": 210,
+    "prot": 30,
+    "carb": 0,
+    "fat": 9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Roasted Chickpea Flour",
+    "cal": 120,
+    "prot": 6.5,
+    "carb": 19.5,
+    "fat": 1.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Roasted Garlic Hummus",
+    "cal": 140,
+    "prot": 4,
+    "carb": 10,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Roasted Kent Pumpkin",
+    "cal": 50,
+    "prot": 1,
+    "carb": 11,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Roasted Makhana",
+    "cal": 70,
+    "prot": 2,
+    "carb": 14.5,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Roasted Makhana (Foxnuts)",
+    "cal": 95,
+    "prot": 2.4,
+    "carb": 19,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Roasted Makhana & Ginger Chai",
+    "cal": 135,
+    "prot": 3.6,
+    "carb": 25,
+    "fat": 1.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Roasted Papad",
+    "cal": 35,
+    "prot": 1.5,
+    "carb": 6,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "IN"
+  },
+  {
+    "name": "Roasted Peanuts",
+    "cal": 85,
+    "prot": 3.8,
+    "carb": 2.4,
+    "fat": 7.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Roasted Potatoes in Olive oil",
+    "cal": 130,
+    "prot": 2,
+    "carb": 24,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Roasted Pumpkin & Eggplant",
+    "cal": 75,
+    "prot": 1.5,
+    "carb": 15,
+    "fat": 1.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Roasted Pumpkin & Zucchini",
+    "cal": 75,
+    "prot": 1.5,
+    "carb": 15,
+    "fat": 1.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Roasted Pumpkin cubes",
+    "cal": 50,
+    "prot": 1,
+    "carb": 11,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Roasted Sweet Potato",
+    "cal": 90,
+    "prot": 1.8,
+    "carb": 20,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Roasted Veggie & Quinoa Bowl",
+    "cal": 255,
+    "prot": 8.7,
+    "carb": 37.1,
+    "fat": 8.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Rohu Fish Curry",
+    "cal": 190,
+    "prot": 22,
+    "carb": 3,
+    "fat": 9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Rolled Oats",
+    "cal": 230,
+    "prot": 8,
+    "carb": 40,
+    "fat": 4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Rooibos Herbal Tea (No Milk)",
+    "cal": 2,
+    "prot": 0,
+    "carb": 0.5,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "cup",
+    "country": "ZA"
+  },
+  {
+    "name": "Rooibos Tea & Ouma Rusk",
+    "cal": 122,
+    "prot": 2,
+    "carb": 18.5,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Rooibos Tea with Low-Fat Milk",
+    "cal": 50,
+    "prot": 3.2,
+    "carb": 5.5,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "ZA"
+  },
+  {
+    "name": "Rooibos Tea, Milk & Honey",
+    "cal": 72,
+    "prot": 3.2,
+    "carb": 11.5,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Roti / Chapati",
+    "cal": 80,
+    "prot": 3,
+    "carb": 16,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Roti, Dal, Veg Sabzi & Curd",
+    "cal": 410,
+    "prot": 17.9,
+    "carb": 66.5,
+    "fat": 8.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Roti, Grilled Chicken & Dal Tadka",
+    "cal": 405,
+    "prot": 41,
+    "carb": 45,
+    "fat": 5.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Roti, Yellow Moong Dal, Grilled Paneer & Salad",
+    "cal": 415,
+    "prot": 20.7,
+    "carb": 52.5,
+    "fat": 13.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Rye Crispbread (Knäckebrot)",
+    "cal": 70,
+    "prot": 2,
+    "carb": 14,
+    "fat": 0.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "DE"
+  },
+  {
+    "name": "Rye Toast with Avocado & Tomato",
+    "cal": 235,
+    "prot": 6.9,
+    "carb": 37.7,
+    "fat": 7.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Saba",
+    "cal": 200,
+    "prot": 18,
+    "carb": 0,
+    "fat": 14,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Salad (Lettuce, Tomato, Onion)",
+    "cal": 20,
+    "prot": 0.8,
+    "carb": 4,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Salmon (Cooked)",
+    "cal": 206,
+    "prot": 22.1,
+    "carb": 0,
+    "fat": 12.3,
+    "fiber": 0,
+    "calcium": 12,
+    "iron": 0.8,
+    "unit": "grams (g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Salmon Fillet",
+    "cal": 206,
+    "prot": 22,
+    "carb": 0,
+    "fat": 13,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Salmon Salad with Vinaigrette",
+    "cal": 310,
+    "prot": 25.5,
+    "carb": 5.5,
+    "fat": 21.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Salmon, Rice & Miso Soup",
+    "cal": 315,
+    "prot": 23,
+    "carb": 37,
+    "fat": 7.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Saloona Broth",
+    "cal": 35,
+    "prot": 0.8,
+    "carb": 6,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "AE"
+  },
+  {
+    "name": "Salted Grilled Salmon (Shake)",
+    "cal": 130,
+    "prot": 18,
+    "carb": 0,
+    "fat": 6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Salzkartoffeln",
+    "cal": 95,
+    "prot": 2.4,
+    "carb": 21,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Samosa",
+    "cal": 260,
+    "prot": 3.5,
+    "carb": 32,
+    "fat": 13,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Samosas",
+    "cal": 520,
+    "prot": 7,
+    "carb": 64,
+    "fat": 26,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Sandesh",
+    "cal": 80,
+    "prot": 2.5,
+    "carb": 11,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Sanitarium Weet-Bix",
+    "cal": 110,
+    "prot": 3.8,
+    "carb": 22,
+    "fat": 0.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "AU"
+  },
+  {
+    "name": "Sashimi Assortment & Miso Soup",
+    "cal": 325,
+    "prot": 30.5,
+    "carb": 31.5,
+    "fat": 7.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Sattu (Roasted Chickpea Flour)",
+    "cal": 120,
+    "prot": 6.5,
+    "carb": 19.5,
+    "fat": 1.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Sattu Protein Drink",
+    "cal": 120,
+    "prot": 6,
+    "carb": 19.5,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Sausage slices (Landjäger)",
+    "cal": 160,
+    "prot": 11,
+    "carb": 0.5,
+    "fat": 13,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Sautéed Green Beans",
+    "cal": 28,
+    "prot": 1.5,
+    "carb": 5.2,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Sautéed Mushrooms",
+    "cal": 40,
+    "prot": 2.2,
+    "carb": 4.5,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Sauteed Spinach (Palak)",
+    "cal": 25,
+    "prot": 2,
+    "carb": 3,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Savory Chicken Croquette (Coxinha)",
+    "cal": 230,
+    "prot": 9.5,
+    "carb": 24,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Schinken",
+    "cal": 60,
+    "prot": 9,
+    "carb": 0.4,
+    "fat": 2.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Scotch Egg & Cucumber Slices",
+    "cal": 225,
+    "prot": 10.5,
+    "carb": 15,
+    "fat": 14.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Scottish Smoked Salmon",
+    "cal": 110,
+    "prot": 13.2,
+    "carb": 0,
+    "fat": 6.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Scrambled",
+    "cal": 80,
+    "prot": 8.5,
+    "carb": 1.5,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Scrambled Egg Whites & Cheese",
+    "cal": 150,
+    "prot": 18,
+    "carb": 1.5,
+    "fat": 8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Scrambled Eggs (1 Whole, 2 Whites)",
+    "cal": 110,
+    "prot": 14,
+    "carb": 0.8,
+    "fat": 5.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "eggs",
+    "country": "UK"
+  },
+  {
+    "name": "Scrambled Eggs (2 Whole)",
+    "cal": 140,
+    "prot": 12,
+    "carb": 0.6,
+    "fat": 9.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "eggs",
+    "country": "ZA"
+  },
+  {
+    "name": "Scrambled Eggs (Butter)",
+    "cal": 150,
+    "prot": 12,
+    "carb": 0.6,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "eggs",
+    "country": "BR"
+  },
+  {
+    "name": "Scrambled Eggs & Beef Biltong",
+    "cal": 330,
+    "prot": 35,
+    "carb": 16.6,
+    "fat": 14,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Scrambled Eggs, Avocado & Toast",
+    "cal": 305,
+    "prot": 19.8,
+    "carb": 19.5,
+    "fat": 17.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Scrambled Tofu & Grilled Tomatoes",
+    "cal": 208,
+    "prot": 15.5,
+    "carb": 22.6,
+    "fat": 6.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Sea Bass, New Potatoes & Spinach",
+    "cal": 260,
+    "prot": 29.8,
+    "carb": 20.8,
+    "fat": 6.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Semi-Skimmed Milk",
+    "cal": 95,
+    "prot": 7,
+    "carb": 9.5,
+    "fat": 3.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "UK"
+  },
+  {
+    "name": "Senbei",
+    "cal": 90,
+    "prot": 1.8,
+    "carb": 20,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "JP"
+  },
+  {
+    "name": "Senbei Crackers & Green Tea",
+    "cal": 92,
+    "prot": 1.9,
+    "carb": 20.4,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Shake",
+    "cal": 130,
+    "prot": 18,
+    "carb": 0,
+    "fat": 6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Shakshuka, Pita & Labneh",
+    "cal": 370,
+    "prot": 19.7,
+    "carb": 34.8,
+    "fat": 17,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Shaved Beef Biltong",
+    "cal": 90,
+    "prot": 16,
+    "carb": 0.6,
+    "fat": 2.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Shelled Pumpkin Seeds",
+    "cal": 85,
+    "prot": 4.5,
+    "carb": 2,
+    "fat": 7.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Shelled Walnuts",
+    "cal": 100,
+    "prot": 2.2,
+    "carb": 2,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Shepherds Pie & Broccoli",
+    "cal": 348,
+    "prot": 22.2,
+    "carb": 37.5,
+    "fat": 12.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Shiitake, Scallion, Carrot",
+    "cal": 35,
+    "prot": 1.2,
+    "carb": 7,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Shish Tawook & Tabbouleh",
+    "cal": 355,
+    "prot": 34.1,
+    "carb": 13,
+    "fat": 18.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Shorbat Adas",
+    "cal": 120,
+    "prot": 6.5,
+    "carb": 20,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "AE"
+  },
+  {
+    "name": "Shredded Cheddar Cheese",
+    "cal": 80,
+    "prot": 5,
+    "carb": 0.5,
+    "fat": 6.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Shredded Chicken Breast",
+    "cal": 50,
+    "prot": 10,
+    "carb": 0,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Shredded Seaweed & Onion",
+    "cal": 10,
+    "prot": 0.5,
+    "carb": 2,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Silken Tofu",
+    "cal": 60,
+    "prot": 6.5,
+    "carb": 2,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Sirloin Steak, Sweet Potato & Asparagus",
+    "cal": 414,
+    "prot": 37,
+    "carb": 27.2,
+    "fat": 16.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Skewered Grilled Chicken (Yakitori)",
+    "cal": 190,
+    "prot": 26,
+    "carb": 4,
+    "fat": 7.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Skim Milk",
+    "cal": 70,
+    "prot": 7,
+    "carb": 10,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "US"
+  },
+  {
+    "name": "Skinless",
+    "cal": 210,
+    "prot": 30,
+    "carb": 0,
+    "fat": 9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Sliced Almonds",
+    "cal": 90,
+    "prot": 3,
+    "carb": 3,
+    "fat": 8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Sliced Banana",
+    "cal": 45,
+    "prot": 0.5,
+    "carb": 11.5,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Sliced Chicken Polony",
+    "cal": 95,
+    "prot": 9,
+    "carb": 2.5,
+    "fat": 5.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Sliced Cucumber & Mint",
+    "cal": 8,
+    "prot": 0.3,
+    "carb": 1.8,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Sliced Lean Turkey",
+    "cal": 65,
+    "prot": 13,
+    "carb": 0.5,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Sliced Plum Tomato",
+    "cal": 10,
+    "prot": 0.5,
+    "carb": 2.2,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Sliced Roast Beef",
+    "cal": 140,
+    "prot": 23,
+    "carb": 0,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Sliced Strawberries",
+    "cal": 16,
+    "prot": 0.3,
+    "carb": 4,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Sliced Tomato",
+    "cal": 6,
+    "prot": 0.3,
+    "carb": 1.3,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Sliced Turkey Breast",
+    "cal": 90,
+    "prot": 18,
+    "carb": 0.8,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Smashed Avo & Poached Eggs",
+    "cal": 295,
+    "prot": 16.8,
+    "carb": 21.1,
+    "fat": 16.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Smashed Avo, Grilled Feta & Toast",
+    "cal": 245,
+    "prot": 9,
+    "carb": 23.5,
+    "fat": 14.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Smoked Salmon & Scrambled Eggs",
+    "cal": 305,
+    "prot": 30.7,
+    "carb": 16.8,
+    "fat": 12.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Smooth Hummus Dip",
+    "cal": 70,
+    "prot": 2.1,
+    "carb": 5.5,
+    "fat": 4.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Soft",
+    "cal": 110,
+    "prot": 2.2,
+    "carb": 24,
+    "fat": 0.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Sourdough Bread Toast",
+    "cal": 90,
+    "prot": 4,
+    "carb": 17,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slice",
+    "country": "AU"
+  },
+  {
+    "name": "Sourdough Toast",
+    "cal": 90,
+    "prot": 4,
+    "carb": 17,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slice",
+    "country": "AU"
+  },
+  {
+    "name": "South African Chakalaka with Baked Beans",
+    "cal": 140,
+    "prot": 5.5,
+    "carb": 22,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "South African Veggie Patty",
+    "cal": 130,
+    "prot": 10,
+    "carb": 12,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "ZA"
+  },
+  {
+    "name": "Soy-glazed Rice Crackers (Senbei)",
+    "cal": 90,
+    "prot": 1.8,
+    "carb": 20,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "JP"
+  },
+  {
+    "name": "Soya Chunks Curry",
+    "cal": 180,
+    "prot": 20,
+    "carb": 12,
+    "fat": 6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Soya Chunks Curry & Rice",
+    "cal": 305,
+    "prot": 22.6,
+    "carb": 39,
+    "fat": 6.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Spiced Shawarma Chicken Breast",
+    "cal": 130,
+    "prot": 22,
+    "carb": 1,
+    "fat": 4.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Spiced Vegetable Chakalaka",
+    "cal": 60,
+    "prot": 1.5,
+    "carb": 10,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Spicy Onion Tomato Gravy",
+    "cal": 70,
+    "prot": 1.8,
+    "carb": 8,
+    "fat": 3.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Spicy Pan-fried Rohu Fish",
+    "cal": 220,
+    "prot": 22,
+    "carb": 2,
+    "fat": 12,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Spinach & Vinaigrette",
+    "cal": 30,
+    "prot": 1.2,
+    "carb": 4,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Sprouted Moong Beans",
+    "cal": 120,
+    "prot": 9,
+    "carb": 19,
+    "fat": 0.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Sprouted Moong Chaat",
+    "cal": 120,
+    "prot": 9,
+    "carb": 19,
+    "fat": 0.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Steam",
+    "cal": 35,
+    "prot": 2.4,
+    "carb": 7.2,
+    "fat": 0.4,
+    "fiber": 3.3,
+    "calcium": 47,
+    "iron": 0.7,
+    "unit": "grams (g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Steamed Asparagus",
+    "cal": 16,
+    "prot": 1.8,
+    "carb": 3.2,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Steamed Baby Spinach",
+    "cal": 20,
+    "prot": 1.8,
+    "carb": 2.8,
+    "fat": 0.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Steamed Basmati Rice",
+    "cal": 150,
+    "prot": 3.2,
+    "carb": 32,
+    "fat": 0.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Steamed Bok Choy with sesame",
+    "cal": 35,
+    "prot": 1.8,
+    "carb": 3.5,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Steamed Broccoli",
+    "cal": 28,
+    "prot": 2.2,
+    "carb": 5.5,
+    "fat": 0.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Steamed Broccoli Florets",
+    "cal": 35,
+    "prot": 2.8,
+    "carb": 7,
+    "fat": 0.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Steamed Brussels Sprouts",
+    "cal": 30,
+    "prot": 2.4,
+    "carb": 6,
+    "fat": 0.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Steamed Green Peas",
+    "cal": 40,
+    "prot": 2.5,
+    "carb": 7,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Steamed Idlis",
+    "cal": 150,
+    "prot": 4,
+    "carb": 32,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "IN"
+  },
+  {
+    "name": "Steamed Kamaboko Fish Cake",
+    "cal": 80,
+    "prot": 10,
+    "carb": 8,
+    "fat": 0.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Steamed Khaman Dhokla",
+    "cal": 150,
+    "prot": 5,
+    "carb": 26,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "IN"
+  },
+  {
+    "name": "Steamed Rice",
+    "cal": 125,
+    "prot": 2.6,
+    "carb": 27,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Steamed Sweet Potato",
+    "cal": 90,
+    "prot": 1.8,
+    "carb": 20,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Steamed White Rice",
+    "cal": 130,
+    "prot": 2.7,
+    "carb": 28,
+    "fat": 0.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Stew",
+    "cal": 255,
+    "prot": 5.5,
+    "carb": 49.5,
+    "fat": 3.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Stir-fry Veggies (Pepper, Onion)",
+    "cal": 35,
+    "prot": 1.2,
+    "carb": 7,
+    "fat": 0.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Strawberry Fruit Jam",
+    "cal": 40,
+    "prot": 0.1,
+    "carb": 10,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "String Cheese & Almonds",
+    "cal": 170,
+    "prot": 10.2,
+    "carb": 4,
+    "fat": 12.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Sunomono",
+    "cal": 15,
+    "prot": 0.4,
+    "carb": 3,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Sushi Selection & Edamame",
+    "cal": 328,
+    "prot": 23.8,
+    "carb": 42.2,
+    "fat": 6.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Sweet Potato",
+    "cal": 86,
+    "prot": 1.6,
+    "carb": 20,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Sweet Potato & Black Bean Bowl",
+    "cal": 220,
+    "prot": 9.6,
+    "carb": 44,
+    "fat": 0.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Sweet Potato & Feta Wrap",
+    "cal": 298,
+    "prot": 10,
+    "carb": 43.2,
+    "fat": 8.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Swiss Cheese Slices",
+    "cal": 110,
+    "prot": 8,
+    "carb": 0.4,
+    "fat": 8.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Tabbouleh Salad",
+    "cal": 95,
+    "prot": 2,
+    "carb": 10,
+    "fat": 6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Tahini Dip",
+    "cal": 90,
+    "prot": 2.5,
+    "carb": 3,
+    "fat": 8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Takuan",
+    "cal": 10,
+    "prot": 0.2,
+    "carb": 2,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Tamagoyaki",
+    "cal": 120,
+    "prot": 8.5,
+    "carb": 4,
+    "fat": 8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Tamagoyaki, Rice & Pickle",
+    "cal": 280,
+    "prot": 11.7,
+    "carb": 39,
+    "fat": 8.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Tapioca Crepe with Cheese & Tomato",
+    "cal": 266,
+    "prot": 7.7,
+    "carb": 41.3,
+    "fat": 7.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Tapioca Crepe with Eggs & Cheese",
+    "cal": 310,
+    "prot": 18.2,
+    "carb": 40.5,
+    "fat": 8.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Tapioca Flour Crepe",
+    "cal": 160,
+    "prot": 0.2,
+    "carb": 39,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Tempeh & Veggie Wrap",
+    "cal": 300,
+    "prot": 20.8,
+    "carb": 33,
+    "fat": 9.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Tempura Sweet Potato & Zucchini",
+    "cal": 110,
+    "prot": 1.5,
+    "carb": 15,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Teriyaki Tofu & Bok Choy",
+    "cal": 320,
+    "prot": 18.3,
+    "carb": 39,
+    "fat": 10.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Teriyaki Tofu Rice Bowl",
+    "cal": 275,
+    "prot": 14,
+    "carb": 36.5,
+    "fat": 7.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Thai Green Tofu Curry & Rice",
+    "cal": 315,
+    "prot": 13.5,
+    "carb": 39.5,
+    "fat": 11.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Thick Labneh Dip",
+    "cal": 80,
+    "prot": 3,
+    "carb": 2.4,
+    "fat": 6.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Three Bean Veggie Chili",
+    "cal": 320,
+    "prot": 19,
+    "carb": 42.5,
+    "fat": 8.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Three-Bean Stew (Black, Kidney, Pinto)",
+    "cal": 240,
+    "prot": 14,
+    "carb": 42,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Tofu in Thai Green Curry Sauce",
+    "cal": 190,
+    "prot": 11,
+    "carb": 12,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Tofu Scramble & Avocado Toast",
+    "cal": 305,
+    "prot": 17.3,
+    "carb": 35,
+    "fat": 12.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Tofu stir-fry with Brown Rice",
+    "cal": 235,
+    "prot": 12.8,
+    "carb": 32,
+    "fat": 6.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Tofu, Rice & Miso Soup",
+    "cal": 245,
+    "prot": 11.5,
+    "carb": 39,
+    "fat": 4.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Tomato & Mustard Salad",
+    "cal": 25,
+    "prot": 0.8,
+    "carb": 4,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Tomato Garlic Salad",
+    "cal": 25,
+    "prot": 0.8,
+    "carb": 4,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Tomato Salsa (Campanha)",
+    "cal": 20,
+    "prot": 0.5,
+    "carb": 3.5,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Tomato sauce",
+    "cal": 170,
+    "prot": 13,
+    "carb": 5,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "eggs",
+    "country": "AE"
+  },
+  {
+    "name": "Tossed Feta & Olive oil",
+    "cal": 60,
+    "prot": 2.8,
+    "carb": 0.8,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Toum",
+    "cal": 50,
+    "prot": 0.1,
+    "carb": 2,
+    "fat": 4.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Traditional Cheese Bread",
+    "cal": 220,
+    "prot": 4.2,
+    "carb": 28,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "BR"
+  },
+  {
+    "name": "Traditional Egg Spätzle",
+    "cal": 190,
+    "prot": 6.5,
+    "carb": 36,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Traditional Hummus",
+    "cal": 140,
+    "prot": 4.2,
+    "carb": 11,
+    "fat": 9.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Traditional Labneh",
+    "cal": 40,
+    "prot": 1.5,
+    "carb": 1.2,
+    "fat": 3.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AE"
+  },
+  {
+    "name": "Traditional Pork Scotch Egg",
+    "cal": 210,
+    "prot": 10,
+    "carb": 12,
+    "fat": 14,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Traditional Rolled Oats",
+    "cal": 190,
+    "prot": 6,
+    "carb": 34,
+    "fat": 3.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Traditional Spätzle Pasta",
+    "cal": 240,
+    "prot": 8,
+    "carb": 45,
+    "fat": 2.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "DE"
+  },
+  {
+    "name": "Traditional Veg Potjiekos Stew",
+    "cal": 130,
+    "prot": 3,
+    "carb": 22,
+    "fat": 3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Tsuyu Dipping Sauce",
+    "cal": 20,
+    "prot": 0.5,
+    "carb": 4,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "JP"
+  },
+  {
+    "name": "Tuna & Salmon",
+    "cal": 165,
+    "prot": 26,
+    "carb": 0,
+    "fat": 6.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Tuna Flakes cup",
+    "cal": 67,
+    "prot": 15,
+    "carb": 0.5,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Tuna, Salmon, Prawn",
+    "cal": 240,
+    "prot": 15,
+    "carb": 35,
+    "fat": 2.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "JP"
+  },
+  {
+    "name": "Turkey & Swiss Cheese Sandwich",
+    "cal": 380,
+    "prot": 38,
+    "carb": 31.4,
+    "fat": 12.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Turkey Bacon",
+    "cal": 70,
+    "prot": 6,
+    "carb": 0.5,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slices",
+    "country": "US"
+  },
+  {
+    "name": "Turkey Bacon, Egg White Omelet & Toast",
+    "cal": 218,
+    "prot": 24.5,
+    "carb": 16.5,
+    "fat": 6.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Turkey Breast slices",
+    "cal": 65,
+    "prot": 13,
+    "carb": 0.5,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Turkey Jerky & Walnuts",
+    "cal": 190,
+    "prot": 13.2,
+    "carb": 4,
+    "fat": 14,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Turkey Meatballs & Whole Wheat Pasta",
+    "cal": 540,
+    "prot": 33.5,
+    "carb": 70,
+    "fat": 15,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Turkey roll-ups & Chamomile tea",
+    "cal": 67,
+    "prot": 13,
+    "carb": 1,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Turkey Roll-ups with Cream Cheese",
+    "cal": 130,
+    "prot": 19.5,
+    "carb": 2,
+    "fat": 4.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Turkey Roll-ups with Labneh",
+    "cal": 130,
+    "prot": 19.5,
+    "carb": 2,
+    "fat": 4.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Turkey slice & Chamomile Tea",
+    "cal": 57,
+    "prot": 11,
+    "carb": 0.9,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Turkey slices",
+    "cal": 65,
+    "prot": 13,
+    "carb": 0.5,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Turkey slices & Chamomile Tea",
+    "cal": 57,
+    "prot": 11,
+    "carb": 0.9,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Turkey slices & Macadamia nuts",
+    "cal": 170,
+    "prot": 14.2,
+    "carb": 2.6,
+    "fat": 12,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Turmeric & Black Pepper",
+    "cal": 5,
+    "prot": 0.1,
+    "carb": 1,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Udon Noodles in Kelp Dashi",
+    "cal": 220,
+    "prot": 6,
+    "carb": 46,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Unsweetened Soy Milk",
+    "cal": 85,
+    "prot": 8,
+    "carb": 4,
+    "fat": 4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "JP"
+  },
+  {
+    "name": "Upma",
+    "cal": 210,
+    "prot": 4,
+    "carb": 36,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Veg",
+    "cal": 290,
+    "prot": 9,
+    "carb": 38,
+    "fat": 11,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Vegemite Yeast Extract",
+    "cal": 10,
+    "prot": 1.3,
+    "carb": 1,
+    "fat": 0.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "AU"
+  },
+  {
+    "name": "Vegetable & Tofu Feijoada",
+    "cal": 180,
+    "prot": 9,
+    "carb": 26,
+    "fat": 4.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Vegetable Basmati Pulao",
+    "cal": 250,
+    "prot": 5.5,
+    "carb": 46,
+    "fat": 4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Vegetable Moqueca (Palm Oil/Dendê & Coconut)",
+    "cal": 220,
+    "prot": 3.5,
+    "carb": 18,
+    "fat": 16,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Vegetable Moqueca & Rice",
+    "cal": 345,
+    "prot": 6,
+    "carb": 45.5,
+    "fat": 16.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Vegetable Potjiekos (Stew) & Rice",
+    "cal": 255,
+    "prot": 5.5,
+    "carb": 49.5,
+    "fat": 3.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Vegetable Pulao & Cucumber Raita",
+    "cal": 310,
+    "prot": 8.7,
+    "carb": 50.5,
+    "fat": 7.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Vegetable Saloona & Rice",
+    "cal": 290,
+    "prot": 6.7,
+    "carb": 54,
+    "fat": 4.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Vegetable Sushi Roll & Edamame",
+    "cal": 268,
+    "prot": 12,
+    "carb": 45.2,
+    "fat": 6.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Vegetable Udon Noodle Soup",
+    "cal": 255,
+    "prot": 7.2,
+    "carb": 53,
+    "fat": 1.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Vegetable Wellington & Roast Potatoes",
+    "cal": 410,
+    "prot": 12.5,
+    "carb": 63,
+    "fat": 12.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Vegetarian Abendbrot",
+    "cal": 325,
+    "prot": 15.8,
+    "carb": 34.8,
+    "fat": 12.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Vegetarian Burger & Sweet Potato Fries",
+    "cal": 330,
+    "prot": 16.7,
+    "carb": 52,
+    "fat": 6.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Vegetarian Cheese & Onion Pasty",
+    "cal": 280,
+    "prot": 7.5,
+    "carb": 30,
+    "fat": 15,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Vegetarian Full English",
+    "cal": 290,
+    "prot": 19.3,
+    "carb": 36.5,
+    "fat": 6.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Vegetarian Sausage",
+    "cal": 110,
+    "prot": 9.5,
+    "carb": 5,
+    "fat": 5.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "UK"
+  },
+  {
+    "name": "Vegetarian Tofu Sausage",
+    "cal": 120,
+    "prot": 9,
+    "carb": 4.5,
+    "fat": 7.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "DE"
+  },
+  {
+    "name": "Vegetarian Wellington Slice",
+    "cal": 240,
+    "prot": 8,
+    "carb": 32,
+    "fat": 9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Veggie & Grain Patty",
+    "cal": 140,
+    "prot": 11,
+    "carb": 14,
+    "fat": 5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "US"
+  },
+  {
+    "name": "Veggie Burger & Baked Sweet Potato Fries",
+    "cal": 320,
+    "prot": 15.2,
+    "carb": 50,
+    "fat": 6.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Veggie Feijoada & Rice",
+    "cal": 305,
+    "prot": 11.5,
+    "carb": 53.5,
+    "fat": 4.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "BR"
+  },
+  {
+    "name": "Veggie Sausage & Potato Salad",
+    "cal": 270,
+    "prot": 11.2,
+    "carb": 28.5,
+    "fat": 12.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Vinagrete",
+    "cal": 25,
+    "prot": 0.5,
+    "carb": 4,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Vinegar Salad (Vinagrete)",
+    "cal": 25,
+    "prot": 0.5,
+    "carb": 4,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Vollkornbrot",
+    "cal": 170,
+    "prot": 5.5,
+    "carb": 32,
+    "fat": 1.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slices",
+    "country": "DE"
+  },
+  {
+    "name": "Vollkornbrot (Dark Rye)",
+    "cal": 85,
+    "prot": 2.8,
+    "carb": 16,
+    "fat": 0.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slice",
+    "country": "DE"
+  },
+  {
+    "name": "Vollkornbrot with Cheese & Boiled Egg",
+    "cal": 269,
+    "prot": 16.6,
+    "carb": 17,
+    "fat": 14.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Vollkornbrot with Cheese & Cucumber",
+    "cal": 293,
+    "prot": 14.3,
+    "carb": 34,
+    "fat": 10.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "DE"
+  },
+  {
+    "name": "Wakame Miso Soup",
+    "cal": 35,
+    "prot": 2,
+    "carb": 4,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "JP"
+  },
+  {
+    "name": "Walnut Halves",
+    "cal": 100,
+    "prot": 2.3,
+    "carb": 2,
+    "fat": 9.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "UK"
+  },
+  {
+    "name": "Walnuts",
+    "cal": 100,
+    "prot": 2.2,
+    "carb": 2,
+    "fat": 10,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Warm Camel Milk & Date",
+    "cal": 156,
+    "prot": 6.6,
+    "carb": 27.2,
+    "fat": 3.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Warm Cow Milk",
+    "cal": 120,
+    "prot": 6.8,
+    "carb": 9.6,
+    "fat": 6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "ZA"
+  },
+  {
+    "name": "Warm Haldi Milk",
+    "cal": 95,
+    "prot": 6.9,
+    "carb": 10.6,
+    "fat": 2.1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Warm Milk & Honey",
+    "cal": 117,
+    "prot": 7,
+    "carb": 15.5,
+    "fat": 3.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Warm Milk with Almonds",
+    "cal": 180,
+    "prot": 8.5,
+    "carb": 11.5,
+    "fat": 11.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "IN"
+  },
+  {
+    "name": "Warm Milk with Honey",
+    "cal": 117,
+    "prot": 7,
+    "carb": 15.5,
+    "fat": 3.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "UK"
+  },
+  {
+    "name": "Warm Oats with Chia & Berries",
+    "cal": 240,
+    "prot": 8.2,
+    "carb": 37.2,
+    "fat": 6.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "ZA"
+  },
+  {
+    "name": "Water",
+    "cal": 0,
+    "prot": 0,
+    "carb": 0,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "US"
+  },
+  {
+    "name": "Water & Cinnamon",
+    "cal": 0,
+    "prot": 0,
+    "carb": 0,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "ZA"
+  },
+  {
+    "name": "Water & Lemon Juice",
+    "cal": 5,
+    "prot": 0.1,
+    "carb": 1.2,
+    "fat": 0,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "IN"
+  },
+  {
+    "name": "Weet-Bix, Milk & Banana",
+    "cal": 245,
+    "prot": 11.1,
+    "carb": 43.3,
+    "fat": 2.9,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AU"
+  },
+  {
+    "name": "Wheat Burger Bun",
+    "cal": 120,
+    "prot": 4,
+    "carb": 22,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "ZA"
+  },
+  {
+    "name": "Wheat Roti / Chapati",
+    "cal": 120,
+    "prot": 3.1,
+    "carb": 22.4,
+    "fat": 2.2,
+    "fiber": 2.8,
+    "calcium": 12,
+    "iron": 0.9,
+    "unit": "pieces",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Whey Protein",
+    "cal": 120,
+    "prot": 24,
+    "carb": 3,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "scoop",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Whey Protein Isolate",
+    "cal": 120,
+    "prot": 25,
+    "carb": 1.5,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 120,
+    "iron": 0.5,
+    "unit": "scoop (30g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Whey Protein Shake & Carrots",
+    "cal": 150,
+    "prot": 25.9,
+    "carb": 10.5,
+    "fat": 0.7,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "Whey/Casein Protein shake",
+    "cal": 110,
+    "prot": 24,
+    "carb": 1.5,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "US"
+  },
+  {
+    "name": "White Maize Meal (Pap)",
+    "cal": 175,
+    "prot": 3.8,
+    "carb": 38,
+    "fat": 0.6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "White Maize Porridge (Soft)",
+    "cal": 110,
+    "prot": 2.2,
+    "carb": 24,
+    "fat": 0.4,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "White Rice",
+    "cal": 195,
+    "prot": 4,
+    "carb": 42,
+    "fat": 0.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "White Rice (Cooked)",
+    "cal": 130,
+    "prot": 2.7,
+    "carb": 28.2,
+    "fat": 0.3,
+    "fiber": 0.4,
+    "calcium": 10,
+    "iron": 0.2,
+    "unit": "grams (g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "White Rice & Carioca Beans",
+    "cal": 210,
+    "prot": 8,
+    "carb": 42,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "BR"
+  },
+  {
+    "name": "Whole Eggs",
+    "cal": 140,
+    "prot": 12,
+    "carb": 0.6,
+    "fat": 9.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "eggs",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Whole Eggs (Boiled)",
+    "cal": 155,
+    "prot": 12.6,
+    "carb": 1.1,
+    "fat": 10.6,
+    "fiber": 0,
+    "calcium": 50,
+    "iron": 1.2,
+    "unit": "grams (g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Whole Eggs (Hard Boiled)",
+    "cal": 140,
+    "prot": 12,
+    "carb": 0.6,
+    "fat": 9.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "eggs",
+    "country": "IN"
+  },
+  {
+    "name": "Whole Grain Sourdough",
+    "cal": 100,
+    "prot": 4.5,
+    "carb": 18,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slice",
+    "country": "AU"
+  },
+  {
+    "name": "Whole Milk",
+    "cal": 150,
+    "prot": 8,
+    "carb": 12,
+    "fat": 8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "IN"
+  },
+  {
+    "name": "Whole Milk (Cow)",
+    "cal": 61,
+    "prot": 3.2,
+    "carb": 4.8,
+    "fat": 3.3,
+    "fiber": 0,
+    "calcium": 113,
+    "iron": 0.1,
+    "unit": "ml",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Whole Wheat Bread Slices",
+    "cal": 160,
+    "prot": 8,
+    "carb": 30,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "US"
+  },
+  {
+    "name": "Whole Wheat Bread Toast",
+    "cal": 160,
+    "prot": 8,
+    "carb": 30,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slices",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Whole Wheat Burger Bun",
+    "cal": 120,
+    "prot": 4.5,
+    "carb": 22,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "US"
+  },
+  {
+    "name": "Whole Wheat Dough",
+    "cal": 260,
+    "prot": 6,
+    "carb": 54,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Whole Wheat Paratha",
+    "cal": 260,
+    "prot": 6,
+    "carb": 44,
+    "fat": 6,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "IN"
+  },
+  {
+    "name": "Whole Wheat Pita Bread",
+    "cal": 130,
+    "prot": 4.2,
+    "carb": 26,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "AE"
+  },
+  {
+    "name": "Whole Wheat Roti",
+    "cal": 160,
+    "prot": 5.2,
+    "carb": 32,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pcs",
+    "country": "IN"
+  },
+  {
+    "name": "Whole Wheat Spaghetti",
+    "cal": 280,
+    "prot": 10,
+    "carb": 58,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "US"
+  },
+  {
+    "name": "Whole Wheat Toast",
+    "cal": 80,
+    "prot": 4,
+    "carb": 15,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slice",
+    "country": "US"
+  },
+  {
+    "name": "Whole Wheat Wrap",
+    "cal": 130,
+    "prot": 4,
+    "carb": 22,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "ZA"
+  },
+  {
+    "name": "Wholemeal Crusty Roll",
+    "cal": 130,
+    "prot": 5,
+    "carb": 26,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "UK"
+  },
+  {
+    "name": "Wholemeal Flatbread Wrap",
+    "cal": 130,
+    "prot": 4,
+    "carb": 22,
+    "fat": 2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "AU"
+  },
+  {
+    "name": "Wholemeal Toast",
+    "cal": 80,
+    "prot": 4,
+    "carb": 15,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "slice",
+    "country": "ZA"
+  },
+  {
+    "name": "Wholemeal Tortilla Wrap",
+    "cal": 140,
+    "prot": 4.5,
+    "carb": 24,
+    "fat": 2.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "UK"
+  },
+  {
+    "name": "Yakitori",
+    "cal": 190,
+    "prot": 26,
+    "carb": 4,
+    "fat": 7.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "JP"
+  },
+  {
+    "name": "Yakitori Chicken Bento",
+    "cal": 330,
+    "prot": 29,
+    "carb": 34.5,
+    "fat": 7.8,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "JP"
+  },
+  {
+    "name": "Yellow Dal Tadka",
+    "cal": 80,
+    "prot": 4.8,
+    "carb": 13,
+    "fat": 1.2,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "IN"
+  },
+  {
+    "name": "Yellow Lentil Soup (Shorbat Adas)",
+    "cal": 120,
+    "prot": 6.5,
+    "carb": 20,
+    "fat": 1.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "AE"
+  },
+  {
+    "name": "Yellow Moong Dal",
+    "cal": 110,
+    "prot": 7,
+    "carb": 20,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "ml",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Yellow Rice with Raisins",
+    "cal": 140,
+    "prot": 2.6,
+    "carb": 30,
+    "fat": 1,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "g",
+    "country": "ZA"
+  },
+  {
+    "name": "Yellow Toor Dal (Cooked)",
+    "cal": 116,
+    "prot": 6.8,
+    "carb": 19.8,
+    "fat": 1.2,
+    "fiber": 3.5,
+    "calcium": 24,
+    "iron": 1.1,
+    "unit": "grams (g)",
+    "country": "GLOBAL"
+  },
+  {
+    "name": "Zaatar Flatbread & Labneh",
+    "cal": 260,
+    "prot": 7.5,
+    "carb": 30.4,
+    "fat": 12.3,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "meal serving",
+    "country": "AE"
+  },
+  {
+    "name": "Zaatar Spice Flatbread (Manakish)",
+    "cal": 180,
+    "prot": 4.5,
+    "carb": 28,
+    "fat": 5.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "pc",
+    "country": "AE"
+  }
+];
+var DIET_DATABASE = {
   "IN": {
     "name": "India",
     "meals": {
@@ -8526,91 +18331,10630 @@ const DIET_DATABASE = {
     }
   }
 };
-
-
-const COMMON_FOODS_DIRECTORY = {
-  "oatmeal": { baseQty: 100, unit: "g", cal: 389, p: 16.9, c: 66.3, f: 6.9 },
-  "whole eggs": { baseQty: 2, unit: "eggs", cal: 140, p: 12.0, c: 0.6, f: 9.8 },
-  "boiled egg whites": { baseQty: 4, unit: "eggs", cal: 68, p: 14.5, c: 1.0, f: 0.2 },
-  "whole wheat bread toast": { baseQty: 2, unit: "slices", cal: 160, p: 8.0, c: 30.0, f: 2.0 },
-  "milk": { baseQty: 200, unit: "ml", cal: 120, p: 6.8, c: 9.6, f: 6.5 },
-  "grilled chicken breast": { baseQty: 100, unit: "g", cal: 165, p: 31.0, c: 0, f: 3.6 },
-  "basmati rice": { baseQty: 100, unit: "g", cal: 130, p: 2.7, c: 28.0, f: 0.3 },
-  "brown rice": { baseQty: 100, unit: "g", cal: 112, p: 2.6, c: 23.5, f: 0.9 },
-  "banana": { baseQty: 1, unit: "pc", cal: 105, p: 1.3, c: 27.0, f: 0.3 },
-  "apple": { baseQty: 1, unit: "pc", cal: 95, p: 0.5, c: 25.0, f: 0.3 },
-  "mashed avocado": { baseQty: 50, unit: "g", cal: 80, p: 1.0, c: 4.3, f: 7.3 },
-  "organic tofu": { baseQty: 100, unit: "g", cal: 76, p: 8.0, c: 1.9, f: 4.8 },
-  "greek yogurt": { baseQty: 100, unit: "g", cal: 59, p: 10.0, c: 3.6, f: 0.4 },
-  "grilled paneer": { baseQty: 100, unit: "g", cal: 265, p: 18.3, c: 1.2, f: 20.8 },
-  "raw almonds": { baseQty: 30, unit: "g", cal: 173, p: 6.3, c: 6.1, f: 15.0 },
-  "peanut butter": { baseQty: 16, unit: "g", cal: 95, p: 4.0, c: 3.0, f: 8.0 },
-  "salmon fillet": { baseQty: 100, unit: "g", cal: 206, p: 22.0, c: 0, f: 13.0 },
-  "canned tuna": { baseQty: 100, unit: "g", cal: 116, p: 26.0, c: 0, f: 1.0 },
-  "cottage cheese": { baseQty: 100, unit: "g", cal: 98, p: 11.0, c: 3.4, f: 4.3 },
-  "whey protein": { baseQty: 1, unit: "scoop", cal: 120, p: 24.0, c: 3.0, f: 1.5 },
-  "sweet potato": { baseQty: 100, unit: "g", cal: 86, p: 1.6, c: 20.0, f: 0.1 },
-  "baby spinach": { baseQty: 100, unit: "g", cal: 23, p: 2.9, c: 3.6, f: 0.4 },
-  "cucumber slices": { baseQty: 100, unit: "g", cal: 15, p: 0.7, c: 3.6, f: 0.1 },
-  "butter": { baseQty: 10, unit: "g", cal: 72, p: 0.1, c: 0.1, f: 8.1 },
-  "ghee": { baseQty: 5, unit: "ml", cal: 45, p: 0, c: 0, f: 5.0 },
-  "dates": { baseQty: 3, unit: "pcs", cal: 60, p: 0.4, c: 16.0, f: 0.1 },
-  "hummus dip": { baseQty: 30, unit: "g", cal: 50, p: 1.5, c: 4.3, f: 3.0 },
-  "baked falafel": { baseQty: 3, unit: "pcs", cal: 160, p: 5.0, c: 18.0, f: 8.0 },
-  "roasted makhana": { baseQty: 20, unit: "g", cal: 70, p: 2.0, c: 14.5, f: 0.1 },
-  "sattu protein drink": { baseQty: 30, unit: "g", cal: 120, p: 6.0, c: 19.5, f: 1.5 },
-  "maize porridge (pap)": { baseQty: 100, unit: "g", cal: 110, p: 2.3, c: 25.0, f: 0.2 },
-  "beef biltong": { baseQty: 30, unit: "g", cal: 90, p: 15.0, c: 0.6, f: 3.0 },
-  "labneh dip": { baseQty: 40, unit: "g", cal: 80, p: 3.0, c: 2.4, f: 6.8 },
-  "puri sabji": { baseQty: 1, unit: "plate", cal: 350, p: 8.0, c: 45.0, f: 16.0 },
-  "steamed white rice": { baseQty: 100, unit: "g", cal: 130, p: 2.7, c: 28.0, f: 0.3 },
-  "masala dosa": { baseQty: 1, unit: "pc", cal: 220, p: 4.5, c: 38.0, f: 6.0 },
-  "paneer butter masala": { baseQty: 150, unit: "g", cal: 320, p: 12.0, c: 10.0, f: 26.0 },
-  "samosa": { baseQty: 1, unit: "pc", cal: 260, p: 3.5, c: 32.0, f: 13.0 },
-  "gulab jamun": { baseQty: 1, unit: "pc", cal: 150, p: 2.0, c: 26.0, f: 5.0 },
-  "aloo paratha": { baseQty: 1, unit: "pc", cal: 210, p: 4.5, c: 33.0, f: 7.0 },
-  "dal tadka": { baseQty: 150, unit: "ml", cal: 120, p: 6.5, c: 18.0, f: 3.0 },
-  "roti / chapati": { baseQty: 1, unit: "pc", cal: 80, p: 3.0, c: 16.0, f: 0.5 },
-  "yellow moong dal": { baseQty: 150, unit: "ml", cal: 110, p: 7.0, c: 20.0, f: 1.0 },
-  "chole bhature": { baseQty: 1, unit: "plate", cal: 450, p: 12.0, c: 60.0, f: 18.0 },
-  "idli & sambhar": { baseQty: 1, unit: "plate", cal: 210, p: 7.0, c: 40.0, f: 2.0 },
-  "butter chicken": { baseQty: 150, unit: "g", cal: 340, p: 22.0, c: 8.0, f: 24.0 },
-  "chicken biryani": { baseQty: 200, unit: "g", cal: 360, p: 24.0, c: 45.0, f: 9.0 },
-  "fish fry": { baseQty: 100, unit: "g", cal: 220, p: 18.0, c: 8.0, f: 13.0 },
-  "egg bhurji": { baseQty: 1, unit: "plate", cal: 190, p: 14.0, c: 4.0, f: 13.0 },
-  "pizza slice (cheese)": { baseQty: 1, unit: "slice", cal: 280, p: 12.0, c: 32.0, f: 10.0 },
-  "burger (veg)": { baseQty: 1, unit: "pc", cal: 290, p: 9.0, c: 38.0, f: 11.0 },
-  "burger (chicken)": { baseQty: 1, unit: "pc", cal: 350, p: 22.0, c: 36.0, f: 13.0 },
-  "french fries": { baseQty: 100, unit: "g", cal: 312, p: 3.4, c: 41.0, f: 15.0 },
-  "egg roll": { baseQty: 1, unit: "roll", cal: 320, p: 9.5, c: 38.0, f: 14.5 },
-  "kolkata egg roll": { baseQty: 1, unit: "roll", cal: 320, p: 9.5, c: 38.0, f: 14.5 },
-  "double egg roll": { baseQty: 1, unit: "roll", cal: 410, p: 15.0, c: 38.0, f: 20.0 },
-  "chicken roll": { baseQty: 1, unit: "roll", cal: 360, p: 18.0, c: 36.0, f: 16.0 },
-  "chicken egg roll": { baseQty: 1, unit: "roll", cal: 450, p: 22.0, c: 40.0, f: 22.0 },
-  "puchka": { baseQty: 5, unit: "pcs", cal: 150, p: 2.5, c: 24.0, f: 4.5 },
-  "pani puri": { baseQty: 5, unit: "pcs", cal: 150, p: 2.5, c: 24.0, f: 4.5 },
-  "luchi": { baseQty: 2, unit: "pcs", cal: 180, p: 3.5, c: 24.0, f: 8.0 },
-  "alur dom": { baseQty: 100, unit: "g", cal: 120, p: 2.0, c: 18.0, f: 5.0 },
-  "chapatis": { baseQty: 2, unit: "pcs", cal: 160, p: 6.0, c: 32.0, f: 1.0 },
-  "paratha": { baseQty: 1, unit: "pc", cal: 260, p: 4.5, c: 38.0, f: 10.0 },
-  "white rice": { baseQty: 150, unit: "g", cal: 195, p: 4.0, c: 42.0, f: 0.5 },
-  "chicken curry": { baseQty: 150, unit: "g", cal: 240, p: 22.0, c: 6.0, f: 14.0 },
-  "fish curry": { baseQty: 150, unit: "g", cal: 180, p: 18.0, c: 5.0, f: 9.0 },
-  "upma": { baseQty: 150, unit: "g", cal: 210, p: 4.0, c: 36.0, f: 5.0 },
-  "poha": { baseQty: 100, unit: "g", cal: 180, p: 3.5, c: 36.0, f: 2.5 },
-  "dhokla": { baseQty: 2, unit: "pcs", cal: 150, p: 5.0, c: 26.0, f: 3.0 },
-  "samosas": { baseQty: 2, unit: "pcs", cal: 520, p: 7.0, c: 64.0, f: 26.0 },
-  "mutton curry": { baseQty: 150, unit: "g", cal: 310, p: 24.0, c: 5.0, f: 21.0 },
-  "dal fry": { baseQty: 150, unit: "ml", cal: 140, p: 7.0, c: 20.0, f: 4.0 },
-  "jeera rice": { baseQty: 150, unit: "g", cal: 210, p: 3.5, c: 44.0, f: 2.0 },
-  "kathi roll": { baseQty: 1, unit: "roll", cal: 360, p: 16.0, c: 38.0, f: 16.0 },
-  "mochar chop": { baseQty: 2, unit: "pcs", cal: 180, p: 4.0, c: 22.0, f: 8.5 },
-  "ghugni": { baseQty: 150, unit: "g", cal: 160, p: 7.5, c: 24.0, f: 4.0 },
-  "rasgulla": { baseQty: 1, unit: "pc", cal: 120, p: 2.0, c: 26.0, f: 1.0 },
-  "sandesh": { baseQty: 1, unit: "pc", cal: 80, p: 2.5, c: 11.0, f: 3.0 }
-};;
-
-const citiesMap = {
+var COMMON_FOODS_DIRECTORY = {
+  "1 tsp sugar": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 40,
+    "p": 1.2,
+    "c": 6,
+    "f": 1.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "1 whole, 2 whites": {
+    "baseQty": 100,
+    "unit": "eggs",
+    "cal": 110,
+    "p": 14,
+    "c": 0.8,
+    "f": 5.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "2 whole": {
+    "baseQty": 100,
+    "unit": "eggs",
+    "cal": 140,
+    "p": 12,
+    "c": 0.6,
+    "f": 9.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "2 whole, 1 white": {
+    "baseQty": 100,
+    "unit": "eggs",
+    "cal": 160,
+    "p": 15,
+    "c": 1,
+    "f": 10.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "70% kakao": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 85,
+    "p": 1,
+    "c": 7,
+    "f": 6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "abendbrot (dark bread, gouda & ham)": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 340,
+    "p": 22,
+    "c": 33,
+    "f": 12.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "açai bowl with banana": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 135,
+    "p": 1.7,
+    "c": 27.5,
+    "f": 2.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "alcatra": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 210,
+    "p": 26,
+    "c": 0,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "all-natural peanut butter": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 120,
+    "p": 5,
+    "c": 4,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "almonds": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 3.2,
+    "c": 3,
+    "f": 7.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "almonds (raw)": {
+    "baseQty": 100,
+    "unit": "grams (g)",
+    "cal": 579,
+    "p": 21.2,
+    "c": 21.7,
+    "f": 49.9,
+    "micros": {
+      "fiber": 12.5,
+      "calcium": 269,
+      "iron": 3.7
+    }
+  },
+  "almonds & cashews": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 145,
+    "p": 4.8,
+    "c": 7.2,
+    "f": 12,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "aloo paratha": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 210,
+    "p": 4.5,
+    "c": 33,
+    "f": 7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "alur dom": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 120,
+    "p": 2,
+    "c": 18,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "apfelmus": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 60,
+    "p": 0.2,
+    "c": 15,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "apple": {
+    "baseQty": 100,
+    "unit": "medium fruit",
+    "cal": 52,
+    "p": 0.3,
+    "c": 13.8,
+    "f": 0.2,
+    "micros": {
+      "fiber": 2.4,
+      "calcium": 6,
+      "iron": 0.1
+    }
+  },
+  "apple & peanut butter": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 200,
+    "p": 5.5,
+    "c": 24,
+    "f": 10.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "apple & quark": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 152,
+    "p": 18.3,
+    "c": 20,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "apple & walnuts": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 175,
+    "p": 2.7,
+    "c": 21,
+    "f": 9.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "applesauce (apfelmus)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 60,
+    "p": 0.2,
+    "c": 15,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "arabic coffee (gahwa)": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 2,
+    "p": 0.1,
+    "c": 0.4,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "arabic flatbread (khubz)": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 150,
+    "p": 5,
+    "c": 30,
+    "f": 1.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "arabic pita bread": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 140,
+    "p": 4.5,
+    "c": 28,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "arabic pita bread (khubz)": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 105,
+    "p": 3.3,
+    "c": 22.5,
+    "f": 0.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "arabic pita wrap": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 140,
+    "p": 4.5,
+    "c": 28,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "arnotts salada crackers": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 80,
+    "p": 1.8,
+    "c": 14.5,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "assorted nigiri (tuna, salmon, prawn)": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 240,
+    "p": 15,
+    "c": 35,
+    "f": 2.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "australian feta cheese": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 65,
+    "p": 3.5,
+    "c": 1,
+    "f": 5.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "australian honey": {
+    "baseQty": 100,
+    "unit": "tsp",
+    "cal": 22,
+    "p": 0,
+    "c": 6,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "australian lamb loin chops": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 260,
+    "p": 26,
+    "c": 0,
+    "f": 17,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "avocado toast with tofu scramble": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 320,
+    "p": 17.5,
+    "c": 36,
+    "f": 13.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baby carrots": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 40,
+    "p": 0.9,
+    "c": 9.5,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baby spinach": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 23,
+    "p": 2.9,
+    "c": 3.6,
+    "f": 0.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baby spinach & balsamic glaze": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 30,
+    "p": 1.2,
+    "c": 4.5,
+    "f": 0.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baked cod fillet": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 140,
+    "p": 30,
+    "c": 0,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baked cod, wild rice & green beans": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 320,
+    "p": 36.6,
+    "c": 32,
+    "f": 5.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baked eggplant with miso glaze": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 120,
+    "p": 2,
+    "c": 22,
+    "f": 3.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baked falafel": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 160,
+    "p": 5,
+    "c": 18,
+    "f": 8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baked falafel plate & fattoush": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 290,
+    "p": 9.8,
+    "c": 37.5,
+    "f": 13.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baked garlic chicken & sweet potatoes": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 316,
+    "p": 41,
+    "c": 25.5,
+    "f": 4.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baked garlic chicken breast": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 198,
+    "p": 37,
+    "c": 0,
+    "f": 4.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baked heinz beans": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 80,
+    "p": 4.8,
+    "c": 13,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baked jacket potato": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 185,
+    "p": 4.2,
+    "c": 42,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baked japanese sweet potato": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 130,
+    "p": 1.8,
+    "c": 30,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baked potato with skin": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 110,
+    "p": 2.5,
+    "c": 25,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baked satsumaimo": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 130,
+    "p": 1.8,
+    "c": 30,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baked sweet potato": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 108,
+    "p": 2.2,
+    "c": 24,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baked sweet potato fries": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 70,
+    "p": 1.2,
+    "c": 16,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "baked sweet potato wedges": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 70,
+    "p": 1.2,
+    "c": 16,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "banana": {
+    "baseQty": 100,
+    "unit": "medium fruit",
+    "cal": 89,
+    "p": 1.1,
+    "c": 22.8,
+    "f": 0.3,
+    "micros": {
+      "fiber": 2.6,
+      "calcium": 5,
+      "iron": 0.3
+    }
+  },
+  "banana mashed with oat bran": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 145,
+    "p": 3.2,
+    "c": 33,
+    "f": 1.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "barbecued beef picanha": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 330,
+    "p": 30,
+    "c": 0,
+    "f": 22,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "barley flour wrap": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 140,
+    "p": 4.5,
+    "c": 25,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "barley tea": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 2,
+    "p": 0,
+    "c": 0.5,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "barley tea & walnuts": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 102,
+    "p": 2.2,
+    "c": 2.5,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "basmati rice": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 130,
+    "p": 2.7,
+    "c": 28,
+    "f": 0.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "basmati rice saffron": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 125,
+    "p": 2.5,
+    "c": 27.5,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "basmati rice with saffron": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 150,
+    "p": 3.2,
+    "c": 32,
+    "f": 0.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "batata doce": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 108,
+    "p": 2,
+    "c": 24,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "beef biltong": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 15,
+    "c": 0.6,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "beef bobotie (egg/custard topping)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 320,
+    "p": 22,
+    "c": 16,
+    "f": 18,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "beef bobotie & rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 460,
+    "p": 24.6,
+    "c": 46,
+    "f": 19,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "beef droëwors": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 140,
+    "p": 12,
+    "c": 0.5,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "beef droëwors (dried sausage)": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 140,
+    "p": 12,
+    "c": 0.5,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "beef jerky & walnuts": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 216,
+    "p": 12.2,
+    "c": 5,
+    "f": 17,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "beef mince with okra & rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 365,
+    "p": 26.5,
+    "c": 33.5,
+    "f": 12.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "beef steak & beans": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 445,
+    "p": 34.5,
+    "c": 46,
+    "f": 13,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "bergkäse mountain cheese": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 140,
+    "p": 10,
+    "c": 0.2,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "black coffee": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 2,
+    "p": 0.1,
+    "c": 0.4,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "black tea (no sugar)": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 2,
+    "p": 0,
+    "c": 0.5,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "black, kidney, pinto": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 240,
+    "p": 14,
+    "c": 42,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "boiled": {
+    "baseQty": 100,
+    "unit": "grams (g)",
+    "cal": 155,
+    "p": 12.6,
+    "c": 1.1,
+    "f": 10.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 50,
+      "iron": 1.2
+    }
+  },
+  "boiled cassava (mandioca)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 160,
+    "p": 1.5,
+    "c": 38,
+    "f": 0.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "boiled edamame": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 88,
+    "p": 8.8,
+    "c": 7.2,
+    "f": 3.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "boiled edamame (in pods)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 110,
+    "p": 11,
+    "c": 9,
+    "f": 4.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "boiled edamame beans": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 88,
+    "p": 8.8,
+    "c": 7.2,
+    "f": 3.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "boiled egg": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 74,
+    "p": 6.3,
+    "c": 0.4,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "boiled egg whites": {
+    "baseQty": 100,
+    "unit": "eggs",
+    "cal": 68,
+    "p": 14.5,
+    "c": 1,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "boiled egg whites & tea": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 53,
+    "p": 11,
+    "c": 1.3,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "boiled new potatoes": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 80,
+    "p": 2,
+    "c": 18,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "boiled potatoes (salzkartoffeln)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 95,
+    "p": 2.4,
+    "c": 21,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "boiled potatoes in stew": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 80,
+    "p": 2,
+    "c": 18,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "boiled potatoes with parsley": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 95,
+    "p": 2.4,
+    "c": 21,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "boiled quail eggs": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 64,
+    "p": 5.2,
+    "c": 0.4,
+    "f": 4.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "boiled quail eggs & green tea": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 66,
+    "p": 5.3,
+    "c": 0.8,
+    "f": 4.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "boiled sweet potato (batata doce)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 108,
+    "p": 2,
+    "c": 24,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "braai chicken, chakalaka & pap": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 370,
+    "p": 38.9,
+    "c": 36,
+    "f": 6.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "brazil nuts": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 160,
+    "p": 3.5,
+    "c": 3,
+    "f": 16,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "brazilian collard greens (couve)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 30,
+    "p": 1.5,
+    "c": 4.5,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "brazilian rump steak (alcatra)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 210,
+    "p": 26,
+    "c": 0,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "breaded chicken schnitzel": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 260,
+    "p": 28,
+    "c": 14,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "british gala apple": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 75,
+    "p": 0.4,
+    "c": 19,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "british honey roast ham": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 50,
+    "p": 8,
+    "c": 0.5,
+    "f": 1.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "broccoli (steam)": {
+    "baseQty": 100,
+    "unit": "grams (g)",
+    "cal": 35,
+    "p": 2.4,
+    "c": 7.2,
+    "f": 0.4,
+    "micros": {
+      "fiber": 3.3,
+      "calcium": 47,
+      "iron": 0.7
+    }
+  },
+  "brown lentil stew with root vegetables": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 210,
+    "p": 12,
+    "c": 34,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "brown rice": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 112,
+    "p": 2.6,
+    "c": 23.5,
+    "f": 0.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "brown rice (cooked)": {
+    "baseQty": 100,
+    "unit": "grams (g)",
+    "cal": 111,
+    "p": 2.6,
+    "c": 23,
+    "f": 0.9,
+    "micros": {
+      "fiber": 1.8,
+      "calcium": 10,
+      "iron": 0.4
+    }
+  },
+  "brown rice cakes": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 70,
+    "p": 1.5,
+    "c": 14,
+    "f": 0.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "brown rice, paneer bhurji & spinach": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 315,
+    "p": 22.6,
+    "c": 29,
+    "f": 12.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "brown soda bread toast": {
+    "baseQty": 100,
+    "unit": "slice",
+    "cal": 85,
+    "p": 3.5,
+    "c": 16,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "buckwheat soba noodles": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 200,
+    "p": 7.5,
+    "c": 42,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "burger (chicken)": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 350,
+    "p": 22,
+    "c": 36,
+    "f": 13,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "burger (veg)": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 290,
+    "p": 9,
+    "c": 38,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "butter": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 72,
+    "p": 0.1,
+    "c": 0.1,
+    "f": 8.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "butter (for cooking)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 36,
+    "p": 0,
+    "c": 0,
+    "f": 4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "butter chicken": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 340,
+    "p": 22,
+    "c": 8,
+    "f": 24,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "butter chicken & garlic naan": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 560,
+    "p": 30.5,
+    "c": 50,
+    "f": 25,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "butternut squash soup & lentil bobotie": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 270,
+    "p": 10,
+    "c": 44,
+    "f": 6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "camel milk": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 90,
+    "p": 6.2,
+    "c": 9.2,
+    "f": 3.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "campanha": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 20,
+    "p": 0.5,
+    "c": 3.5,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "canned black beans": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 110,
+    "p": 7,
+    "c": 20,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "canned brown lentils": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 110,
+    "p": 8,
+    "c": 18,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "canned chickpeas (garbanzo)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 130,
+    "p": 7,
+    "c": 22,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "canned light tuna in brine": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 65,
+    "p": 15,
+    "c": 0,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "canned tuna": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 116,
+    "p": 26,
+    "c": 0,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "canned tuna in water": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 20,
+    "c": 0,
+    "f": 0.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cape malay chicken curry": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 240,
+    "p": 22,
+    "c": 12,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cape malay chicken curry & rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 390,
+    "p": 25,
+    "c": 45,
+    "f": 11.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cape malay lentil curry & rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 295,
+    "p": 11.5,
+    "c": 55.5,
+    "f": 2.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cape malay spiced lentils": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 170,
+    "p": 9,
+    "c": 28,
+    "f": 2.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "carne moída com quiabo": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 240,
+    "p": 24,
+    "c": 6,
+    "f": 12,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "carrot sticks": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 40,
+    "p": 0.9,
+    "c": 9.5,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cassava farofa": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 70,
+    "p": 0.3,
+    "c": 16,
+    "f": 0.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "celery & baby carrots": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 30,
+    "p": 0.7,
+    "c": 7,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chakalaka & pap with beans": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 290,
+    "p": 8.5,
+    "c": 54,
+    "f": 3.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chamomile herbal tea": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 2,
+    "p": 0,
+    "c": 0.5,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chamomile tea": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 2,
+    "p": 0,
+    "c": 0.5,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chamomile tea & digestive biscuit": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 72,
+    "p": 1,
+    "c": 10.5,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chapatis": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 160,
+    "p": 6,
+    "c": 32,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cheese": {
+    "baseQty": 100,
+    "unit": "slice",
+    "cal": 280,
+    "p": 12,
+    "c": 32,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cheese & onion pasty & greens": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 320,
+    "p": 10,
+    "c": 37,
+    "f": 15.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chia seeds": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 50,
+    "p": 1.7,
+    "c": 4.2,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 350,
+    "p": 22,
+    "c": 36,
+    "f": 13,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken & barley soup": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 210,
+    "p": 18,
+    "c": 22,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken biryani": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 360,
+    "p": 24,
+    "c": 45,
+    "f": 9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken biryani (lean breast meat)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 340,
+    "p": 24,
+    "c": 42,
+    "f": 8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken biryani & raita": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 390,
+    "p": 26.8,
+    "c": 46,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken breast (cooked)": {
+    "baseQty": 100,
+    "unit": "grams (g)",
+    "cal": 165,
+    "p": 31,
+    "c": 0,
+    "f": 3.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 15,
+      "iron": 1
+    }
+  },
+  "chicken breast & avocado wrap": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 380,
+    "p": 42.1,
+    "c": 27.8,
+    "f": 10.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken breast filet": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 180,
+    "p": 36,
+    "c": 0,
+    "f": 3.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken coxinha & espresso": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 232,
+    "p": 9.6,
+    "c": 24.4,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken curry": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 240,
+    "p": 22,
+    "c": 6,
+    "f": 14,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken curry & basmati rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 385,
+    "p": 31.7,
+    "c": 39,
+    "f": 8.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken egg roll": {
+    "baseQty": 100,
+    "unit": "roll",
+    "cal": 450,
+    "p": 22,
+    "c": 40,
+    "f": 22,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken empada (pastry)": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 210,
+    "p": 8.5,
+    "c": 22,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken empada pie": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 210,
+    "p": 8.5,
+    "c": 22,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken keema paratha": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 395,
+    "p": 18,
+    "c": 54.5,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken machboos": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 380,
+    "p": 26,
+    "c": 48,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken machboos & saloona": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 415,
+    "p": 26.8,
+    "c": 54,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken polony slices & cucumber": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 110,
+    "p": 9.5,
+    "c": 5.5,
+    "f": 5.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken roll": {
+    "baseQty": 100,
+    "unit": "roll",
+    "cal": 360,
+    "p": 18,
+    "c": 36,
+    "f": 16,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken salami (lean)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 85,
+    "p": 10,
+    "c": 1.5,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken salami slices": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 100,
+    "p": 10.5,
+    "c": 4.5,
+    "f": 4.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken schnitzel, potatoes & sauerkraut": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 370,
+    "p": 31.2,
+    "c": 38.5,
+    "f": 10.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken shawarma strips & hummus": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 200,
+    "p": 24.1,
+    "c": 6.5,
+    "f": 9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken tikka bites & green tea": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 122,
+    "p": 19.1,
+    "c": 1.6,
+    "f": 4.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken, barley & vegetable soup": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 340,
+    "p": 23,
+    "c": 48,
+    "f": 5.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chicken, rice, beans & couve": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 400,
+    "p": 47.5,
+    "c": 36.5,
+    "f": 6.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chickpea & spinach curry with rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 330,
+    "p": 11.2,
+    "c": 60,
+    "f": 4.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chickpea spinach masala": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 180,
+    "p": 8,
+    "c": 28,
+    "f": 4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "chole bhature": {
+    "baseQty": 100,
+    "unit": "plate",
+    "cal": 450,
+    "p": 12,
+    "c": 60,
+    "f": 18,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "churrasco beef & cassava": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 510,
+    "p": 32,
+    "c": 41.5,
+    "f": 22.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "clear chicken broth": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 40,
+    "p": 4.5,
+    "c": 2,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "clear honey": {
+    "baseQty": 100,
+    "unit": "tbsp",
+    "cal": 60,
+    "p": 0,
+    "c": 15,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "coconut chutney": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 1,
+    "c": 3,
+    "f": 8.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "coffee with whole milk": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 45,
+    "p": 2,
+    "c": 3,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cold soba noodles & tempura veggies": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 330,
+    "p": 9.5,
+    "c": 61,
+    "f": 6.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cooked": {
+    "baseQty": 100,
+    "unit": "grams (g)",
+    "cal": 165,
+    "p": 31,
+    "c": 0,
+    "f": 3.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 15,
+      "iron": 1
+    }
+  },
+  "cooked brown rice": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 110,
+    "p": 2.6,
+    "c": 23,
+    "f": 0.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cooked quinoa": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 120,
+    "p": 4.4,
+    "c": 21.3,
+    "f": 1.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cooked rice & carioca beans": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 210,
+    "p": 8,
+    "c": 42,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cooked wild rice": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 120,
+    "p": 4.8,
+    "c": 25,
+    "f": 0.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cottage cheese": {
+    "baseQty": 100,
+    "unit": "grams (g)",
+    "cal": 265,
+    "p": 18.3,
+    "c": 1.2,
+    "f": 20.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 480,
+      "iron": 0.2
+    }
+  },
+  "cottage cheese (hüttenkäse)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 72,
+    "p": 9.6,
+    "c": 2.2,
+    "f": 2.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cottage cheese & cherries": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 115,
+    "p": 12.5,
+    "c": 9,
+    "f": 2.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "couve": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 30,
+    "p": 1.5,
+    "c": 4.5,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cow": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 61,
+    "p": 3.2,
+    "c": 4.8,
+    "f": 3.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 113,
+      "iron": 0.1
+    }
+  },
+  "cow milk 1.5% fat": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 96,
+    "p": 7,
+    "c": 9.8,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "coxinha": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 230,
+    "p": 9.5,
+    "c": 24,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "crackers with vegemite & butter": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 126,
+    "p": 3.1,
+    "c": 15.5,
+    "f": 5.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "creamy butternut squash soup": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 90,
+    "p": 1.5,
+    "c": 18,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "creamy mushroom risotto": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 240,
+    "p": 5,
+    "c": 38,
+    "f": 7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "creamy pork/turkey geschnetzeltes": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 260,
+    "p": 24,
+    "c": 4,
+    "f": 16,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "crisp apple": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 80,
+    "p": 0.5,
+    "c": 20,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "crumbled feta cheese": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 78,
+    "p": 4.2,
+    "c": 1.2,
+    "f": 6.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "crushed almonds": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 60,
+    "p": 2,
+    "c": 2,
+    "f": 5.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cucumber & avocado maki rolls": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 180,
+    "p": 3.2,
+    "c": 38,
+    "f": 2.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cucumber & tomato chopped": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 20,
+    "p": 0.8,
+    "c": 4,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cucumber mint raita": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 60,
+    "p": 3.2,
+    "c": 4.5,
+    "f": 3.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cucumber onion salad": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 15,
+    "p": 0.5,
+    "c": 3,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cucumber salad (sunomono)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 15,
+    "p": 0.4,
+    "c": 3,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cucumber slices": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 15,
+    "p": 0.7,
+    "c": 3.6,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cured beef jerky": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 116,
+    "p": 10,
+    "c": 3,
+    "f": 7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cured landjäger sausage": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 160,
+    "p": 11,
+    "c": 0.5,
+    "f": 13,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "cured turkey jerky": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 11,
+    "c": 2,
+    "f": 4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "dairy butter": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 36,
+    "p": 0,
+    "c": 0,
+    "f": 4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "dal fry": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 140,
+    "p": 7,
+    "c": 20,
+    "f": 4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "dal tadka": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 120,
+    "p": 6.5,
+    "c": 18,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "dark bread with quark & jam": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 250,
+    "p": 12.8,
+    "c": 44.4,
+    "f": 1.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "dark bread, gouda & ham": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 340,
+    "p": 22,
+    "c": 33,
+    "f": 12.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "dark chocolate (70% kakao)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 85,
+    "p": 1,
+    "c": 7,
+    "f": 6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "dark rye": {
+    "baseQty": 100,
+    "unit": "slice",
+    "cal": 85,
+    "p": 2.8,
+    "c": 16,
+    "f": 0.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "dark rye bread slice": {
+    "baseQty": 100,
+    "unit": "slice",
+    "cal": 80,
+    "p": 2.8,
+    "c": 16,
+    "f": 0.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "dark rye bread toast": {
+    "baseQty": 100,
+    "unit": "slices",
+    "cal": 160,
+    "p": 5.6,
+    "c": 32,
+    "f": 1.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "dates": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 60,
+    "p": 0.4,
+    "c": 16,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "dates & arabic coffee": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 134,
+    "p": 0.9,
+    "c": 36.4,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "dhokla": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 150,
+    "p": 5,
+    "c": 26,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "digestive biscuit": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 70,
+    "p": 1,
+    "c": 10,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "digestive biscuits & tea": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 155,
+    "p": 2.6,
+    "c": 21,
+    "f": 6.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "double egg roll": {
+    "baseQty": 100,
+    "unit": "roll",
+    "cal": 410,
+    "p": 15,
+    "c": 38,
+    "f": 20,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "dried apricots": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 60,
+    "p": 0.8,
+    "c": 15,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "dried sausage": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 140,
+    "p": 12,
+    "c": 0.5,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "edamame beans": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 110,
+    "p": 11,
+    "c": 9,
+    "f": 4.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "egg bhurji": {
+    "baseQty": 100,
+    "unit": "plate",
+    "cal": 190,
+    "p": 14,
+    "c": 4,
+    "f": 13,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "egg bhurji & whole wheat toast": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 340,
+    "p": 24,
+    "c": 35,
+    "f": 12.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "egg curry & whole wheat roti": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 370,
+    "p": 19,
+    "c": 40.6,
+    "f": 14.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "egg roll": {
+    "baseQty": 100,
+    "unit": "roll",
+    "cal": 320,
+    "p": 9.5,
+    "c": 38,
+    "f": 14.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "egg white salad cups": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 133,
+    "p": 15.3,
+    "c": 5,
+    "f": 5.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "egg whites": {
+    "baseQty": 100,
+    "unit": "eggs",
+    "cal": 68,
+    "p": 14.5,
+    "c": 1,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "egg/custard topping": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 320,
+    "p": 22,
+    "c": 16,
+    "f": 18,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "eggs (2 whole, 1 white)": {
+    "baseQty": 100,
+    "unit": "eggs",
+    "cal": 160,
+    "p": 15,
+    "c": 1,
+    "f": 10.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "eggs shakshuka (tomato sauce)": {
+    "baseQty": 100,
+    "unit": "eggs",
+    "cal": 170,
+    "p": 13,
+    "c": 5,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "emirati vegetable saloona stew": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 140,
+    "p": 3.5,
+    "c": 22,
+    "f": 4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "emmentaler cheese slices": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 115,
+    "p": 8.5,
+    "c": 0.2,
+    "f": 9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "english breakfast tea with dash milk": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 15,
+    "p": 0.6,
+    "c": 1,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "english mature cheddar": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 83,
+    "p": 5,
+    "c": 0.3,
+    "f": 7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "espresso coffee": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 2,
+    "p": 0.1,
+    "c": 0.4,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "falafel & tahini": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 260,
+    "p": 8.5,
+    "c": 24,
+    "f": 15.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "falafel wrap with hummus": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 380,
+    "p": 12.6,
+    "c": 54.5,
+    "f": 13.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fattoush salad": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 70,
+    "p": 1.8,
+    "c": 9.5,
+    "f": 3.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fava beans": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 165,
+    "p": 10,
+    "c": 24,
+    "f": 3.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fermented sauerkraut": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 15,
+    "p": 0.8,
+    "c": 3.5,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fermented soybeans": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 100,
+    "p": 9,
+    "c": 6,
+    "f": 5.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "file de frango": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 210,
+    "p": 40,
+    "c": 0,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "firm tofu cubed": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 9,
+    "c": 2,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fish cake (kamaboko) slices": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 80,
+    "p": 10,
+    "c": 8,
+    "f": 0.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fish curry": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 180,
+    "p": 18,
+    "c": 5,
+    "f": 9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fish curry (machher jhol) & rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 375,
+    "p": 26.2,
+    "c": 41,
+    "f": 10.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fish fry": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 220,
+    "p": 18,
+    "c": 8,
+    "f": 13,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fish fry & rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 370,
+    "p": 25.2,
+    "c": 34,
+    "f": 12.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "flattened rice (poha)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 260,
+    "p": 4.8,
+    "c": 58,
+    "f": 1.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "for cooking": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 36,
+    "p": 0,
+    "c": 0,
+    "f": 4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "foul mudammas (fava beans)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 165,
+    "p": 10,
+    "c": 24,
+    "f": 3.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "foul mudammas with olive oil & pita": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 385,
+    "p": 14.2,
+    "c": 50,
+    "f": 14.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "foxnuts": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 95,
+    "p": 2.4,
+    "c": 19,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "french fries": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 312,
+    "p": 3.4,
+    "c": 41,
+    "f": 15,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "french roll (pão de sal)": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 140,
+    "p": 4,
+    "c": 28,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh apple slices": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 25,
+    "p": 0.2,
+    "c": 6.5,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh avocado": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 65,
+    "p": 0.8,
+    "c": 3.5,
+    "f": 6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh avocado slices": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 50,
+    "p": 0.6,
+    "c": 2.8,
+    "f": 4.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh blueberries": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 30,
+    "p": 0.4,
+    "c": 7,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh cucumber slices": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 8,
+    "p": 0.3,
+    "c": 1.8,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh cucumber tomato salad": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 15,
+    "p": 0.5,
+    "c": 3,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh curly kale": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 25,
+    "p": 1.5,
+    "c": 4.5,
+    "f": 0.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh fruit salad": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 75,
+    "p": 0.8,
+    "c": 18,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh labneh cheese dip": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 60,
+    "p": 2.2,
+    "c": 1.8,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh papaya cubes": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 35,
+    "p": 0.4,
+    "c": 9,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh passionfruit pulp": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 30,
+    "p": 0.7,
+    "c": 7,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh plain curd": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 60,
+    "p": 3.5,
+    "c": 4.5,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh red apple": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 52,
+    "p": 0.3,
+    "c": 14,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh ricotta & spinach filling": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 6,
+    "c": 3,
+    "f": 6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh rocket & horseradish": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 15,
+    "p": 0.5,
+    "c": 1.5,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh salsa & spinach": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 20,
+    "p": 0.8,
+    "c": 4,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fresh sashimi (tuna & salmon)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 165,
+    "p": 26,
+    "c": 0,
+    "f": 6.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fried atlantic herring": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 240,
+    "p": 22,
+    "c": 0,
+    "f": 16,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "fried egg": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 80,
+    "p": 6,
+    "c": 0.3,
+    "f": 6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "gahwa": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 2,
+    "p": 0.1,
+    "c": 0.4,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "garbanzo": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 130,
+    "p": 7,
+    "c": 22,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "garlic butter green beans": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 60,
+    "p": 1.8,
+    "c": 7,
+    "f": 3.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "garlic naan bread": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 240,
+    "p": 6.5,
+    "c": 42,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "garlic paste (toum)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 50,
+    "p": 0.1,
+    "c": 2,
+    "f": 4.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "german dark bread": {
+    "baseQty": 100,
+    "unit": "slices",
+    "cal": 170,
+    "p": 5.5,
+    "c": 32,
+    "f": 1.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "german dark rye bread (vollkornbrot)": {
+    "baseQty": 100,
+    "unit": "slices",
+    "cal": 170,
+    "p": 5.5,
+    "c": 32,
+    "f": 1.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "german grain bread": {
+    "baseQty": 100,
+    "unit": "slices",
+    "cal": 170,
+    "p": 5.5,
+    "c": 32,
+    "f": 1.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "german magerquark": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 100,
+    "p": 18,
+    "c": 6,
+    "f": 0.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "german pickles (gewürzgurken)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 10,
+    "p": 0.3,
+    "c": 2,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "german potato pancakes (kartoffelpuffer)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 230,
+    "p": 3.5,
+    "c": 32,
+    "f": 9.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "german potato salad (oil/vinegar dressing)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 150,
+    "p": 2.2,
+    "c": 24,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "german smoked ham": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 75,
+    "p": 11,
+    "c": 0.5,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "german smoked ham (schinken)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 60,
+    "p": 9,
+    "c": 0.4,
+    "f": 2.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "geschnetzeltes & spätzle": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 450,
+    "p": 30.5,
+    "c": 40,
+    "f": 18,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "gewürzgurken": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 10,
+    "p": 0.3,
+    "c": 2,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "ghee": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 45,
+    "p": 0,
+    "c": 0,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "gherkin (pickled cucumber)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 8,
+    "p": 0.2,
+    "c": 1.6,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "ghugni": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 160,
+    "p": 7.5,
+    "c": 24,
+    "f": 4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "ginger tea with cow milk (1 tsp sugar)": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 40,
+    "p": 1.2,
+    "c": 6,
+    "f": 1.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "gouda cheese slice": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 110,
+    "p": 7.5,
+    "c": 0.6,
+    "f": 8.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "gouda cheese slices": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 145,
+    "p": 10,
+    "c": 0.8,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "granary bread toast": {
+    "baseQty": 100,
+    "unit": "slice",
+    "cal": 90,
+    "p": 4.5,
+    "c": 16,
+    "f": 1.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grated cheddar cheese": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 83,
+    "p": 5,
+    "c": 0.3,
+    "f": 7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grated paneer filling": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 110,
+    "p": 7.5,
+    "c": 1.2,
+    "f": 8.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "greek style natural yogurt": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 14,
+    "c": 5.5,
+    "f": 0.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "greek yogurt": {
+    "baseQty": 100,
+    "unit": "grams (g)",
+    "cal": 59,
+    "p": 10,
+    "c": 3.6,
+    "f": 0.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 110,
+      "iron": 0.1
+    }
+  },
+  "greek yogurt & passionfruit": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 120,
+    "p": 14.7,
+    "c": 12.5,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "greek yogurt parfait with granola": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 246,
+    "p": 20.3,
+    "c": 32,
+    "f": 4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "green salad with vinaigrette": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 30,
+    "p": 0.8,
+    "c": 3,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "green tea": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 2,
+    "p": 0.1,
+    "c": 0.4,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "green tea (no sugar)": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 2,
+    "p": 0.1,
+    "c": 0.4,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled asparagus spears": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 16,
+    "p": 1.8,
+    "c": 3.2,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled barramundi & sweet potato": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 306,
+    "p": 31.7,
+    "c": 29.2,
+    "f": 5.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled barramundi fillet": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 170,
+    "p": 28,
+    "c": 0,
+    "f": 5.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled braai chicken breast": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 190,
+    "p": 35,
+    "c": 0,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled broccoli": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 28,
+    "p": 2.2,
+    "c": 5.5,
+    "f": 0.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled broccolini": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 28,
+    "p": 2.4,
+    "c": 4.8,
+    "f": 0.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled cape hake fillet": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 150,
+    "p": 32,
+    "c": 0,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled chicken & sweet potato": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 316,
+    "p": 40.2,
+    "c": 29.5,
+    "f": 4.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled chicken breast": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 165,
+    "p": 31,
+    "c": 0,
+    "f": 3.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled chicken breast (file de frango)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 210,
+    "p": 40,
+    "c": 0,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled chicken breast slices": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 190,
+    "p": 37,
+    "c": 0,
+    "f": 4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled chicken tikka": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 120,
+    "p": 19,
+    "c": 1.2,
+    "f": 4.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled chicken, quinoa & broccoli": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 419,
+    "p": 54.1,
+    "c": 32.5,
+    "f": 7.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled hake & baked potato": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 260,
+    "p": 34.5,
+    "c": 25,
+    "f": 2.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled halloumi & flatbread": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 348,
+    "p": 17.8,
+    "c": 33,
+    "f": 16.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled halloumi & roasted vegetable salad": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 295,
+    "p": 15.2,
+    "c": 20.7,
+    "f": 17,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled halloumi cheese": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 190,
+    "p": 12.5,
+    "c": 1.2,
+    "f": 15,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled lamb chops, pumpkin & broccolini": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 338,
+    "p": 29.4,
+    "c": 15.8,
+    "f": 17.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled lamb tikka": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 250,
+    "p": 28,
+    "c": 0,
+    "f": 15,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled mackerel (saba)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 200,
+    "p": 18,
+    "c": 0,
+    "f": 14,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled mackerel & rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 340,
+    "p": 20.9,
+    "c": 30.5,
+    "f": 14.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled mushroom & tomato": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 20,
+    "p": 1,
+    "c": 3.5,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled paneer": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 265,
+    "p": 18.3,
+    "c": 1.2,
+    "f": 20.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled paneer cubes": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 140,
+    "p": 9,
+    "c": 1.5,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled paneer tikka masala curry": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 240,
+    "p": 12,
+    "c": 8,
+    "f": 18,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled pink salmon": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 180,
+    "p": 24,
+    "c": 0,
+    "f": 9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled plum tomato halves": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 22,
+    "p": 1,
+    "c": 4.8,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled sea bass fillet": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 160,
+    "p": 26,
+    "c": 0,
+    "f": 6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled shish tawook": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 210,
+    "p": 32,
+    "c": 1,
+    "f": 8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "grilled tomato halves": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 22,
+    "p": 1,
+    "c": 4.8,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "gulab jamun": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 150,
+    "p": 2,
+    "c": 26,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "ham roll-ups with gherkin": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 83,
+    "p": 11.2,
+    "c": 2.1,
+    "f": 3.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "hard boiled": {
+    "baseQty": 100,
+    "unit": "eggs",
+    "cal": 140,
+    "p": 12,
+    "c": 0.6,
+    "f": 9.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "hard boiled egg": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 74,
+    "p": 6.3,
+    "c": 0.4,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "hard boiled egg & almonds": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 164,
+    "p": 9.5,
+    "c": 3.4,
+    "f": 12.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "hard boiled egg & ham slices": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 124,
+    "p": 14.3,
+    "c": 0.9,
+    "f": 6.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "hearty lentil vegetable soup": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 150,
+    "p": 8,
+    "c": 24,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "heinz baked beans": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 80,
+    "p": 4.8,
+    "c": 13,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "honey": {
+    "baseQty": 100,
+    "unit": "tbsp",
+    "cal": 64,
+    "p": 0,
+    "c": 17,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "honey granola": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 130,
+    "p": 3,
+    "c": 22,
+    "f": 3.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "hot sencha green tea": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 2,
+    "p": 0.1,
+    "c": 0.4,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "hummus": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 140,
+    "p": 4.2,
+    "c": 12,
+    "f": 9.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "hummus & carrot sticks": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 180,
+    "p": 5.1,
+    "c": 20.5,
+    "f": 9.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "hummus dip": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 50,
+    "p": 1.5,
+    "c": 4.3,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "hummus, celery & carrots": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 170,
+    "p": 4.7,
+    "c": 17,
+    "f": 10.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "hüttenkäse": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 72,
+    "p": 9.6,
+    "c": 2.2,
+    "f": 2.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "idli & sambhar": {
+    "baseQty": 100,
+    "unit": "plate",
+    "cal": 210,
+    "p": 7,
+    "c": 40,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "idli, sambhar & chutney": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 320,
+    "p": 8,
+    "c": 49,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "in pods": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 110,
+    "p": 11,
+    "c": 9,
+    "f": 4.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "italian turkey meatballs": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 210,
+    "p": 22,
+    "c": 4,
+    "f": 12,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "jacket potato with baked beans & cheese": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 348,
+    "p": 14,
+    "c": 55.3,
+    "f": 7.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "jacket potato with tuna mayo": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 315,
+    "p": 24.3,
+    "c": 43,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "japanese rolled omelet (tamagoyaki)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 120,
+    "p": 8.5,
+    "c": 4,
+    "f": 8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "jeera rice": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 210,
+    "p": 3.5,
+    "c": 44,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "jerky": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 90,
+    "p": 18,
+    "c": 0.8,
+    "f": 1.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "juicy orange": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 60,
+    "p": 1.2,
+    "c": 14,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "kamaboko": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 80,
+    "p": 10,
+    "c": 8,
+    "f": 0.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "kangaroo biltong (jerky)": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 90,
+    "p": 18,
+    "c": 0.8,
+    "f": 1.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "kangaroo fillet & sweet potato mash": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 286,
+    "p": 42.6,
+    "c": 23.2,
+    "f": 2.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "kangaroo fillet steak": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 180,
+    "p": 39,
+    "c": 0,
+    "f": 1.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "kangaroo steak & eggs": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 280,
+    "p": 36,
+    "c": 17.3,
+    "f": 7.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "kartoffelpuffer": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 230,
+    "p": 3.5,
+    "c": 32,
+    "f": 9.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "käsespätzle & salad": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 410,
+    "p": 18.8,
+    "c": 48.2,
+    "f": 15.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "kathi roll": {
+    "baseQty": 100,
+    "unit": "roll",
+    "cal": 360,
+    "p": 16,
+    "c": 38,
+    "f": 16,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "keema": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 12,
+    "c": 0.5,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "khaman dhokla & tea": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 152,
+    "p": 5.1,
+    "c": 26.4,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "khichdi, papad & raita": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 325,
+    "p": 12.8,
+    "c": 54,
+    "f": 5.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "khubz": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 150,
+    "p": 5,
+    "c": 30,
+    "f": 1.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "knäckebrot": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 70,
+    "p": 2,
+    "c": 14,
+    "f": 0.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "knäckebrot & cottage cheese": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 142,
+    "p": 11.6,
+    "c": 16.2,
+    "f": 2.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "kolkata egg roll": {
+    "baseQty": 100,
+    "unit": "roll",
+    "cal": 320,
+    "p": 9.5,
+    "c": 38,
+    "f": 14.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "labneh dip": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 80,
+    "p": 3,
+    "c": 2.4,
+    "f": 6.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lamb tikka skewers & hummus": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 450,
+    "p": 33.7,
+    "c": 20,
+    "f": 27.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "landjäger": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 160,
+    "p": 11,
+    "c": 0.5,
+    "f": 13,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "large british eggs": {
+    "baseQty": 100,
+    "unit": "eggs",
+    "cal": 156,
+    "p": 13,
+    "c": 0.8,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "large poached eggs": {
+    "baseQty": 100,
+    "unit": "eggs",
+    "cal": 140,
+    "p": 12,
+    "c": 0.6,
+    "f": 9.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lean": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 85,
+    "p": 10,
+    "c": 1.5,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lean beef biltong": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 120,
+    "p": 21,
+    "c": 0.8,
+    "f": 3.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lean beef mince with okra (carne moída com quiabo)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 240,
+    "p": 24,
+    "c": 6,
+    "f": 12,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lean beef sirloin steak": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 290,
+    "p": 33,
+    "c": 0,
+    "f": 16,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lean breast meat": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 340,
+    "p": 24,
+    "c": 42,
+    "f": 8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lean chicken curry": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 220,
+    "p": 28,
+    "c": 4,
+    "f": 8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lean kangaroo fillet": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 120,
+    "p": 26,
+    "c": 0,
+    "f": 1.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lean kangaroo jerky": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 18,
+    "c": 0.8,
+    "f": 1.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lemon olive oil vinaigrette": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 70,
+    "p": 0,
+    "c": 0.5,
+    "f": 7.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lemon tea (no sugar)": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 4,
+    "p": 0.1,
+    "c": 1,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lentil & vegetable soup with rye bread": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 230,
+    "p": 10.8,
+    "c": 40,
+    "f": 2.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lentil bobotie slice": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 180,
+    "p": 8.5,
+    "c": 26,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lentil burger & beetroot salad": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 315,
+    "p": 14.8,
+    "c": 49,
+    "f": 6.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lentil potato shepherd's pie": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 260,
+    "p": 12,
+    "c": 42,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lentil potato stew (linseneintopf)": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 290,
+    "p": 14,
+    "c": 52,
+    "f": 1.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lentil shepherd's pie & broccoli": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 295,
+    "p": 14.8,
+    "c": 49,
+    "f": 4.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lentil soup, hummus & khubz": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 335,
+    "p": 13.3,
+    "c": 51.5,
+    "f": 10.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "lettuce, tomato, onion": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 20,
+    "p": 0.8,
+    "c": 4,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "light chicken broth": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 90,
+    "p": 14.5,
+    "c": 2,
+    "f": 2.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "light cream cheese": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 40,
+    "p": 1.5,
+    "c": 1.2,
+    "f": 3.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "light mayonnaise": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 40,
+    "p": 0.1,
+    "c": 1,
+    "f": 4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "light turkey breast slices": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 67,
+    "p": 13,
+    "c": 1,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "linseneintopf": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 290,
+    "p": 14,
+    "c": 52,
+    "f": 1.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "low-fat cottage cheese": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 12,
+    "c": 3,
+    "f": 2.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "low-fat dairy milk": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 90,
+    "p": 6.8,
+    "c": 9.8,
+    "f": 2.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "low-fat german quark": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 40,
+    "p": 7.2,
+    "c": 2.4,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "low-fat milk": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 90,
+    "p": 6.8,
+    "c": 9.6,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "low-fat paneer bhurji": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 180,
+    "p": 18,
+    "c": 3,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "low-fat paneer stuffing": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 135,
+    "p": 14,
+    "c": 2,
+    "f": 8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "luchi": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 180,
+    "p": 3.5,
+    "c": 24,
+    "f": 8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "macadamia nuts & orange": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 200,
+    "p": 2.8,
+    "c": 16.8,
+    "f": 15.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "machher jhol": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 375,
+    "p": 26.2,
+    "c": 41,
+    "f": 10.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "maize meal pap": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 150,
+    "p": 3,
+    "c": 32,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "maize porridge (pap)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 110,
+    "p": 2.3,
+    "c": 25,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "maize porridge (pap) with milk & honey": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 355,
+    "p": 10.6,
+    "c": 62.6,
+    "f": 6.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "maize porridge & eggs": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 250,
+    "p": 14.2,
+    "c": 24.6,
+    "f": 10.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "manakish": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 180,
+    "p": 4.5,
+    "c": 28,
+    "f": 5.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mandioca": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 160,
+    "p": 1.5,
+    "c": 38,
+    "f": 0.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "maracujá": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 4,
+    "p": 0,
+    "c": 1,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "marinara tomato sauce": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 50,
+    "p": 1.5,
+    "c": 8,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "marinated organic tempeh": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 150,
+    "p": 16,
+    "c": 7,
+    "f": 7.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "masala dosa": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 220,
+    "p": 4.5,
+    "c": 38,
+    "f": 6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "masala omelet & toast": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 336,
+    "p": 20,
+    "c": 30.6,
+    "f": 15.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mashed avocado": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 80,
+    "p": 1,
+    "c": 4.3,
+    "f": 7.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mashed banana": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 1,
+    "c": 23,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mashed potatoes (no cream)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 105,
+    "p": 2.2,
+    "c": 22,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mashed sweet potato (no cream)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 1.8,
+    "c": 20,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "matcha green tea powder": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 10,
+    "p": 0.8,
+    "c": 1.2,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "matcha soy milk": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 95,
+    "p": 8.8,
+    "c": 5.2,
+    "f": 4.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mcvities digestive biscuits": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 140,
+    "p": 2,
+    "c": 20,
+    "f": 6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "medjool date": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 66,
+    "p": 0.4,
+    "c": 18,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "medjool dates": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 132,
+    "p": 0.8,
+    "c": 36,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "micellar casein protein": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 110,
+    "p": 24,
+    "c": 1.5,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "milk": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 120,
+    "p": 6.8,
+    "c": 9.6,
+    "f": 6.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "minced chicken (keema)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 12,
+    "c": 0.5,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "minced lamb shepherd's pie": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 320,
+    "p": 20,
+    "c": 32,
+    "f": 12,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mint & coriander chutney": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 15,
+    "p": 0.5,
+    "c": 2,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "miso eggplant (nasu dengaku) & rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 245,
+    "p": 4.5,
+    "c": 49.5,
+    "f": 3.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mixed garden greens": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 20,
+    "p": 1.5,
+    "c": 4,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mixed greens & tomato salad": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 20,
+    "p": 0.8,
+    "c": 4,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mixed nuts portfolio": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 190,
+    "p": 5.3,
+    "c": 19,
+    "f": 12.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mixed veg (onion, peas)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 20,
+    "p": 1,
+    "c": 4.2,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mixed vegetable raita": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 50,
+    "p": 2.8,
+    "c": 4,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mixed vegetable sabzi": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 70,
+    "p": 2,
+    "c": 10,
+    "f": 2.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mixed vegetable sambhar": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 80,
+    "p": 3,
+    "c": 14,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mixed vegetables (onion, tomato)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 20,
+    "p": 1,
+    "c": 4,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mixed vegetables (shiitake, scallion, carrot)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 35,
+    "p": 1.2,
+    "c": 7,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mochar chop": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 180,
+    "p": 4,
+    "c": 22,
+    "f": 8.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "moong dal & rice khichdi": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 240,
+    "p": 8.5,
+    "c": 44,
+    "f": 3.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "moong dal chilla": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 220,
+    "p": 12,
+    "c": 36,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "moong dal chilla & mint chutney": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 345,
+    "p": 20,
+    "c": 39.2,
+    "f": 12,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "moong dal tadka": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 100,
+    "p": 6,
+    "c": 16,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mozzarella string cheese": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 80,
+    "p": 7,
+    "c": 1,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "muesli oats mix": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 180,
+    "p": 6,
+    "c": 32,
+    "f": 2.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "muesli with apple & walnuts": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 366,
+    "p": 14.7,
+    "c": 49.5,
+    "f": 12.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mugicha": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 2,
+    "p": 0,
+    "c": 0.5,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mujadara (rice & lentils with caramelized onions)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 260,
+    "p": 9.5,
+    "c": 48,
+    "f": 3.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mujadara & tomato salad": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 285,
+    "p": 10.3,
+    "c": 52,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "multigrain roll": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 130,
+    "p": 4.8,
+    "c": 24,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mushroom risotto & greens": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 260,
+    "p": 6.8,
+    "c": 40.8,
+    "f": 7.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "mutton curry": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 310,
+    "p": 24,
+    "c": 5,
+    "f": 21,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "nairns rough oatcakes": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 90,
+    "p": 2.2,
+    "c": 11.5,
+    "f": 3.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "nasu dengaku": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 245,
+    "p": 4.5,
+    "c": 49.5,
+    "f": 3.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "natto (fermented soybeans)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 100,
+    "p": 9,
+    "c": 6,
+    "f": 5.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "natto, rice & pickle": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 230,
+    "p": 11.6,
+    "c": 34.5,
+    "f": 5.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "no cream": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 105,
+    "p": 2.2,
+    "c": 22,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "no milk": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 2,
+    "p": 0,
+    "c": 0.5,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "no sugar": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 4,
+    "p": 0.1,
+    "c": 1,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "non-fat": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 100,
+    "p": 17,
+    "c": 6,
+    "f": 0.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "oat bran": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 55,
+    "p": 2.2,
+    "c": 10,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "oatcakes & cheddar cheese": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 173,
+    "p": 7.2,
+    "c": 11.8,
+    "f": 10.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "oatmeal": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 389,
+    "p": 16.9,
+    "c": 66.3,
+    "f": 6.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "oatmeal oats": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 150,
+    "p": 5,
+    "c": 26,
+    "f": 2.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "oatmeal with almonds & milk": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 534,
+    "p": 19,
+    "c": 72,
+    "f": 20,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "oatmeal with blueberries & chia": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 340,
+    "p": 15.6,
+    "c": 54.2,
+    "f": 6.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "oatmeal with papaya & honey": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 237,
+    "p": 10.6,
+    "c": 42.5,
+    "f": 2.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "oats (raw)": {
+    "baseQty": 100,
+    "unit": "grams (g)",
+    "cal": 389,
+    "p": 16.9,
+    "c": 66.3,
+    "f": 6.9,
+    "micros": {
+      "fiber": 10.6,
+      "calcium": 54,
+      "iron": 4.7
+    }
+  },
+  "oil/vinegar dressing": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 150,
+    "p": 2.2,
+    "c": 24,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "olive oil & balsamic dressing": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 110,
+    "p": 0,
+    "c": 1.5,
+    "f": 12,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "olive oil dressing": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 45,
+    "p": 0,
+    "c": 0,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "olive oil drizzled": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 90,
+    "p": 0,
+    "c": 0,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "omelet with spinach & ricotta": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 230,
+    "p": 18,
+    "c": 3.6,
+    "f": 15.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "onion cucumber raita": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 50,
+    "p": 2.8,
+    "c": 4,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "onion, peas": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 20,
+    "p": 1,
+    "c": 4.2,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "onion, tomato": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 20,
+    "p": 1,
+    "c": 4,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "organic açai pulp": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 1.2,
+    "c": 16,
+    "f": 2.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "organic tofu": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 76,
+    "p": 8,
+    "c": 1.9,
+    "f": 4.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "organic tofu (scrambled)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 80,
+    "p": 8.5,
+    "c": 1.5,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "ouma condensed milk rusk": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 120,
+    "p": 2,
+    "c": 18,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "palak": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 25,
+    "p": 2,
+    "c": 3,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "palm oil/dendê & coconut": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 220,
+    "p": 3.5,
+    "c": 18,
+    "f": 16,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pan-fried herring & potatoes": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 335,
+    "p": 24.4,
+    "c": 21,
+    "f": 16.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pan-fried teriyaki tofu": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 140,
+    "p": 11,
+    "c": 7,
+    "f": 7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "paneer (cottage cheese)": {
+    "baseQty": 100,
+    "unit": "grams (g)",
+    "cal": 265,
+    "p": 18.3,
+    "c": 1.2,
+    "f": 20.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 480,
+      "iron": 0.2
+    }
+  },
+  "paneer butter masala": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 320,
+    "p": 12,
+    "c": 10,
+    "f": 26,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "paneer paratha & curd": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 455,
+    "p": 23.5,
+    "c": 50.5,
+    "f": 17,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "paneer tikka masala & rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 365,
+    "p": 14.5,
+    "c": 35.5,
+    "f": 18.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pani puri": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 150,
+    "p": 2.5,
+    "c": 24,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pão de queijo & cafe com leite": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 265,
+    "p": 6.2,
+    "c": 31,
+    "f": 12,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pão de queijo & espresso": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 152,
+    "p": 2.9,
+    "c": 19.4,
+    "f": 6.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pão de sal": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 140,
+    "p": 4,
+    "c": 28,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pão de sal, eggs & coffee": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 292,
+    "p": 16.1,
+    "c": 29,
+    "f": 12,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pap": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 110,
+    "p": 2.3,
+    "c": 25,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "papaya & apple slices": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 75,
+    "p": 0.8,
+    "c": 18,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "paratha": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 260,
+    "p": 4.5,
+    "c": 38,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "passionfruit tea (maracujá)": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 4,
+    "p": 0,
+    "c": 1,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "passionfruit tea & almonds": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 94,
+    "p": 3.2,
+    "c": 4,
+    "f": 7.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pastry": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 210,
+    "p": 8.5,
+    "c": 22,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "peanut butter": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 95,
+    "p": 4,
+    "c": 3,
+    "f": 8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "peanuts & raisins": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 159,
+    "p": 5.5,
+    "c": 15,
+    "f": 9.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pepper, onion": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 35,
+    "p": 1.2,
+    "c": 7,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "peppermint herbal tea": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 2,
+    "p": 0,
+    "c": 0.5,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "peppermint tea & dark chocolate": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 87,
+    "p": 1,
+    "c": 7.5,
+    "f": 6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pickled beetroot salad": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 35,
+    "p": 1,
+    "c": 7,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pickled cabbage salad": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 15,
+    "p": 0.5,
+    "c": 3,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pickled cucumber": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 5,
+    "p": 0.1,
+    "c": 1,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pickled radish (takuan)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 10,
+    "p": 0.2,
+    "c": 2,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pitted tart cherries": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 25,
+    "p": 0.5,
+    "c": 6,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pizza slice (cheese)": {
+    "baseQty": 100,
+    "unit": "slice",
+    "cal": 280,
+    "p": 12,
+    "c": 32,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "plain greek yogurt (non-fat)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 100,
+    "p": 17,
+    "c": 6,
+    "f": 0.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "plain low-fat curd": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 60,
+    "p": 3.5,
+    "c": 4.5,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "poached egg": {
+    "baseQty": 100,
+    "unit": "egg",
+    "cal": 70,
+    "p": 6,
+    "c": 0.3,
+    "f": 4.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "poached eggs & grilled tomatoes": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 268,
+    "p": 18.5,
+    "c": 21.6,
+    "f": 12.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "poha": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 180,
+    "p": 3.5,
+    "c": 36,
+    "f": 2.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "poha & green tea": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 367,
+    "p": 9.7,
+    "c": 65,
+    "f": 8.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "porridge with honey & banana": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 390,
+    "p": 13.5,
+    "c": 70,
+    "f": 6.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "potato pancakes & applesauce": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 290,
+    "p": 3.7,
+    "c": 47,
+    "f": 9.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "prato feito (beef steak & beans)": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 445,
+    "p": 34.5,
+    "c": 46,
+    "f": 13,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "prato feito vegetariano": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 310,
+    "p": 14.8,
+    "c": 46.3,
+    "f": 7.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "premium lentil patty": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 150,
+    "p": 9,
+    "c": 18,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "puchka": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 150,
+    "p": 2.5,
+    "c": 24,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pumpkin lentil salad": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 190,
+    "p": 10.2,
+    "c": 33,
+    "f": 2.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "pumpkin seeds & dried apricots": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 145,
+    "p": 5.3,
+    "c": 17,
+    "f": 7.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "puri sabji": {
+    "baseQty": 100,
+    "unit": "plate",
+    "cal": 350,
+    "p": 8,
+    "c": 45,
+    "f": 16,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "queijo minas cheese": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 100,
+    "p": 7.2,
+    "c": 1,
+    "f": 7.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "quinoa, chickpea & kale salad": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 345,
+    "p": 12.9,
+    "c": 48.3,
+    "f": 11.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "raisins": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 45,
+    "p": 0.5,
+    "c": 11.8,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "rasgulla": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 120,
+    "p": 2,
+    "c": 26,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "raw": {
+    "baseQty": 100,
+    "unit": "grams (g)",
+    "cal": 389,
+    "p": 16.9,
+    "c": 66.3,
+    "f": 6.9,
+    "micros": {
+      "fiber": 10.6,
+      "calcium": 54,
+      "iron": 4.7
+    }
+  },
+  "raw almonds": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 173,
+    "p": 6.3,
+    "c": 6.1,
+    "f": 15,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "raw honey": {
+    "baseQty": 100,
+    "unit": "tbsp",
+    "cal": 60,
+    "p": 0,
+    "c": 15,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "raw macadamia nuts": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 140,
+    "p": 1.6,
+    "c": 2.8,
+    "f": 15,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "raw whole almonds": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 3.2,
+    "c": 3,
+    "f": 7.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "rice & lentils with caramelized onions": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 260,
+    "p": 9.5,
+    "c": 48,
+    "f": 3.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "rice cakes & cottage cheese": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 160,
+    "p": 13.5,
+    "c": 17,
+    "f": 3.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "rice, beans, sautéed mushrooms & farofa": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 320,
+    "p": 10.5,
+    "c": 62.5,
+    "f": 3.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roast beef & rocket wrap": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 295,
+    "p": 28,
+    "c": 25.5,
+    "f": 8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roast chicken, mash & veg": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 345,
+    "p": 34.6,
+    "c": 28,
+    "f": 10.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted barley tea (mugicha)": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 2,
+    "p": 0,
+    "c": 0.5,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted black chana": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 140,
+    "p": 8,
+    "c": 22,
+    "f": 2.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted chana & lemon tea": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 144,
+    "p": 8.1,
+    "c": 23,
+    "f": 2.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted chicken leg (skinless)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 210,
+    "p": 30,
+    "c": 0,
+    "f": 9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted chickpea flour": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 120,
+    "p": 6.5,
+    "c": 19.5,
+    "f": 1.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted garlic hummus": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 140,
+    "p": 4,
+    "c": 10,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted kent pumpkin": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 50,
+    "p": 1,
+    "c": 11,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted makhana": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 70,
+    "p": 2,
+    "c": 14.5,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted makhana (foxnuts)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 95,
+    "p": 2.4,
+    "c": 19,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted makhana & ginger chai": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 135,
+    "p": 3.6,
+    "c": 25,
+    "f": 1.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted papad": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 35,
+    "p": 1.5,
+    "c": 6,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted peanuts": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 85,
+    "p": 3.8,
+    "c": 2.4,
+    "f": 7.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted potatoes in olive oil": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 130,
+    "p": 2,
+    "c": 24,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted pumpkin & eggplant": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 75,
+    "p": 1.5,
+    "c": 15,
+    "f": 1.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted pumpkin & zucchini": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 75,
+    "p": 1.5,
+    "c": 15,
+    "f": 1.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted pumpkin cubes": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 50,
+    "p": 1,
+    "c": 11,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted sweet potato": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 1.8,
+    "c": 20,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roasted veggie & quinoa bowl": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 255,
+    "p": 8.7,
+    "c": 37.1,
+    "f": 8.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "rohu fish curry": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 190,
+    "p": 22,
+    "c": 3,
+    "f": 9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "rolled oats": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 230,
+    "p": 8,
+    "c": 40,
+    "f": 4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "rooibos herbal tea (no milk)": {
+    "baseQty": 100,
+    "unit": "cup",
+    "cal": 2,
+    "p": 0,
+    "c": 0.5,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "rooibos tea & ouma rusk": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 122,
+    "p": 2,
+    "c": 18.5,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "rooibos tea with low-fat milk": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 50,
+    "p": 3.2,
+    "c": 5.5,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "rooibos tea, milk & honey": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 72,
+    "p": 3.2,
+    "c": 11.5,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roti / chapati": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 80,
+    "p": 3,
+    "c": 16,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roti, dal, veg sabzi & curd": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 410,
+    "p": 17.9,
+    "c": 66.5,
+    "f": 8.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roti, grilled chicken & dal tadka": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 405,
+    "p": 41,
+    "c": 45,
+    "f": 5.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "roti, yellow moong dal, grilled paneer & salad": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 415,
+    "p": 20.7,
+    "c": 52.5,
+    "f": 13.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "rye crispbread (knäckebrot)": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 70,
+    "p": 2,
+    "c": 14,
+    "f": 0.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "rye toast with avocado & tomato": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 235,
+    "p": 6.9,
+    "c": 37.7,
+    "f": 7.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "saba": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 200,
+    "p": 18,
+    "c": 0,
+    "f": 14,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "salad (lettuce, tomato, onion)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 20,
+    "p": 0.8,
+    "c": 4,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "salmon (cooked)": {
+    "baseQty": 100,
+    "unit": "grams (g)",
+    "cal": 206,
+    "p": 22.1,
+    "c": 0,
+    "f": 12.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 12,
+      "iron": 0.8
+    }
+  },
+  "salmon fillet": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 206,
+    "p": 22,
+    "c": 0,
+    "f": 13,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "salmon salad with vinaigrette": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 310,
+    "p": 25.5,
+    "c": 5.5,
+    "f": 21.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "salmon, rice & miso soup": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 315,
+    "p": 23,
+    "c": 37,
+    "f": 7.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "saloona broth": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 35,
+    "p": 0.8,
+    "c": 6,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "salted grilled salmon (shake)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 130,
+    "p": 18,
+    "c": 0,
+    "f": 6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "salzkartoffeln": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 95,
+    "p": 2.4,
+    "c": 21,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "samosa": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 260,
+    "p": 3.5,
+    "c": 32,
+    "f": 13,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "samosas": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 520,
+    "p": 7,
+    "c": 64,
+    "f": 26,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sandesh": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 80,
+    "p": 2.5,
+    "c": 11,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sanitarium weet-bix": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 110,
+    "p": 3.8,
+    "c": 22,
+    "f": 0.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sashimi assortment & miso soup": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 325,
+    "p": 30.5,
+    "c": 31.5,
+    "f": 7.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sattu (roasted chickpea flour)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 120,
+    "p": 6.5,
+    "c": 19.5,
+    "f": 1.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sattu protein drink": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 120,
+    "p": 6,
+    "c": 19.5,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sausage slices (landjäger)": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 160,
+    "p": 11,
+    "c": 0.5,
+    "f": 13,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sautéed green beans": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 28,
+    "p": 1.5,
+    "c": 5.2,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sautéed mushrooms": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 40,
+    "p": 2.2,
+    "c": 4.5,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sauteed spinach (palak)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 25,
+    "p": 2,
+    "c": 3,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "savory chicken croquette (coxinha)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 230,
+    "p": 9.5,
+    "c": 24,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "schinken": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 60,
+    "p": 9,
+    "c": 0.4,
+    "f": 2.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "scotch egg & cucumber slices": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 225,
+    "p": 10.5,
+    "c": 15,
+    "f": 14.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "scottish smoked salmon": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 110,
+    "p": 13.2,
+    "c": 0,
+    "f": 6.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "scrambled": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 80,
+    "p": 8.5,
+    "c": 1.5,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "scrambled egg whites & cheese": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 150,
+    "p": 18,
+    "c": 1.5,
+    "f": 8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "scrambled eggs (1 whole, 2 whites)": {
+    "baseQty": 100,
+    "unit": "eggs",
+    "cal": 110,
+    "p": 14,
+    "c": 0.8,
+    "f": 5.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "scrambled eggs (2 whole)": {
+    "baseQty": 100,
+    "unit": "eggs",
+    "cal": 140,
+    "p": 12,
+    "c": 0.6,
+    "f": 9.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "scrambled eggs (butter)": {
+    "baseQty": 100,
+    "unit": "eggs",
+    "cal": 150,
+    "p": 12,
+    "c": 0.6,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "scrambled eggs & beef biltong": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 330,
+    "p": 35,
+    "c": 16.6,
+    "f": 14,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "scrambled eggs, avocado & toast": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 305,
+    "p": 19.8,
+    "c": 19.5,
+    "f": 17.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "scrambled tofu & grilled tomatoes": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 208,
+    "p": 15.5,
+    "c": 22.6,
+    "f": 6.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sea bass, new potatoes & spinach": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 260,
+    "p": 29.8,
+    "c": 20.8,
+    "f": 6.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "semi-skimmed milk": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 95,
+    "p": 7,
+    "c": 9.5,
+    "f": 3.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "senbei": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 90,
+    "p": 1.8,
+    "c": 20,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "senbei crackers & green tea": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 92,
+    "p": 1.9,
+    "c": 20.4,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "shake": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 130,
+    "p": 18,
+    "c": 0,
+    "f": 6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "shakshuka, pita & labneh": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 370,
+    "p": 19.7,
+    "c": 34.8,
+    "f": 17,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "shaved beef biltong": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 16,
+    "c": 0.6,
+    "f": 2.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "shelled pumpkin seeds": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 85,
+    "p": 4.5,
+    "c": 2,
+    "f": 7.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "shelled walnuts": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 100,
+    "p": 2.2,
+    "c": 2,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "shepherds pie & broccoli": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 348,
+    "p": 22.2,
+    "c": 37.5,
+    "f": 12.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "shiitake, scallion, carrot": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 35,
+    "p": 1.2,
+    "c": 7,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "shish tawook & tabbouleh": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 355,
+    "p": 34.1,
+    "c": 13,
+    "f": 18.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "shorbat adas": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 120,
+    "p": 6.5,
+    "c": 20,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "shredded cheddar cheese": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 80,
+    "p": 5,
+    "c": 0.5,
+    "f": 6.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "shredded chicken breast": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 50,
+    "p": 10,
+    "c": 0,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "shredded seaweed & onion": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 10,
+    "p": 0.5,
+    "c": 2,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "silken tofu": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 60,
+    "p": 6.5,
+    "c": 2,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sirloin steak, sweet potato & asparagus": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 414,
+    "p": 37,
+    "c": 27.2,
+    "f": 16.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "skewered grilled chicken (yakitori)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 190,
+    "p": 26,
+    "c": 4,
+    "f": 7.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "skim milk": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 70,
+    "p": 7,
+    "c": 10,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "skinless": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 210,
+    "p": 30,
+    "c": 0,
+    "f": 9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sliced almonds": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 3,
+    "c": 3,
+    "f": 8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sliced banana": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 45,
+    "p": 0.5,
+    "c": 11.5,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sliced chicken polony": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 95,
+    "p": 9,
+    "c": 2.5,
+    "f": 5.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sliced cucumber & mint": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 8,
+    "p": 0.3,
+    "c": 1.8,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sliced lean turkey": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 65,
+    "p": 13,
+    "c": 0.5,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sliced plum tomato": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 10,
+    "p": 0.5,
+    "c": 2.2,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sliced roast beef": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 140,
+    "p": 23,
+    "c": 0,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sliced strawberries": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 16,
+    "p": 0.3,
+    "c": 4,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sliced tomato": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 6,
+    "p": 0.3,
+    "c": 1.3,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sliced turkey breast": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 18,
+    "c": 0.8,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "smashed avo & poached eggs": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 295,
+    "p": 16.8,
+    "c": 21.1,
+    "f": 16.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "smashed avo, grilled feta & toast": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 245,
+    "p": 9,
+    "c": 23.5,
+    "f": 14.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "smoked salmon & scrambled eggs": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 305,
+    "p": 30.7,
+    "c": 16.8,
+    "f": 12.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "smooth hummus dip": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 70,
+    "p": 2.1,
+    "c": 5.5,
+    "f": 4.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "soft": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 110,
+    "p": 2.2,
+    "c": 24,
+    "f": 0.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sourdough bread toast": {
+    "baseQty": 100,
+    "unit": "slice",
+    "cal": 90,
+    "p": 4,
+    "c": 17,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sourdough toast": {
+    "baseQty": 100,
+    "unit": "slice",
+    "cal": 90,
+    "p": 4,
+    "c": 17,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "south african chakalaka with baked beans": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 140,
+    "p": 5.5,
+    "c": 22,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "south african veggie patty": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 130,
+    "p": 10,
+    "c": 12,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "soy-glazed rice crackers (senbei)": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 90,
+    "p": 1.8,
+    "c": 20,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "soya chunks curry": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 180,
+    "p": 20,
+    "c": 12,
+    "f": 6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "soya chunks curry & rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 305,
+    "p": 22.6,
+    "c": 39,
+    "f": 6.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "spiced shawarma chicken breast": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 130,
+    "p": 22,
+    "c": 1,
+    "f": 4.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "spiced vegetable chakalaka": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 60,
+    "p": 1.5,
+    "c": 10,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "spicy onion tomato gravy": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 70,
+    "p": 1.8,
+    "c": 8,
+    "f": 3.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "spicy pan-fried rohu fish": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 220,
+    "p": 22,
+    "c": 2,
+    "f": 12,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "spinach & vinaigrette": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 30,
+    "p": 1.2,
+    "c": 4,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sprouted moong beans": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 120,
+    "p": 9,
+    "c": 19,
+    "f": 0.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sprouted moong chaat": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 120,
+    "p": 9,
+    "c": 19,
+    "f": 0.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "steam": {
+    "baseQty": 100,
+    "unit": "grams (g)",
+    "cal": 35,
+    "p": 2.4,
+    "c": 7.2,
+    "f": 0.4,
+    "micros": {
+      "fiber": 3.3,
+      "calcium": 47,
+      "iron": 0.7
+    }
+  },
+  "steamed asparagus": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 16,
+    "p": 1.8,
+    "c": 3.2,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "steamed baby spinach": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 20,
+    "p": 1.8,
+    "c": 2.8,
+    "f": 0.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "steamed basmati rice": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 150,
+    "p": 3.2,
+    "c": 32,
+    "f": 0.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "steamed bok choy with sesame": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 35,
+    "p": 1.8,
+    "c": 3.5,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "steamed broccoli": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 28,
+    "p": 2.2,
+    "c": 5.5,
+    "f": 0.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "steamed broccoli florets": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 35,
+    "p": 2.8,
+    "c": 7,
+    "f": 0.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "steamed brussels sprouts": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 30,
+    "p": 2.4,
+    "c": 6,
+    "f": 0.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "steamed green peas": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 40,
+    "p": 2.5,
+    "c": 7,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "steamed idlis": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 150,
+    "p": 4,
+    "c": 32,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "steamed kamaboko fish cake": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 80,
+    "p": 10,
+    "c": 8,
+    "f": 0.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "steamed khaman dhokla": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 150,
+    "p": 5,
+    "c": 26,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "steamed rice": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 125,
+    "p": 2.6,
+    "c": 27,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "steamed sweet potato": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 1.8,
+    "c": 20,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "steamed white rice": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 130,
+    "p": 2.7,
+    "c": 28,
+    "f": 0.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "stew": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 255,
+    "p": 5.5,
+    "c": 49.5,
+    "f": 3.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "stir-fry veggies (pepper, onion)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 35,
+    "p": 1.2,
+    "c": 7,
+    "f": 0.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "strawberry fruit jam": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 40,
+    "p": 0.1,
+    "c": 10,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "string cheese & almonds": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 170,
+    "p": 10.2,
+    "c": 4,
+    "f": 12.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sunomono": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 15,
+    "p": 0.4,
+    "c": 3,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sushi selection & edamame": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 328,
+    "p": 23.8,
+    "c": 42.2,
+    "f": 6.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sweet potato": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 86,
+    "p": 1.6,
+    "c": 20,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sweet potato & black bean bowl": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 220,
+    "p": 9.6,
+    "c": 44,
+    "f": 0.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "sweet potato & feta wrap": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 298,
+    "p": 10,
+    "c": 43.2,
+    "f": 8.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "swiss cheese slices": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 110,
+    "p": 8,
+    "c": 0.4,
+    "f": 8.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tabbouleh salad": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 95,
+    "p": 2,
+    "c": 10,
+    "f": 6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tahini dip": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 90,
+    "p": 2.5,
+    "c": 3,
+    "f": 8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "takuan": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 10,
+    "p": 0.2,
+    "c": 2,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tamagoyaki": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 120,
+    "p": 8.5,
+    "c": 4,
+    "f": 8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tamagoyaki, rice & pickle": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 280,
+    "p": 11.7,
+    "c": 39,
+    "f": 8.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tapioca crepe with cheese & tomato": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 266,
+    "p": 7.7,
+    "c": 41.3,
+    "f": 7.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tapioca crepe with eggs & cheese": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 310,
+    "p": 18.2,
+    "c": 40.5,
+    "f": 8.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tapioca flour crepe": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 160,
+    "p": 0.2,
+    "c": 39,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tempeh & veggie wrap": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 300,
+    "p": 20.8,
+    "c": 33,
+    "f": 9.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tempura sweet potato & zucchini": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 110,
+    "p": 1.5,
+    "c": 15,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "teriyaki tofu & bok choy": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 320,
+    "p": 18.3,
+    "c": 39,
+    "f": 10.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "teriyaki tofu rice bowl": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 275,
+    "p": 14,
+    "c": 36.5,
+    "f": 7.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "thai green tofu curry & rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 315,
+    "p": 13.5,
+    "c": 39.5,
+    "f": 11.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "thick labneh dip": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 80,
+    "p": 3,
+    "c": 2.4,
+    "f": 6.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "three bean veggie chili": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 320,
+    "p": 19,
+    "c": 42.5,
+    "f": 8.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "three-bean stew (black, kidney, pinto)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 240,
+    "p": 14,
+    "c": 42,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tofu in thai green curry sauce": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 190,
+    "p": 11,
+    "c": 12,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tofu scramble & avocado toast": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 305,
+    "p": 17.3,
+    "c": 35,
+    "f": 12.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tofu stir-fry with brown rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 235,
+    "p": 12.8,
+    "c": 32,
+    "f": 6.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tofu, rice & miso soup": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 245,
+    "p": 11.5,
+    "c": 39,
+    "f": 4.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tomato & mustard salad": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 25,
+    "p": 0.8,
+    "c": 4,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tomato garlic salad": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 25,
+    "p": 0.8,
+    "c": 4,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tomato salsa (campanha)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 20,
+    "p": 0.5,
+    "c": 3.5,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tomato sauce": {
+    "baseQty": 100,
+    "unit": "eggs",
+    "cal": 170,
+    "p": 13,
+    "c": 5,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tossed feta & olive oil": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 60,
+    "p": 2.8,
+    "c": 0.8,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "toum": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 50,
+    "p": 0.1,
+    "c": 2,
+    "f": 4.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "traditional cheese bread": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 220,
+    "p": 4.2,
+    "c": 28,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "traditional egg spätzle": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 190,
+    "p": 6.5,
+    "c": 36,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "traditional hummus": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 140,
+    "p": 4.2,
+    "c": 11,
+    "f": 9.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "traditional labneh": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 40,
+    "p": 1.5,
+    "c": 1.2,
+    "f": 3.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "traditional pork scotch egg": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 210,
+    "p": 10,
+    "c": 12,
+    "f": 14,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "traditional rolled oats": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 190,
+    "p": 6,
+    "c": 34,
+    "f": 3.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "traditional spätzle pasta": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 240,
+    "p": 8,
+    "c": 45,
+    "f": 2.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "traditional veg potjiekos stew": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 130,
+    "p": 3,
+    "c": 22,
+    "f": 3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tsuyu dipping sauce": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 20,
+    "p": 0.5,
+    "c": 4,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tuna & salmon": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 165,
+    "p": 26,
+    "c": 0,
+    "f": 6.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tuna flakes cup": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 67,
+    "p": 15,
+    "c": 0.5,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "tuna, salmon, prawn": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 240,
+    "p": 15,
+    "c": 35,
+    "f": 2.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "turkey & swiss cheese sandwich": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 380,
+    "p": 38,
+    "c": 31.4,
+    "f": 12.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "turkey bacon": {
+    "baseQty": 100,
+    "unit": "slices",
+    "cal": 70,
+    "p": 6,
+    "c": 0.5,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "turkey bacon, egg white omelet & toast": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 218,
+    "p": 24.5,
+    "c": 16.5,
+    "f": 6.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "turkey breast slices": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 65,
+    "p": 13,
+    "c": 0.5,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "turkey jerky & walnuts": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 190,
+    "p": 13.2,
+    "c": 4,
+    "f": 14,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "turkey meatballs & whole wheat pasta": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 540,
+    "p": 33.5,
+    "c": 70,
+    "f": 15,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "turkey roll-ups & chamomile tea": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 67,
+    "p": 13,
+    "c": 1,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "turkey roll-ups with cream cheese": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 130,
+    "p": 19.5,
+    "c": 2,
+    "f": 4.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "turkey roll-ups with labneh": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 130,
+    "p": 19.5,
+    "c": 2,
+    "f": 4.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "turkey slice & chamomile tea": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 57,
+    "p": 11,
+    "c": 0.9,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "turkey slices": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 65,
+    "p": 13,
+    "c": 0.5,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "turkey slices & chamomile tea": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 57,
+    "p": 11,
+    "c": 0.9,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "turkey slices & macadamia nuts": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 170,
+    "p": 14.2,
+    "c": 2.6,
+    "f": 12,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "turmeric & black pepper": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 5,
+    "p": 0.1,
+    "c": 1,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "udon noodles in kelp dashi": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 220,
+    "p": 6,
+    "c": 46,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "unsweetened soy milk": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 85,
+    "p": 8,
+    "c": 4,
+    "f": 4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "upma": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 210,
+    "p": 4,
+    "c": 36,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "veg": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 290,
+    "p": 9,
+    "c": 38,
+    "f": 11,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegemite yeast extract": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 10,
+    "p": 1.3,
+    "c": 1,
+    "f": 0.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetable & tofu feijoada": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 180,
+    "p": 9,
+    "c": 26,
+    "f": 4.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetable basmati pulao": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 250,
+    "p": 5.5,
+    "c": 46,
+    "f": 4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetable moqueca (palm oil/dendê & coconut)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 220,
+    "p": 3.5,
+    "c": 18,
+    "f": 16,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetable moqueca & rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 345,
+    "p": 6,
+    "c": 45.5,
+    "f": 16.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetable potjiekos (stew) & rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 255,
+    "p": 5.5,
+    "c": 49.5,
+    "f": 3.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetable pulao & cucumber raita": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 310,
+    "p": 8.7,
+    "c": 50.5,
+    "f": 7.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetable saloona & rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 290,
+    "p": 6.7,
+    "c": 54,
+    "f": 4.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetable sushi roll & edamame": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 268,
+    "p": 12,
+    "c": 45.2,
+    "f": 6.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetable udon noodle soup": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 255,
+    "p": 7.2,
+    "c": 53,
+    "f": 1.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetable wellington & roast potatoes": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 410,
+    "p": 12.5,
+    "c": 63,
+    "f": 12.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetarian abendbrot": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 325,
+    "p": 15.8,
+    "c": 34.8,
+    "f": 12.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetarian burger & sweet potato fries": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 330,
+    "p": 16.7,
+    "c": 52,
+    "f": 6.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetarian cheese & onion pasty": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 280,
+    "p": 7.5,
+    "c": 30,
+    "f": 15,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetarian full english": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 290,
+    "p": 19.3,
+    "c": 36.5,
+    "f": 6.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetarian sausage": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 110,
+    "p": 9.5,
+    "c": 5,
+    "f": 5.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetarian tofu sausage": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 120,
+    "p": 9,
+    "c": 4.5,
+    "f": 7.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vegetarian wellington slice": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 240,
+    "p": 8,
+    "c": 32,
+    "f": 9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "veggie & grain patty": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 140,
+    "p": 11,
+    "c": 14,
+    "f": 5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "veggie burger & baked sweet potato fries": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 320,
+    "p": 15.2,
+    "c": 50,
+    "f": 6.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "veggie feijoada & rice": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 305,
+    "p": 11.5,
+    "c": 53.5,
+    "f": 4.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "veggie sausage & potato salad": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 270,
+    "p": 11.2,
+    "c": 28.5,
+    "f": 12.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vinagrete": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 25,
+    "p": 0.5,
+    "c": 4,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vinegar salad (vinagrete)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 25,
+    "p": 0.5,
+    "c": 4,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vollkornbrot": {
+    "baseQty": 100,
+    "unit": "slices",
+    "cal": 170,
+    "p": 5.5,
+    "c": 32,
+    "f": 1.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vollkornbrot (dark rye)": {
+    "baseQty": 100,
+    "unit": "slice",
+    "cal": 85,
+    "p": 2.8,
+    "c": 16,
+    "f": 0.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vollkornbrot with cheese & boiled egg": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 269,
+    "p": 16.6,
+    "c": 17,
+    "f": 14.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "vollkornbrot with cheese & cucumber": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 293,
+    "p": 14.3,
+    "c": 34,
+    "f": 10.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "wakame miso soup": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 35,
+    "p": 2,
+    "c": 4,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "walnut halves": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 100,
+    "p": 2.3,
+    "c": 2,
+    "f": 9.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "walnuts": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 100,
+    "p": 2.2,
+    "c": 2,
+    "f": 10,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "warm camel milk & date": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 156,
+    "p": 6.6,
+    "c": 27.2,
+    "f": 3.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "warm cow milk": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 120,
+    "p": 6.8,
+    "c": 9.6,
+    "f": 6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "warm haldi milk": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 95,
+    "p": 6.9,
+    "c": 10.6,
+    "f": 2.1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "warm milk & honey": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 117,
+    "p": 7,
+    "c": 15.5,
+    "f": 3.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "warm milk with almonds": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 180,
+    "p": 8.5,
+    "c": 11.5,
+    "f": 11.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "warm milk with honey": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 117,
+    "p": 7,
+    "c": 15.5,
+    "f": 3.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "warm oats with chia & berries": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 240,
+    "p": 8.2,
+    "c": 37.2,
+    "f": 6.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "water": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 0,
+    "p": 0,
+    "c": 0,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "water & cinnamon": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 0,
+    "p": 0,
+    "c": 0,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "water & lemon juice": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 5,
+    "p": 0.1,
+    "c": 1.2,
+    "f": 0,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "weet-bix, milk & banana": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 245,
+    "p": 11.1,
+    "c": 43.3,
+    "f": 2.9,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "wheat burger bun": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 120,
+    "p": 4,
+    "c": 22,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "wheat roti / chapati": {
+    "baseQty": 100,
+    "unit": "pieces",
+    "cal": 120,
+    "p": 3.1,
+    "c": 22.4,
+    "f": 2.2,
+    "micros": {
+      "fiber": 2.8,
+      "calcium": 12,
+      "iron": 0.9
+    }
+  },
+  "whey protein": {
+    "baseQty": 100,
+    "unit": "scoop",
+    "cal": 120,
+    "p": 24,
+    "c": 3,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "whey protein isolate": {
+    "baseQty": 100,
+    "unit": "scoop (30g)",
+    "cal": 120,
+    "p": 25,
+    "c": 1.5,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 120,
+      "iron": 0.5
+    }
+  },
+  "whey protein shake & carrots": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 150,
+    "p": 25.9,
+    "c": 10.5,
+    "f": 0.7,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "whey/casein protein shake": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 110,
+    "p": 24,
+    "c": 1.5,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "white maize meal (pap)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 175,
+    "p": 3.8,
+    "c": 38,
+    "f": 0.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "white maize porridge (soft)": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 110,
+    "p": 2.2,
+    "c": 24,
+    "f": 0.4,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "white rice": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 195,
+    "p": 4,
+    "c": 42,
+    "f": 0.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "white rice (cooked)": {
+    "baseQty": 100,
+    "unit": "grams (g)",
+    "cal": 130,
+    "p": 2.7,
+    "c": 28.2,
+    "f": 0.3,
+    "micros": {
+      "fiber": 0.4,
+      "calcium": 10,
+      "iron": 0.2
+    }
+  },
+  "white rice & carioca beans": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 210,
+    "p": 8,
+    "c": 42,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "whole eggs": {
+    "baseQty": 100,
+    "unit": "eggs",
+    "cal": 140,
+    "p": 12,
+    "c": 0.6,
+    "f": 9.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "whole eggs (boiled)": {
+    "baseQty": 100,
+    "unit": "grams (g)",
+    "cal": 155,
+    "p": 12.6,
+    "c": 1.1,
+    "f": 10.6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 50,
+      "iron": 1.2
+    }
+  },
+  "whole eggs (hard boiled)": {
+    "baseQty": 100,
+    "unit": "eggs",
+    "cal": 140,
+    "p": 12,
+    "c": 0.6,
+    "f": 9.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "whole grain sourdough": {
+    "baseQty": 100,
+    "unit": "slice",
+    "cal": 100,
+    "p": 4.5,
+    "c": 18,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "whole milk": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 150,
+    "p": 8,
+    "c": 12,
+    "f": 8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "whole milk (cow)": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 61,
+    "p": 3.2,
+    "c": 4.8,
+    "f": 3.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 113,
+      "iron": 0.1
+    }
+  },
+  "whole wheat bread slices": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 160,
+    "p": 8,
+    "c": 30,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "whole wheat bread toast": {
+    "baseQty": 100,
+    "unit": "slices",
+    "cal": 160,
+    "p": 8,
+    "c": 30,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "whole wheat burger bun": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 120,
+    "p": 4.5,
+    "c": 22,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "whole wheat dough": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 260,
+    "p": 6,
+    "c": 54,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "whole wheat paratha": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 260,
+    "p": 6,
+    "c": 44,
+    "f": 6,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "whole wheat pita bread": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 130,
+    "p": 4.2,
+    "c": 26,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "whole wheat roti": {
+    "baseQty": 100,
+    "unit": "pcs",
+    "cal": 160,
+    "p": 5.2,
+    "c": 32,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "whole wheat spaghetti": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 280,
+    "p": 10,
+    "c": 58,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "whole wheat toast": {
+    "baseQty": 100,
+    "unit": "slice",
+    "cal": 80,
+    "p": 4,
+    "c": 15,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "whole wheat wrap": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 130,
+    "p": 4,
+    "c": 22,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "wholemeal crusty roll": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 130,
+    "p": 5,
+    "c": 26,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "wholemeal flatbread wrap": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 130,
+    "p": 4,
+    "c": 22,
+    "f": 2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "wholemeal toast": {
+    "baseQty": 100,
+    "unit": "slice",
+    "cal": 80,
+    "p": 4,
+    "c": 15,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "wholemeal tortilla wrap": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 140,
+    "p": 4.5,
+    "c": 24,
+    "f": 2.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "yakitori": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 190,
+    "p": 26,
+    "c": 4,
+    "f": 7.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "yakitori chicken bento": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 330,
+    "p": 29,
+    "c": 34.5,
+    "f": 7.8,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "yellow dal tadka": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 80,
+    "p": 4.8,
+    "c": 13,
+    "f": 1.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "yellow lentil soup (shorbat adas)": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 120,
+    "p": 6.5,
+    "c": 20,
+    "f": 1.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "yellow moong dal": {
+    "baseQty": 100,
+    "unit": "ml",
+    "cal": 110,
+    "p": 7,
+    "c": 20,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "yellow rice with raisins": {
+    "baseQty": 100,
+    "unit": "g",
+    "cal": 140,
+    "p": 2.6,
+    "c": 30,
+    "f": 1,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "yellow toor dal (cooked)": {
+    "baseQty": 100,
+    "unit": "grams (g)",
+    "cal": 116,
+    "p": 6.8,
+    "c": 19.8,
+    "f": 1.2,
+    "micros": {
+      "fiber": 3.5,
+      "calcium": 24,
+      "iron": 1.1
+    }
+  },
+  "zaatar flatbread & labneh": {
+    "baseQty": 100,
+    "unit": "meal serving",
+    "cal": 260,
+    "p": 7.5,
+    "c": 30.4,
+    "f": 12.3,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "zaatar spice flatbread (manakish)": {
+    "baseQty": 100,
+    "unit": "pc",
+    "cal": 180,
+    "p": 4.5,
+    "c": 28,
+    "f": 5.5,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  }
+};
+var citiesMap = {
       IN: [
         { id: 'mumbai', name: 'Mumbai', tz: 'IST (UTC+5:30)', habits: 'Dinner is typically eaten late (8:30 PM - 9:30 PM). Vegetarian-friendly, rice & lentil-heavy meals are standard daily mainstays.', timings: { breakfast: '08:30 AM', snack1: '11:00 AM', lunch: '01:30 PM', snack2: '05:30 PM', dinner: '09:30 PM', bedtime: '11:00 PM' } },
         { id: 'delhi', name: 'Delhi', tz: 'IST (UTC+5:30)', habits: 'Hearty breakfasts. Rich wheat, dairy (paneer, ghee), and legume-heavy diet are local staples.', timings: { breakfast: '08:30 AM', snack1: '11:30 AM', lunch: '02:00 PM', snack2: '06:00 PM', dinner: '09:30 PM', bedtime: '11:00 PM' } },
@@ -8674,14 +29018,14 @@ const citiesMap = {
     };;
 
 if (typeof window !== "undefined") {
+  window.FOODS_JSON_ARRAY = FOODS_JSON_ARRAY;
   window.DIET_DATABASE = DIET_DATABASE;
   window.COMMON_FOODS_DIRECTORY = COMMON_FOODS_DIRECTORY;
   window.citiesMap = citiesMap;
 }
 if (typeof globalThis !== "undefined") {
+  globalThis.FOODS_JSON_ARRAY = FOODS_JSON_ARRAY;
   globalThis.DIET_DATABASE = DIET_DATABASE;
   globalThis.COMMON_FOODS_DIRECTORY = COMMON_FOODS_DIRECTORY;
   globalThis.citiesMap = citiesMap;
 }
-
-export { DIET_DATABASE, COMMON_FOODS_DIRECTORY, citiesMap };
