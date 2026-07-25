@@ -2789,14 +2789,17 @@ const FOOD_DATABASE = {
 };
 
 function initTrackFood() {
-  loadTrackFoodData();
-  initTrackFoodDateInput();
-  populateCategorySelects();
-  renderTrackFoodAll();
-  renderTrackFoodInsights();
-  renderTrackFoodSaved();
-  render7DayTrendsChart();
-  toggleTrackFoodAction('close');
+  try {
+    if (!selectedTrackFoodDate) selectedTrackFoodDate = getTodayDateString();
+    loadTrackFoodData();
+    initTrackFoodDateInput();
+    populateCategorySelects();
+    populateSavedMealDropdown();
+    switchTrackFoodTab('all');
+    toggleTrackFoodAction('close');
+  } catch (e) {
+    console.error('Error initializing Track Food:', e);
+  }
 }
 
 function initTrackFoodDateInput() {
@@ -3355,6 +3358,7 @@ function renderTrackFoodAll() {
     const dateInput = document.getElementById('tf-log-date');
     if (dateInput) {
       dateInput.value = selectedTrackFoodDate;
+      dateInput.setAttribute('value', selectedTrackFoodDate);
     }
 
     const loggedItems = getLoggedItemsForSelectedDate();
@@ -3397,27 +3401,27 @@ function renderTrackFoodAll() {
       const isCustom = !['Breakfast', 'Lunch', 'Dinner', 'Snacks'].includes(cat);
 
       html += `
-        <div class="results-table-card">
-          <div class="flex-row-center" style="justify-content: space-between; border-bottom: 1px solid var(--color-hairline); padding-bottom: 6px;">
+        <div class="results-table-card mb-4" style="background: var(--color-surface); border: 1px solid var(--color-hairline); border-radius: 14px; padding: 14px; box-shadow: var(--shadow-sm); margin-top: 12px; display: block; visibility: visible;">
+          <div class="flex-row-center" style="justify-content: space-between; border-bottom: 1px solid var(--color-hairline); padding-bottom: 8px; margin-bottom: 8px;">
             <div style="display:flex; align-items:center; gap:6px;">
-              <span>${icon}</span>
-              <span class="font-bold text-ink text-sm">${cat}</span>
+              <span style="font-size:16px;">${icon}</span>
+              <span class="font-bold text-ink text-sm" style="font-size:14px; font-weight:700; color:var(--color-ink);">${cat}</span>
               ${isCustom ? `<button onclick="deleteCustomCategory('${cat}')" style="font-size:10px; color:#ef4444; background:none; border:none; cursor:pointer;" title="Delete Category">🗑</button>` : ''}
             </div>
-            <span class="font-mono text-xs font-bold text-mute">${catCal} kcal</span>
+            <span class="font-mono text-xs font-bold text-mute" style="font-size:12px;">${catCal} kcal</span>
           </div>
       `;
 
       if (items.length === 0) {
-        html += `<p style="font-size:11px; color:var(--color-mute); padding: 8px 0 2px 0; margin:0;">No foods logged for ${cat}.</p>`;
+        html += `<p style="font-size:11px; color:var(--color-mute); padding: 4px 0; margin:0;">No foods logged for ${cat}.</p>`;
       } else {
         html += `<div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">`;
         items.forEach(item => {
           html += `
             <div style="display:flex; align-items:center; justify-content:space-between; background:var(--color-canvas-soft-2); padding: 8px 10px; border-radius: 8px; font-size:11px;">
               <div style="display:flex; flex-direction:column;">
-                <span class="font-bold text-ink">${item.name || 'Food Item'}</span>
-                <span style="font-size:9px; color:var(--color-mute);" class="font-mono">${item.cal || 0} kcal | ${item.prot || 0}g P | ${item.carb || 0}g C | ${item.fat || 0}g F</span>
+                <span class="font-bold text-ink" style="font-size:12px;">${item.name || 'Food Item'}</span>
+                <span style="font-size:10px; color:var(--color-mute);" class="font-mono">${item.cal || 0} kcal | ${item.prot || 0}g P | ${item.carb || 0}g C | ${item.fat || 0}g F</span>
               </div>
               <button class="icon-btn" onclick="deleteLoggedItem('${item.id}')" title="Delete Item" style="color: #ef4444; font-size: 14px;">🗑</button>
             </div>
