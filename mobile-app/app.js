@@ -3101,7 +3101,11 @@ function toggleTrackFoodAction(action) {
 window.toggleTrackFoodAction = toggleTrackFoodAction;
 
 function cleanSearchTermMobile(str) {
-  return (str || '').toLowerCase().replace(/[\(\),\-/\&]/g, ' ').replace(/\s+/g, ' ').trim();
+  return (str || '').toLowerCase()
+    .replace(/[\(\),\-/\&]/g, ' ')
+    .replace(/biriyani/g, 'biryani')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function getMasterMobileFoodList() {
@@ -3169,7 +3173,7 @@ function onFoodSearchInput(mode) {
     const cleanName = cleanSearchTermMobile(item.name);
     if (cleanName.includes(cleanQuery)) return true;
     return tokens.every(token => cleanName.includes(token));
-  }).slice(0, 15);
+  }).slice(0, 25);
 
   if (matches.length === 0) {
     sugBox.classList.add('hidden');

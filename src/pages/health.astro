@@ -9827,8 +9827,15 @@ import MetricCard from '../components/MetricCard.astro';
             return;
           }
 
-          // Filter matching keys from compiledDirectory
-          const matches = Object.keys(compiledDirectory).filter(key => key.includes(nameVal)).slice(0, 6);
+          // Filter matching keys from compiledDirectory with global search & spelling normalization
+          const cleanQuery = nameVal.toLowerCase().replace(/[\(\),\-/\&]/g, ' ').replace(/biriyani/g, 'biryani').trim();
+          const tokens = cleanQuery.split(' ').filter(t => t.length > 0);
+
+          const matches = Object.keys(compiledDirectory).filter(key => {
+            const cleanKey = key.toLowerCase().replace(/[\(\),\-/\&]/g, ' ').replace(/biriyani/g, 'biryani').trim();
+            if (cleanKey.includes(cleanQuery)) return true;
+            return tokens.length > 0 && tokens.every(token => cleanKey.includes(token));
+          }).slice(0, 20);
 
           if (matches.length === 0) {
             dropdown.classList.add('hidden');
