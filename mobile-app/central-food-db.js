@@ -1,4 +1,4 @@
-// Centralized Master Food Database (Linked directly to public/data/foods.json & public/data/diet-db.json)
+// Centralized Master Food Database (Linked directly to public/data/foods.json & GitHub Live Feed)
 var FOODS_JSON_ARRAY = [
   {
     "name": "1 tsp Sugar",
@@ -29049,15 +29049,19 @@ if (typeof window !== "undefined") {
   window.COMMON_FOODS_DIRECTORY = COMMON_FOODS_DIRECTORY;
   window.citiesMap = citiesMap;
 
-  // Dynamic Live Fetch from public/data/foods.json for instant website & webview sync
+  // Live Automatic Fetch from GitHub Master Database
   if (typeof fetch === "function") {
-    fetch('/data/foods.json')
-      .then(res => res.json())
-      .then(data => {
+    var rawUrl = '/data/foods.json';
+    if (window.location.protocol === 'file:' || window.location.protocol === 'capacitor:' || window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+      rawUrl = 'https://raw.githubusercontent.com/pratyushnath93/WHealthCalculator/main/public/data/foods.json';
+    }
+    fetch(rawUrl)
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
         if (Array.isArray(data)) {
           window.FOODS_JSON_ARRAY = data;
-          data.forEach(item => {
-            const k = item.name.toLowerCase().trim();
+          data.forEach(function(item) {
+            var k = item.name.toLowerCase().trim();
             window.COMMON_FOODS_DIRECTORY[k] = {
               baseQty: item.baseQty || 100,
               unit: item.unit || 'g',
