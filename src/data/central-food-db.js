@@ -13,6 +13,18 @@ var FOODS_JSON_ARRAY = [
     "country": "IN"
   },
   {
+    "name": "Dadaboudi Mutton Biriyani",
+    "cal": 180,
+    "prot": 4.5,
+    "carb": 28,
+    "fat": 5.5,
+    "fiber": 0,
+    "calcium": 0,
+    "iron": 0,
+    "unit": "Bowl",
+    "country": "AE"
+  },
+  {
     "name": "1 Whole, 2 Whites",
     "cal": 110,
     "prot": 14,
@@ -9804,7 +9816,8 @@ var FOODS_JSON_ARRAY = [
     "unit": "pc",
     "country": "AE"
   }
-];
+]
+;
 var DIET_DATABASE = {
   "IN": {
     "name": "India",
@@ -18339,6 +18352,19 @@ var COMMON_FOODS_DIRECTORY = {
     "p": 1.2,
     "c": 6,
     "f": 1.2,
+    "micros": {
+      "fiber": 0,
+      "calcium": 0,
+      "iron": 0
+    }
+  },
+  "dadaboudi mutton biriyani": {
+    "baseQty": 100,
+    "unit": "Bowl",
+    "cal": 180,
+    "p": 4.5,
+    "c": 28,
+    "f": 5.5,
     "micros": {
       "fiber": 0,
       "calcium": 0,
@@ -29022,7 +29048,39 @@ if (typeof window !== "undefined") {
   window.DIET_DATABASE = DIET_DATABASE;
   window.COMMON_FOODS_DIRECTORY = COMMON_FOODS_DIRECTORY;
   window.citiesMap = citiesMap;
+
+  // Dynamic Live Fetch from public/data/foods.json for instant website & webview sync
+  if (typeof fetch === "function") {
+    fetch('/data/foods.json')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          window.FOODS_JSON_ARRAY = data;
+          data.forEach(item => {
+            const k = item.name.toLowerCase().trim();
+            window.COMMON_FOODS_DIRECTORY[k] = {
+              baseQty: item.baseQty || 100,
+              unit: item.unit || 'g',
+              cal: item.cal || 0,
+              p: item.prot || 0,
+              c: item.carb || 0,
+              f: item.fat || 0,
+              micros: {
+                fiber: item.fiber || 0,
+                calcium: item.calcium || 0,
+                iron: item.iron || 0
+              }
+            };
+          });
+          if (typeof window.compileFoodsDirectory === 'function') {
+            window.compileFoodsDirectory();
+          }
+        }
+      })
+      .catch(function(err) {});
+  }
 }
+
 if (typeof globalThis !== "undefined") {
   globalThis.FOODS_JSON_ARRAY = FOODS_JSON_ARRAY;
   globalThis.DIET_DATABASE = DIET_DATABASE;
