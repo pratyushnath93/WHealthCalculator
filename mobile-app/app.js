@@ -954,6 +954,25 @@ function drawLoanPieChart(principal, interest) {
         });
       }
 
+      // Merge Central Database foods from getMasterMobileFoodList()
+      const masterList = getMasterMobileFoodList();
+      if (Array.isArray(masterList)) {
+        masterList.forEach(item => {
+          const k = item.name.toLowerCase().trim();
+          if (!compiledDirectory[k]) {
+            compiledDirectory[k] = {
+              baseQty: item.baseQty || 100,
+              unit: item.unit || 'g',
+              cal: item.cal || 0,
+              p: item.prot || 0,
+              c: item.carb || 0,
+              f: item.fat || 0,
+              micros: {}
+            };
+          }
+        });
+      };
+      
       // Merge Central Database foods
       try {
         const cachedCentral = JSON.parse(localStorage.getItem('whealth_central_foods') || 'null');
@@ -1485,7 +1504,14 @@ const DIET_DATABASE = window.DIET_DATABASE;
             return;
           }
 
-          const matches = Object.keys(compiledDirectory).filter(key => key.includes(nameVal)).slice(0, 6);
+          const cleanQuery = cleanSearchTermMobile(nameVal);
+          const tokens = cleanQuery.split(' ').filter(t => t.length > 0);
+
+          const matches = Object.keys(compiledDirectory).filter(key => {
+            const cleanKey = cleanSearchTermMobile(key);
+            if (cleanKey.includes(cleanQuery)) return true;
+            return tokens.length > 0 && tokens.every(token => cleanKey.includes(token));
+          }).slice(0, 10);
 
           if (matches.length === 0) {
             dropdown.classList.add('hidden');

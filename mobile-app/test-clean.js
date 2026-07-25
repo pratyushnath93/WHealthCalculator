@@ -726,8 +726,15 @@ const DIET_DATABASE = window.DIET_DATABASE;
             return;
           }
 
-          // Filter matching keys from compiledDirectory
-          const matches = Object.keys(compiledDirectory).filter(key => key.includes(nameVal)).slice(0, 6);
+          // Filter matching keys from compiledDirectory using smart search
+          const cleanQuery = (typeof cleanSearchTermMobile === 'function' ? cleanSearchTermMobile(nameVal) : nameVal.toLowerCase().replace(/[\(\),\-/\&]/g, ' ').trim());
+          const tokens = cleanQuery.split(' ').filter(t => t.length > 0);
+
+          const matches = Object.keys(compiledDirectory).filter(key => {
+            const cleanKey = (typeof cleanSearchTermMobile === 'function' ? cleanSearchTermMobile(key) : key.toLowerCase().replace(/[\(\),\-/\&]/g, ' ').trim());
+            if (cleanKey.includes(cleanQuery)) return true;
+            return tokens.length > 0 && tokens.every(token => cleanKey.includes(token));
+          }).slice(0, 10);
 
           if (matches.length === 0) {
             dropdown.classList.add('hidden');
