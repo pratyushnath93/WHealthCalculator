@@ -1,4 +1,21 @@
 // WHealth Calculator - Consolidated Mobile App JS
+function getTodayDateString() {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// Global State Variables (Declared with var at top to prevent TDZ errors)
+var tfLoggedItemsByDate = {};
+var tfSavedMeals = [];
+var tfCategories = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
+var selectedTrackFoodDate = getTodayDateString();
+var tfStagedAddItems = [];
+var activeFoodItem = null;
+var activeModalSavedMealId = null;
+
 function startAppInitialization() {
   initTheme();
   initNavigation();
@@ -2745,24 +2762,7 @@ function initRiskCalculatorCombined() {
 }
 
 // 11. Track Food & Nutrition Manager
-let tfLoggedItemsByDate = {};
-let tfSavedMeals = [];
-let tfCategories = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
-let selectedTrackFoodDate = getTodayDateString();
-
-let tfStagedAddItems = [];
-let activeFoodItem = null;
-let activeModalSavedMealId = null;
-
-function getTodayDateString() {
-  const d = new Date();
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
-const FOOD_DATABASE = {
+var FOOD_DATABASE = {
   "oats": { name: "Oatmeal / Oats", baseQty: 100, unit: "g", cal: 389, prot: 16.9, carb: 66, fat: 6.9 },
   "chicken_breast": { name: "Chicken Breast (Cooked)", baseQty: 100, unit: "g", cal: 165, prot: 31, carb: 0, fat: 3.6 },
   "paneer": { name: "Paneer / Cottage Cheese", baseQty: 100, unit: "g", cal: 265, prot: 18.3, carb: 1.2, fat: 20.8 },
