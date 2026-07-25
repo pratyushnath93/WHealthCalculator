@@ -8,6 +8,7 @@ function getTodayDateString() {
 }
 
 // Global State Variables (Declared with var at top to prevent TDZ errors)
+var compiledDirectory = {};
 var tfLoggedItemsByDate = {};
 var tfSavedMeals = [];
 var tfCategories = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
@@ -943,10 +944,10 @@ function drawLoanPieChart(principal, interest) {
       "sandesh": { baseQty: 1, unit: "pc", cal: 80, p: 2.5, c: 11.0, f: 3.0 }
     };
 
-    let compiledDirectory = {};
+    window.compiledDirectory = {};
     
     function compileFoodsDirectory() {
-      compiledDirectory = { ...COMMON_FOODS_DIRECTORY };
+      window.compiledDirectory = { ...COMMON_FOODS_DIRECTORY };
       
       // Traverse DIET_DATABASE
       if (typeof DIET_DATABASE !== 'undefined' && DIET_DATABASE) {
@@ -1020,6 +1021,7 @@ function drawLoanPieChart(principal, interest) {
         }
       } catch (e) {}
     }
+    window.compileFoodsDirectory = compileFoodsDirectory;
 
     let activeDietPlan = [];
     let targetCaloriesVar = 2000;
