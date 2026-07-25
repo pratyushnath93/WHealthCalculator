@@ -261,7 +261,9 @@
 
     async function syncCentralFoodsMobile() {
       try {
-        const res = await fetch('/data/foods.json');
+        // Always fetch from GitHub so Android app gets live food data
+        const githubUrl = 'https://raw.githubusercontent.com/pratyushnath93/WHealthCalculator/main/public/data/foods.json?t=' + Date.now();
+        const res = await fetch(githubUrl);
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data) && data.length > 0) {
