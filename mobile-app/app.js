@@ -1093,6 +1093,11 @@ function drawLoanPieChart(principal, interest) {
     window.compiledDirectory = {};
     let compiledDirectory = {};
 
+    function cleanSearchTermMobile(term) {
+      if (!term) return '';
+      return term.toLowerCase().replace(/[\(\),\-/\&]/g, ' ').replace(/biriyani/g, 'biryani').trim();
+    }
+
     function compileFoodsDirectory() {
       const baseDir = (typeof window !== 'undefined' && window.COMMON_FOODS_DIRECTORY && Object.keys(window.COMMON_FOODS_DIRECTORY).length > 0) ? window.COMMON_FOODS_DIRECTORY : COMMON_FOODS_DIRECTORY;
       const targetDir = { ...baseDir };
@@ -1970,7 +1975,9 @@ const DIET_DATABASE = window.DIET_DATABASE;
     }
 
     function populateCities() {
-      const country = countrySelect.value;
+      const country = countrySelect ? countrySelect.value : '';
+      if (!citySelect) return;
+      
       citySelect.innerHTML = '';
       
       if (!country || !citiesMap[country]) {
@@ -2071,10 +2078,11 @@ const DIET_DATABASE = window.DIET_DATABASE;
 
       countrySelect.addEventListener('change', () => {
         populateCities();
+        calculate();
       });
 
       citySelect.addEventListener('change', () => {
-        // Wait for Calculate button click
+        calculate();
       });
 
       goalSelect.addEventListener('change', () => {
@@ -2215,30 +2223,30 @@ const DIET_DATABASE = window.DIET_DATABASE;
       });
 
       // Toggle unit containers
-      heightUnit.addEventListener('change', () => {
+      heightUnit?.addEventListener('change', () => {
         if (heightUnit.value === 'metric') {
-          heightMetricContainer.classList.remove('hidden');
-          heightImperialContainer.classList.add('hidden');
+          heightMetricContainer?.classList.remove('hidden');
+          heightImperialContainer?.classList.add('hidden');
         } else {
-          heightMetricContainer.classList.add('hidden');
-          heightImperialContainer.classList.remove('hidden');
+          heightMetricContainer?.classList.add('hidden');
+          heightImperialContainer?.classList.remove('hidden');
         }
         calculate();
       });
 
-      weightUnit.addEventListener('change', () => {
+      weightUnit?.addEventListener('change', () => {
         if (weightUnit.value === 'metric') {
-          weightUnitLabel.textContent = 'kg';
+          if (weightUnitLabel) weightUnitLabel.textContent = 'kg';
           // Convert lbs to kg approximately for seamless UX
-          const currentVal = parseFloat(weightInput.value);
-          if (currentVal) {
+          const currentVal = parseFloat(weightInput?.value || '');
+          if (currentVal && weightInput) {
             weightInput.value = Math.round(currentVal * 0.45359237).toString();
           }
         } else {
-          weightUnitLabel.textContent = 'lbs';
+          if (weightUnitLabel) weightUnitLabel.textContent = 'lbs';
           // Convert kg to lbs approximately for seamless UX
-          const currentVal = parseFloat(weightInput.value);
-          if (currentVal) {
+          const currentVal = parseFloat(weightInput?.value || '');
+          if (currentVal && weightInput) {
             weightInput.value = Math.round(currentVal / 0.45359237).toString();
           }
         }
@@ -2246,7 +2254,7 @@ const DIET_DATABASE = window.DIET_DATABASE;
       });
 
       // Gender buttons segment controls toggle
-      genderInputs.forEach(btn => {
+      genderInputs?.forEach(btn => {
         btn.addEventListener('click', () => {
           genderInputs.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
@@ -2255,51 +2263,54 @@ const DIET_DATABASE = window.DIET_DATABASE;
       });
 
       // Event listeners
-      ageInput.addEventListener('input', () => {
-        ageNumInput.value = ageInput.value;
+      ageInput?.addEventListener('input', () => {
+        if (ageNumInput && ageInput) ageNumInput.value = ageInput.value;
       });
 
-      ageNumInput.addEventListener('input', () => {
+      ageNumInput?.addEventListener('input', () => {
         let val = parseInt(ageNumInput.value) || 0;
-        ageInput.value = Math.max(15, Math.min(80, val)).toString();
+        if (ageInput) ageInput.value = Math.max(15, Math.min(80, val)).toString();
       });
 
       const clampAgeInput = () => {
+        if (!ageNumInput) return;
         let val = parseInt(ageNumInput.value) || 28;
         if (val < 15) val = 15;
         if (val > 80) val = 80;
         ageNumInput.value = val.toString();
-        ageInput.value = val.toString();
+        if (ageInput) ageInput.value = val.toString();
       };
-      ageNumInput.addEventListener('blur', clampAgeInput);
-      ageNumInput.addEventListener('change', clampAgeInput);
+      ageNumInput?.addEventListener('blur', clampAgeInput);
+      ageNumInput?.addEventListener('change', clampAgeInput);
 
-      calculateBtn.addEventListener('click', () => {
-        resetSwaps(goalSelect.value);
+      calculateBtn?.addEventListener('click', () => {
+        if (goalSelect) resetSwaps(goalSelect.value);
         calculate();
       });
 
       function calculate() {
+        if (!weightInput || !activitySelect || !goalSelect) return;
         // Gather inputs
-        const gender = document.getElementById('health-gender-female').classList.contains('active') ? 'female' : 'male';
-        const rawAge = parseInt(ageNumInput.value) || parseInt(ageInput.value) || 28;
+        const femaleBtn = document.getElementById('health-gender-female');
+        const gender = (femaleBtn && femaleBtn.classList.contains('active')) ? 'female' : 'male';
+        const rawAge = parseInt(ageNumInput?.value || '') || parseInt(ageInput?.value || '') || 28;
         const age = Math.max(15, Math.min(80, rawAge));
         const activity = parseFloat(activitySelect.value);
         const goal = goalSelect.value;
 
         // 1. Get weight in kg
         let weightKg = parseFloat(weightInput.value) || 70;
-        if (weightUnit.value === 'imperial') {
+        if (weightUnit && weightUnit.value === 'imperial') {
           weightKg = weightKg * 0.45359237;
         }
 
         // 2. Get height in cm
         let heightCm = 175;
-        if (heightUnit.value === 'metric') {
-          heightCm = parseFloat(heightCmInput.value) || 175;
+        if (heightUnit && heightUnit.value === 'metric') {
+          heightCm = parseFloat(heightCmInput?.value || '') || 175;
         } else {
-          const ft = parseFloat(heightFtInput.value) || 5;
-          const inch = parseFloat(heightInInput.value) || 0;
+          const ft = parseFloat(heightFtInput?.value || '') || 5;
+          const inch = parseFloat(heightInInput?.value || '') || 0;
           heightCm = (ft * 30.48) + (inch * 2.54);
         }
 
@@ -2313,45 +2324,52 @@ const DIET_DATABASE = window.DIET_DATABASE;
 
         const tdee = bmr * activity;
 
-        // 4. Calculate caloric target based on goal
+        // Determine target calories based on goal
         let targetCalories = tdee;
         if (goal === 'loss') {
-          targetCalories = Math.max(gender === 'female' ? 1200 : 1500, tdee - 500);
+          targetCalories = tdee - 500;
         } else if (goal === 'fat-loss') {
-          targetCalories = Math.max(gender === 'female' ? 1200 : 1500, tdee - 500);
+          targetCalories = tdee - 650;
         } else if (goal === 'gain') {
-          targetCalories = tdee + 500;
-        } else if (goal === 'bodybuilding') {
           targetCalories = tdee + 400;
+        } else if (goal === 'bodybuilding') {
+          targetCalories = tdee + 500;
         } else if (goal === 'lean-mass') {
           targetCalories = tdee + 250;
         }
 
-        // 5. Macro ratio mapping (Protein, Fat, Carbs) & Medical Profile adjustments
-        let p_pct = 20, f_pct = 30, c_pct = 50; // maintain default
-        if (goal === 'loss') {
-          p_pct = 30; f_pct = 30; c_pct = 40;
-        } else if (goal === 'fat-loss') {
-          p_pct = 35; f_pct = 25; c_pct = 40;
-        } else if (goal === 'gain') {
-          p_pct = 20; f_pct = 25; c_pct = 55;
-        } else if (goal === 'bodybuilding') {
-          p_pct = 30; f_pct = 25; c_pct = 45;
-        } else if (goal === 'lean-mass') {
-          p_pct = 30; f_pct = 25; c_pct = 45;
-        }
+        const minCalories = gender === 'female' ? 1200 : 1500;
+        targetCalories = Math.max(minCalories, targetCalories);
 
+        // Determine Macros distribution based on Goal & Health Condition
         const healthConditionSelect = document.getElementById('health-condition');
         const healthCondition = healthConditionSelect ? healthConditionSelect.value : 'none';
 
-        if (healthCondition === 'high-sugar' || healthCondition === 'diabetes') {
-          c_pct = Math.max(25, c_pct - 15);
-          p_pct = p_pct + 10;
+        let p_pct = 20;
+        let c_pct = 50;
+        let f_pct = 30;
+
+        if (goal === 'loss') {
+          p_pct = 30; c_pct = 40; f_pct = 30;
+        } else if (goal === 'fat-loss') {
+          p_pct = 35; c_pct = 35; f_pct = 30;
+        } else if (goal === 'gain') {
+          p_pct = 25; c_pct = 50; f_pct = 25;
+        } else if (goal === 'bodybuilding') {
+          p_pct = 35; c_pct = 45; f_pct = 20;
+        } else if (goal === 'lean-mass') {
+          p_pct = 30; c_pct = 45; f_pct = 25;
+        }
+
+        // Adjust for medical condition
+        if (healthCondition === 'diabetes' || healthCondition === 'high-sugar') {
+          c_pct = Math.min(30, c_pct);
+          p_pct = 30;
           f_pct = 100 - c_pct - p_pct;
-        } else if (healthCondition === 'high-bp' || healthCondition === 'heart-disease') {
-          f_pct = Math.min(20, f_pct);
-          p_pct = Math.max(25, p_pct);
-          c_pct = 100 - p_pct - f_pct;
+        } else if (healthCondition === 'high-bp') {
+          f_pct = 25;
+          p_pct = 25;
+          c_pct = 50;
         } else if (healthCondition === 'low-sugar') {
           c_pct = Math.max(50, c_pct);
           p_pct = 20;
@@ -2370,216 +2388,201 @@ const DIET_DATABASE = window.DIET_DATABASE;
           f_pct = 30;
         }
 
-      // Compute macro values
-      const proteinCal = targetCalories * (p_pct / 100);
-      const fatCal = targetCalories * (f_pct / 100);
-      const carbsCal = targetCalories * (c_pct / 100);
+        // Compute macro values
+        const proteinCal = targetCalories * (p_pct / 100);
+        const fatCal = targetCalories * (f_pct / 100);
+        const carbsCal = targetCalories * (c_pct / 100);
 
-      const proteinG = proteinCal / 4;
-      const fatG = fatCal / 9;
-      const carbsG = carbsCal / 4;
+        const proteinG = proteinCal / 4;
+        const fatG = fatCal / 9;
+        const carbsG = carbsCal / 4;
 
-      // Display outputs
-      bmrValue.textContent = `${Math.round(bmr).toLocaleString()} kcal`;
-      tdeeValue.textContent = `${Math.round(tdee).toLocaleString()} kcal`;
-      targetValue.textContent = `${Math.round(targetCalories).toLocaleString()} kcal`;
-      centerCal.textContent = `${Math.round(targetCalories).toLocaleString()} kcal`;
+        // Display outputs
+        if (bmrValue) bmrValue.textContent = `${Math.round(bmr).toLocaleString()} kcal`;
+        if (tdeeValue) tdeeValue.textContent = `${Math.round(tdee).toLocaleString()} kcal`;
+        if (targetValue) targetValue.textContent = `${Math.round(targetCalories).toLocaleString()} kcal`;
+        if (centerCal) centerCal.textContent = `${Math.round(targetCalories).toLocaleString()} kcal`;
 
-      const goalLose = document.getElementById('health-goal-lose');
-      const goalMaintain = document.getElementById('health-goal-maintain');
-      const goalGain = document.getElementById('health-goal-gain');
+        const goalLose = document.getElementById('health-goal-lose');
+        const goalMaintain = document.getElementById('health-goal-maintain');
+        const goalGain = document.getElementById('health-goal-gain');
 
-      if (goalLose) goalLose.textContent = `${Math.round(Math.max(gender === 'female' ? 1200 : 1500, tdee - 500)).toLocaleString()} kcal`;
-      if (goalMaintain) goalMaintain.textContent = `${Math.round(tdee).toLocaleString()} kcal`;
-      if (goalGain) goalGain.textContent = `${Math.round(tdee + 500).toLocaleString()} kcal`;
+        if (goalLose) goalLose.textContent = `${Math.round(Math.max(gender === 'female' ? 1200 : 1500, tdee - 500)).toLocaleString()} kcal`;
+        if (goalMaintain) goalMaintain.textContent = `${Math.round(tdee).toLocaleString()} kcal`;
+        if (goalGain) goalGain.textContent = `${Math.round(tdee + 500).toLocaleString()} kcal`;
 
-      // BMI & Ideal Healthy Weight calculations
-      const heightM = heightCm / 100;
-      const bmi = weightKg / (heightM * heightM);
-      const minWeightKg = 18.5 * (heightM * heightM);
-      const maxWeightKg = 24.9 * (heightM * heightM);
+        // BMI & Ideal Healthy Weight calculations
+        const heightM = heightCm / 100;
+        const bmi = weightKg / (heightM * heightM);
+        const minWeightKg = 18.5 * (heightM * heightM);
+        const maxWeightKg = 24.9 * (heightM * heightM);
 
-      let bmiStatus = 'Normal';
-      if (bmi < 18.5) {
-        bmiStatus = 'Underweight';
-      } else if (bmi >= 25 && bmi < 30) {
-        bmiStatus = 'Overweight';
-      } else if (bmi >= 30) {
-        bmiStatus = 'Obese';
-      }
-
-      // Ideal Body Weight calculation (Devine Formula 1974)
-      const heightInches = heightCm / 2.54;
-      let ibwKg = 50.0;
-      if (gender === 'male') {
-        ibwKg = 50.0 + 2.3 * (heightInches - 60);
-      } else {
-        ibwKg = 45.5 + 2.3 * (heightInches - 60);
-      }
-      if (ibwKg < 35) ibwKg = 35;
-
-      let targetWeightStr = '';
-      let weightRangeStr = '';
-      if (weightUnit.value === 'metric') {
-        targetWeightStr = `${Math.round(ibwKg)} kg`;
-        weightRangeStr = `${Math.round(minWeightKg)} - ${Math.round(maxWeightKg)} kg`;
-      } else {
-        const ibwLbs = ibwKg * 2.20462;
-        targetWeightStr = `${Math.round(ibwLbs)} lbs`;
-        const minLbs = minWeightKg * 2.20462;
-        const maxLbs = maxWeightKg * 2.20462;
-        weightRangeStr = `${Math.round(minLbs)} - ${Math.round(maxLbs)} lbs`;
-      }
-
-      bmiValue.textContent = `${bmi.toFixed(1)} (${bmiStatus})`;
-      bmiSubtitle.textContent = `Target: ${targetWeightStr} (Range: ${weightRangeStr})`;
-
-            carbPctLabel.textContent = `(${c_pct}%)`;
-      carbGLbl.textContent = `${Math.round(carbsG)} g`;
-      carbCalLbl.textContent = `${Math.round(carbsCal).toLocaleString()} kcal`;
-
-      proteinPctLabel.textContent = `(${p_pct}%)`;
-      proteinGLbl.textContent = `${Math.round(proteinG)} g`;
-      proteinCalLbl.textContent = `${Math.round(proteinCal).toLocaleString()} kcal`;
-
-      fatPctLabel.textContent = `(${f_pct}%)`;
-      fatGLbl.textContent = `${Math.round(fatG)} g`;
-      fatCalLbl.textContent = `${Math.round(fatCal).toLocaleString()} kcal`;
-
-      let estFiberG = Math.round((targetCalories / 1000) * 14);
-      if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'fatty-liver') {
-        estFiberG = Math.max(35, Math.round((targetCalories / 1000) * 18));
-      }
-      const fiberGLbl = document.getElementById('fiber-g');
-      if (fiberGLbl) fiberGLbl.textContent = `${estFiberG} g`;
-
-      // Render Micronutrient Estimates Grid
-      const healthMicrosGrid = document.getElementById('health-app-micros-grid');
-      if (healthMicrosGrid) {
-        let sodiumVal = Math.round(targetCalories * 0.8);
-        let potassiumVal = Math.round(targetCalories * 0.9);
-        let magnesiumVal = Math.round(proteinG * 3.5 + 80);
-
-        if (healthCondition === 'high-bp' || healthCondition === 'heart-disease' || healthCondition === 'kidney-disease') {
-          sodiumVal = 1350;
-          potassiumVal = 3600;
-          magnesiumVal = 380;
-        } else if (healthCondition === 'low-bp') {
-          sodiumVal = 2600;
-          potassiumVal = 2800;
+        let bmiStatus = 'Normal';
+        if (bmi < 18.5) {
+          bmiStatus = 'Underweight';
+        } else if (bmi >= 25 && bmi < 30) {
+          bmiStatus = 'Overweight';
+        } else if (bmi >= 30) {
+          bmiStatus = 'Obese';
         }
 
-        const micros = [
-          { name: "Calcium", val: Math.round(proteinG * 14 + 150) + " mg" },
-          { name: "Iron", val: Math.round(proteinG * 0.15 + 2) + " mg" },
-          { name: "Potassium", val: potassiumVal + " mg" },
-          { name: "Sodium", val: sodiumVal + " mg" },
-          { name: "Magnesium", val: magnesiumVal + " mg" },
-          { name: "Zinc", val: Math.round(proteinG * 0.12 + 1.5) + " mg" },
-          { name: "Selenium", val: Math.round(proteinG * 0.7 + (targetCalories > 0 ? 15 : 0)) + " mcg" },
-          { name: "Vitamin A", val: "450 mcg" },
-          { name: "Vitamin C", val: "65 mg" },
-          { name: "Vitamin D", val: "10 mcg" }
-        ];
-        healthMicrosGrid.innerHTML = micros.map(m => `
-          <div class="estimate-item-card">
-            <span>${m.name}</span>
-            <strong>${m.val}</strong>
-          </div>
-        `).join('');
-      }
-
-      // Render Bio-Chemical Estimates Grid
-      const healthBiochemicalsGrid = document.getElementById('health-app-biochemicals-grid');
-      if (healthBiochemicalsGrid) {
-        let cholVal = Math.round(proteinG * 2.8 + 45);
-        let purineVal = Math.round(proteinG * 2.2 + targetCalories * 0.05);
-
-        if (healthCondition === 'high-cholesterol' || healthCondition === 'heart-disease') {
-          cholVal = Math.min(135, cholVal);
+        // Ideal Body Weight calculation (Devine Formula 1974)
+        const heightInches = heightCm / 2.54;
+        let ibwKg = 50.0;
+        if (gender === 'male') {
+          ibwKg = 50.0 + 2.3 * (heightInches - 60);
+        } else {
+          ibwKg = 45.5 + 2.3 * (heightInches - 60);
         }
-        if (healthCondition === 'high-uric-acid') {
-          purineVal = Math.min(130, purineVal);
+        if (ibwKg < 35) ibwKg = 35;
+
+        let targetWeightStr = '';
+        let weightRangeStr = '';
+        if (weightUnit && weightUnit.value === 'metric') {
+          targetWeightStr = `${Math.round(ibwKg)} kg`;
+          weightRangeStr = `${Math.round(minWeightKg)} - ${Math.round(maxWeightKg)} kg`;
+        } else {
+          const ibwLbs = ibwKg * 2.20462;
+          targetWeightStr = `${Math.round(ibwLbs)} lbs`;
+          const minLbs = minWeightKg * 2.20462;
+          const maxLbs = maxWeightKg * 2.20462;
+          weightRangeStr = `${Math.round(minLbs)} - ${Math.round(maxLbs)} lbs`;
         }
 
-        const biochemicals = [
-          { name: "Dietary Cholesterol Target", val: cholVal + " mg" },
-          { name: "Purine Level Estimate", val: purineVal + " mg" }
-        ];
-        healthBiochemicalsGrid.innerHTML = biochemicals.map(b => `
-          <div class="estimate-item-card">
-            <span>${b.name}</span>
-            <strong>${b.val}</strong>
-          </div>
-        `).join('');
-      }
+        if (bmiValue) bmiValue.textContent = `${bmi.toFixed(1)} (${bmiStatus})`;
+        if (bmiSubtitle) bmiSubtitle.textContent = `Target: ${targetWeightStr} (Range: ${weightRangeStr})`;
 
-      // 6. Update Donut Chart
-      // To align circles correctly we stack stroke-dashoffset:
-      // Carbs: 50% (c_pct)
-      // Protein: 30% (p_pct)
-      // Fat: 20% (f_pct)
-      
-      const carbsStroke = CIRCUMFERENCE * (c_pct / 100);
-      const proteinStroke = CIRCUMFERENCE * (p_pct / 100);
-      const fatStroke = CIRCUMFERENCE * (f_pct / 100);
+        if (carbPctLabel) carbPctLabel.textContent = `(${c_pct}%)`;
+        if (carbGLbl) carbGLbl.textContent = `${Math.round(carbsG)} g`;
+        if (carbCalLbl) carbCalLbl.textContent = `${Math.round(carbsCal).toLocaleString()} kcal`;
 
-      // Dash arrays represent stroke-length, spacing
-      donutCarbs.style.strokeDasharray = `${carbsStroke} ${CIRCUMFERENCE}`;
-      donutProtein.style.strokeDasharray = `${proteinStroke} ${CIRCUMFERENCE}`;
-      donutFat.style.strokeDasharray = `${fatStroke} ${CIRCUMFERENCE}`;
+        if (proteinPctLabel) proteinPctLabel.textContent = `(${p_pct}%)`;
+        if (proteinGLbl) proteinGLbl.textContent = `${Math.round(proteinG)} g`;
+        if (proteinCalLbl) proteinCalLbl.textContent = `${Math.round(proteinCal).toLocaleString()} kcal`;
 
-      // Dash offsets specify where strokes start
-      donutCarbs.style.strokeDashoffset = '0';
-      donutProtein.style.strokeDashoffset = (-carbsStroke).toString();
-      donutFat.style.strokeDashoffset = (-(carbsStroke + proteinStroke)).toString();
+        if (fatPctLabel) fatPctLabel.textContent = `(${f_pct}%)`;
+        if (fatGLbl) fatGLbl.textContent = `${Math.round(fatG)} g`;
+        if (fatCalLbl) fatCalLbl.textContent = `${Math.round(fatCal).toLocaleString()} kcal`;
 
-      // Render Health Condition Guidance Card Banner
-      const guidanceCard = document.getElementById('health-condition-guidance-card');
-      if (guidanceCard) {
-        const notes = {
-          'none': { title: 'Healthy Baseline Protocol', text: 'Balanced macros, micronutrients, and bio-chemical targets optimized for general wellness and metabolic maintenance.' },
-          'high-bp': { title: 'Hypertension (High BP) Protocol', text: 'Sodium capped at <1,400 mg/day. Potassium (>3,500 mg) & Magnesium (>380 mg) increased to foster arterial wall relaxation. Saturated fat restricted.' },
-          'high-sugar': { title: 'Pre-Diabetes / High Sugar Protocol', text: 'Carbohydrates reduced by 15-20%. Dietary Fibre target boosted to >35g/day. Low glycemic index foods prioritized to prevent blood glucose spikes.' },
-          'low-bp': { title: 'Hypotension (Low BP) Protocol', text: 'Sodium target adjusted to ~2,600 mg with structured electrolyte & hydration schedules to maintain healthy intravascular volume.' },
-          'low-sugar': { title: 'Hypoglycemia (Low Sugar) Protocol', text: 'Complex carbohydrates maintained at >50%. Frequent small meals & snacks scheduled to sustain steady blood glucose levels.' },
-          'diabetes': { title: 'Type 2 Diabetes Mellitus Protocol', text: 'Strict carbohydrate control (25-30% ratio). Protein & high-solubility Fiber increased (>35g/day) to slow gastric emptying and stabilize HbA1c.' },
-          'thyroid': { title: 'Thyroid Care Protocol', text: 'Selenium (55 mcg) & Zinc optimized. Adequate protein intake maintained to support T4-to-T3 peripheral conversion.' },
-          'high-uric-acid': { title: 'Gout / High Uric Acid Protocol', text: 'Purine level strictly capped at <140 mg/day. Red meat, organ meat, and seafood de-prioritized in favor of low-purine proteins & high fluid intake.' },
-          'high-cholesterol': { title: 'Hyperlipidemia / High Cholesterol Protocol', text: 'Dietary Cholesterol capped at <140 mg/day. Fat reduced to <20%. Soluble fiber elevated to bind bile acids and lower LDL-C.' },
-          'fatty-liver': { title: 'Fatty Liver (MASLD) Protocol', text: 'Simple sugars & fructose eliminated. High Fiber (+25%) & moderate protein recommended to reduce hepatic steatosis.' },
-          'heart-disease': { title: 'Cardiovascular Disease Protocol', text: 'Sodium (<1,400 mg) & Dietary Cholesterol (<140 mg) capped. Potassium & Omega fatty acid sources prioritized.' },
-          'kidney-disease': { title: 'Chronic Kidney Disease (CKD) Protocol', text: 'Protein restricted to ~0.7g/kg (~15% of calories) to minimize renal glomerular workload. Sodium & Potassium strictly monitored.' }
-        };
-        const activeNote = notes[healthCondition] || notes['none'];
-        guidanceCard.innerHTML = `
-          <div style="display:flex; align-items:flex-start; gap:8px;">
-            <span style="color:var(--color-warning); font-weight:bold; font-size:14px;">📋</span>
-            <div>
-              <h4 style="font-weight:bold; color:var(--color-ink); text-transform:uppercase; font-size:11px; margin:0 0 2px 0;">${activeNote.title}</h4>
-              <p style="color:var(--color-mute); font-size:10px; line-height:1.4; margin:0;">${activeNote.text}</p>
+        let estFiberG = Math.round((targetCalories / 1000) * 14);
+        if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'fatty-liver') {
+          estFiberG = Math.max(35, Math.round((targetCalories / 1000) * 18));
+        }
+        const fiberGLbl = document.getElementById('fiber-g');
+        if (fiberGLbl) fiberGLbl.textContent = `${estFiberG} g`;
+
+        // Render Micronutrient Estimates Grid
+        const healthMicrosGrid = document.getElementById('health-app-micros-grid');
+        if (healthMicrosGrid) {
+          const micros = [
+            { name: "Calcium Target", val: Math.round(proteinG * 14 + 150) + " mg" },
+            { name: "Iron Target", val: Math.round(proteinG * 0.15 + 2) + " mg" },
+            { name: "Potassium Target", val: Math.round(targetCalories * 0.9) + " mg" },
+            { name: "Sodium Limit", val: Math.round(targetCalories * 0.8) + " mg" },
+            { name: "Magnesium Target", val: Math.round(proteinG * 3.5 + 80) + " mg" },
+            { name: "Zinc Target", val: Math.round(proteinG * 0.12 + 1.5) + " mg" },
+            { name: "Selenium Target", val: Math.round(proteinG * 0.7 + 15) + " mcg" },
+            { name: "Vitamin A Target", val: Math.round(proteinG * 6.0 + 350) + " mcg" },
+            { name: "Vitamin C Target", val: Math.round(carbsG * 0.4 + 25) + " mg" },
+            { name: "Vitamin D Target", val: Math.round(targetCalories * 0.005 + 5) + " mcg" }
+          ];
+          healthMicrosGrid.innerHTML = micros.map(m => `
+            <div class="estimate-item-card">
+              <span>${m.name}</span>
+              <strong>${m.val}</strong>
             </div>
-          </div>
-        `;
-        guidanceCard.classList.remove('hidden');
+          `).join('');
+        }
+
+        // Render Bio-Chemical Estimates Grid
+        const healthBiochemicalsGrid = document.getElementById('health-app-biochemicals-grid');
+        if (healthBiochemicalsGrid) {
+          let cholVal = Math.round(proteinG * 2.8 + 45);
+          let purineVal = Math.round(proteinG * 2.2 + targetCalories * 0.05);
+
+          if (healthCondition === 'high-cholesterol' || healthCondition === 'heart-disease') {
+            cholVal = Math.min(135, cholVal);
+          }
+          if (healthCondition === 'high-uric-acid') {
+            purineVal = Math.min(130, purineVal);
+          }
+
+          const biochemicals = [
+            { name: "Dietary Cholesterol Target", val: cholVal + " mg" },
+            { name: "Purine Level Estimate", val: purineVal + " mg" }
+          ];
+          healthBiochemicalsGrid.innerHTML = biochemicals.map(b => `
+            <div class="estimate-item-card">
+              <span>${b.name}</span>
+              <strong>${b.val}</strong>
+            </div>
+          `).join('');
+        }
+
+        // 6. Update Donut Chart
+        if (donutCarbs && donutProtein && donutFat) {
+          const carbsStroke = CIRCUMFERENCE * (c_pct / 100);
+          const proteinStroke = CIRCUMFERENCE * (p_pct / 100);
+          const fatStroke = CIRCUMFERENCE * (f_pct / 100);
+
+          donutCarbs.style.strokeDasharray = `${carbsStroke} ${CIRCUMFERENCE}`;
+          donutProtein.style.strokeDasharray = `${proteinStroke} ${CIRCUMFERENCE}`;
+          donutFat.style.strokeDasharray = `${fatStroke} ${CIRCUMFERENCE}`;
+
+          donutCarbs.style.strokeDashoffset = '0';
+          donutProtein.style.strokeDashoffset = (-carbsStroke).toString();
+          donutFat.style.strokeDashoffset = (-(carbsStroke + proteinStroke)).toString();
+        }
+
+        // Render Health Condition Guidance Card Banner
+        const guidanceCard = document.getElementById('health-condition-guidance-card');
+        if (guidanceCard) {
+          const notes = {
+            'none': { title: 'Healthy Baseline Protocol', text: 'Balanced macros, micronutrients, and bio-chemical targets optimized for general wellness and metabolic maintenance.' },
+            'high-bp': { title: 'Hypertension (High BP) Protocol', text: 'Sodium capped at <1,400 mg/day. Potassium (>3,500 mg) & Magnesium (>380 mg) increased to foster arterial wall relaxation. Saturated fat restricted.' },
+            'high-sugar': { title: 'Pre-Diabetes / High Sugar Protocol', text: 'Carbohydrates reduced by 15-20%. Dietary Fibre target boosted to >35g/day. Low glycemic index foods prioritized to prevent blood glucose spikes.' },
+            'low-bp': { title: 'Hypotension (Low BP) Protocol', text: 'Sodium target adjusted to ~2,600 mg with structured electrolyte & hydration schedules to maintain healthy intravascular volume.' },
+            'low-sugar': { title: 'Hypoglycemia (Low Sugar) Protocol', text: 'Complex carbohydrates maintained at >50%. Frequent small meals & snacks scheduled to sustain steady blood glucose levels.' },
+            'diabetes': { title: 'Type 2 Diabetes Mellitus Protocol', text: 'Strict carbohydrate control (25-30% ratio). Protein & high-solubility Fiber increased (>35g/day) to slow gastric emptying and stabilize HbA1c.' },
+            'thyroid': { title: 'Thyroid Care Protocol', text: 'Selenium (55 mcg) & Zinc optimized. Adequate protein intake maintained to support T4-to-T3 peripheral conversion.' },
+            'high-uric-acid': { title: 'Gout / High Uric Acid Protocol', text: 'Purine level strictly capped at <140 mg/day. Red meat, organ meat, and seafood de-prioritized in favor of low-purine proteins & high fluid intake.' },
+            'high-cholesterol': { title: 'Hyperlipidemia / High Cholesterol Protocol', text: 'Dietary Cholesterol capped at <140 mg/day. Fat reduced to <20%. Soluble fiber elevated to bind bile acids and lower LDL-C.' },
+            'fatty-liver': { title: 'Fatty Liver (MASLD) Protocol', text: 'Simple sugars & fructose eliminated. High Fiber (+25%) & moderate protein recommended to reduce hepatic steatosis.' },
+            'heart-disease': { title: 'Cardiovascular Disease Protocol', text: 'Sodium (<1,400 mg) & Dietary Cholesterol (<140 mg) capped. Potassium & Omega fatty acid sources prioritized.' },
+            'kidney-disease': { title: 'Chronic Kidney Disease (CKD) Protocol', text: 'Protein restricted to ~0.7g/kg (~15% of calories) to minimize renal glomerular workload. Sodium & Potassium strictly monitored.' }
+          };
+          const activeNote = notes[healthCondition] || notes['none'];
+          guidanceCard.innerHTML = `
+            <div style="display:flex; align-items:flex-start; gap:8px;">
+              <span style="color:var(--color-warning); font-weight:bold; font-size:14px;">📋</span>
+              <div>
+                <h4 style="font-weight:bold; color:var(--color-ink); text-transform:uppercase; font-size:11px; margin:0 0 2px 0;">${activeNote.title}</h4>
+                <p style="color:var(--color-mute); font-size:10px; line-height:1.4; margin:0;">${activeNote.text}</p>
+              </div>
+            </div>
+          `;
+          guidanceCard.classList.remove('hidden');
+        }
+
+        // Generate the location-specific diet plan
+        generateDietPlan(targetCalories, proteinG, carbsG, fatG, goal);
       }
 
-      // Generate the location-specific diet plan
-      generateDietPlan(targetCalories, proteinG, carbsG, fatG, goal);
+      // Populate suggestions directory
+      compileFoodsDirectory();
+
+      // Initial run
+      populateCities();
+      calculate();
     }
 
-    // Populate suggestions directory
-    compileFoodsDirectory();
-
-    // Initial run
-    populateCities();
-    calculate();
-  }
-
-  // Handle page load
-  initHealthCalculatorCombined();
-  // Support Astro view transitions / fast loads
-  document.addEventListener('astro:page-load', initHealthCalculatorCombined);
+    // Handle page load safely
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initHealthCalculatorCombined);
+    } else {
+      initHealthCalculatorCombined();
+    }
+    document.addEventListener('astro:page-load', initHealthCalculatorCombined);
 
 
 // 10. Risk Allocation & Portfolio Planner
