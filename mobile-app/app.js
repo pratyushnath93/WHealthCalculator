@@ -1091,7 +1091,8 @@ function drawLoanPieChart(principal, interest) {
     };
 
     window.compiledDirectory = {};
-    
+    let compiledDirectory = {};
+
     function compileFoodsDirectory() {
       const baseDir = (typeof window !== 'undefined' && window.COMMON_FOODS_DIRECTORY && Object.keys(window.COMMON_FOODS_DIRECTORY).length > 0) ? window.COMMON_FOODS_DIRECTORY : COMMON_FOODS_DIRECTORY;
       const targetDir = { ...baseDir };
@@ -1129,25 +1130,31 @@ function drawLoanPieChart(principal, interest) {
       }
 
       // Merge FOODS_JSON_ARRAY
-      if (typeof window !== 'undefined' && window.FOODS_JSON_ARRAY && Array.isArray(window.FOODS_JSON_ARRAY)) {
-        window.FOODS_JSON_ARRAY.forEach(item => {
-          if (item && item.name) {
-            const k = item.name.toLowerCase().trim();
-            if (!targetDir[k]) {
-              targetDir[k] = {
-                baseQty: 100,
-                unit: item.unit || 'g',
-                cal: item.cal || 0,
-                p: item.prot || 0,
-                c: item.carb || 0,
-                f: item.fat || 0,
-                micros: {}
-              };
-            }
+      const foodArr = (typeof window !== 'undefined' && window.FOODS_JSON_ARRAY && Array.isArray(window.FOODS_JSON_ARRAY))
+        ? window.FOODS_JSON_ARRAY
+        : (typeof FOODS_JSON_ARRAY !== 'undefined' && Array.isArray(FOODS_JSON_ARRAY) ? FOODS_JSON_ARRAY : []);
+
+      foodArr.forEach(item => {
+        if (item && item.name) {
+          const k = item.name.toLowerCase().trim();
+          if (!targetDir[k]) {
+            targetDir[k] = {
+              baseQty: 100,
+              unit: item.unit || 'g',
+              cal: item.cal || 0,
+              p: item.prot || 0,
+              c: item.carb || 0,
+              f: item.fat || 0,
+              micros: {}
+            };
           }
-        });
-      }
+        }
+      });
+
+      compiledDirectory = targetDir;
+      window.compiledDirectory = targetDir;
     }
+    compileFoodsDirectory();
     window.compileFoodsDirectory = compileFoodsDirectory;
 
     let activeDietPlan = [];
