@@ -1200,10 +1200,10 @@
           </div>
 
           <!-- Single Unified Search & Auto-Suggest Input -->
-          <div class="input-group" style="position: relative;">
+          <div class="input-group" style="position: relative; z-index: 100;">
             <span class="input-title">Food Name (Type to Search & Auto-Suggest)</span>
             <input type="text" id="tf-add-name" placeholder="Type e.g. Chicken, Oats, Paneer, Rice, Egg, Apple..." class="input-small-full" style="text-align:left; font-size:13px;" oninput="onFoodSearchInput('add')" autocomplete="off">
-            <div id="tf-search-suggestions-add" class="hidden" style="position: absolute; top: 100%; left: 0; right: 0; background: var(--color-surface); border: 1px solid var(--color-hairline); border-radius: 8px; max-height: 180px; overflow-y: auto; z-index: 50; box-shadow: var(--shadow-md); margin-top: 4px;"></div>
+            <div id="tf-search-suggestions-add" class="hidden" style="position: absolute; top: 100%; left: 0; right: 0; background: #ffffff; color: #111827; border: 1px solid #0070f3; border-radius: 8px; max-height: 220px; overflow-y: auto; z-index: 9999; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2); margin-top: 4px;"></div>
           </div>
 
           <!-- Optional Saved Meal Selector inside Add Food -->

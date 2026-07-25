@@ -3184,9 +3184,9 @@ function onFoodSearchInput(mode) {
   matches.forEach(item => {
     const escapedName = item.name.replace(/'/g, "\\'");
     html += `
-      <div style="padding: 8px 12px; font-size:11px; cursor:pointer; border-bottom:1px solid var(--color-hairline);" onclick="selectFoodSuggestionItem('${escapedName}', '${mode}')">
-        <div class="font-bold text-ink">${item.name}</div>
-        <div style="font-size:9px; color:var(--color-mute);" class="font-mono">${item.cal} kcal (${item.unit || '100g'}) (${item.prot || 0}g P | ${item.carb || 0}g C | ${item.fat || 0}g F)</div>
+      <div style="padding: 10px 12px; font-size:12px; cursor:pointer; border-bottom:1px solid #e5e7eb; background:#ffffff; color:#111827; text-align:left;" onclick="selectFoodSuggestionItem('${escapedName}', '${mode}')">
+        <div style="font-weight:700; color:#111827; font-size:12px;">${item.name}</div>
+        <div style="font-size:10px; color:#4b5563; margin-top:2px;">${item.cal} kcal (${item.unit || '100g'}) · ${item.prot || 0}g P | ${item.carb || 0}g C | ${item.fat || 0}g F</div>
       </div>
     `;
   });

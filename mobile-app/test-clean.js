@@ -413,15 +413,7 @@ const DIET_DATABASE = window.DIET_DATABASE;
     }
 
     function adjustDietPlanToTargets(_targetCalories, targetP, targetC, targetF) {
-      const items: Array<{
-        ing: any;
-        baseQty: number;
-        baseCal: number;
-        baseP: number;
-        baseC: number;
-        baseF: number;
-        category: 'p' | 'c' | 'f';
-      }> = [];
+      const items = [];
 
       activeDietPlan.forEach(meal => {
         meal.ingredients.forEach(ing => {
