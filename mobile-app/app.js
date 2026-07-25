@@ -152,9 +152,9 @@ function compileFoodsDirectory() {
             micros: {}
           };
         }
-      });
-    }
-  } catch (e) {}
+      }
+    });
+  }
 
   window.compiledDirectory = compiledDirectory;
 }
