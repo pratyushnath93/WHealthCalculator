@@ -1,10 +1,16 @@
 // WHealth Calculator - Consolidated Mobile App JS
-document.addEventListener('DOMContentLoaded', () => {
+function startAppInitialization() {
   initTheme();
   initNavigation();
   initCalculators();
   initHardwareBackPress();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startAppInitialization);
+} else {
+  startAppInitialization();
+}
 
 // 1. Theme Configuration
 function initTheme() {
