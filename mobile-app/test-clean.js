@@ -1324,7 +1324,9 @@ const DIET_DATABASE = window.DIET_DATABASE;
     }
 
     // Populate suggestions directory
-    compileFoodsDirectory();
+    if (typeof compileFoodsDirectory === 'function') {
+      compileFoodsDirectory();
+    }
 
     // Initial run
     calculate();
