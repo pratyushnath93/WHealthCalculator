@@ -349,6 +349,14 @@ import foodsData from '../../../public/data/foods.json';
         });
       }
     }
+
+    const searchInput = document.getElementById('web-add-food-name');
+    if (searchInput && !searchInput.dataset.listenerAttached) {
+      searchInput.dataset.listenerAttached = "true";
+      searchInput.addEventListener('input', onWebFoodSearchInput);
+      searchInput.addEventListener('focus', onWebFoodSearchInput);
+    }
+
     updateWebCategoryDropdowns();
     renderWebLogs();
     renderWebSavedMeals();
