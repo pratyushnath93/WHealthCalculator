@@ -352,6 +352,29 @@ function initHardwareBackPress() {
       handleBackPress();
     });
   }
+
+  // Mobile Edge Touch Swipe Back Gesture Handler
+  let touchStartX = 0;
+  let touchStartY = 0;
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches.length === 1) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e) => {
+    if (e.changedTouches && e.changedTouches.length === 1) {
+      const distX = e.changedTouches[0].clientX - touchStartX;
+      const distY = e.changedTouches[0].clientY - touchStartY;
+      if ((touchStartX < 60 || distX > 80) && distX > 50 && Math.abs(distY) < 60) {
+        const currentView = navHistory[navHistory.length - 1] || 'view-home';
+        if (currentView !== 'view-home') {
+          goBack();
+        }
+      }
+    }
+  }, { passive: true });
 }
 
 function handleBackPress() {
@@ -913,6 +936,7 @@ function drawLoanPieChart(principal, interest) {
 
 
   function initHealthCalculatorCombined() {
+    var DIET_DATABASE = (typeof window !== 'undefined' && window.DIET_DATABASE) ? window.DIET_DATABASE : {};
     // Inputs elements
     const genderInputs = document.querySelectorAll('button[id^="health-gender-"]') ;
     const ageInput = document.getElementById('health-age-slider') ;
@@ -1242,9 +1266,10 @@ function drawLoanPieChart(principal, interest) {
     
 
     
-// DIET_DATABASE replaced with external file reference
-const DIET_DATABASE = window.DIET_DATABASE;
-;
+// DIET_DATABASE synced with window.DIET_DATABASE
+if (typeof window !== 'undefined' && window.DIET_DATABASE) {
+  DIET_DATABASE = window.DIET_DATABASE;
+}
 
     function generateDietPlan(targetCalories, targetP, targetC, targetF, _goal) {
       const country = countrySelect.value;

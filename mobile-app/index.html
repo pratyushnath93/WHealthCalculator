@@ -1799,7 +1799,7 @@
   <!-- Modern Category Picker Modal -->
   <div id="modal-category-picker" class="sidebar-overlay hidden" style="display:flex; align-items:center; justify-content:center; padding:16px; z-index: 1000;">
     <div class="calculator-form p-4 border border-hairline rounded-2xl bg-canvas" style="width:100%; max-width:320px; box-shadow:var(--shadow-lg);">
-      <div class="flex-row-center" style="justify-space-between; margin-bottom:12px;">
+      <div class="flex-row-center" style="justify-content: space-between; margin-bottom:12px;">
         <h4 class="font-bold text-ink text-sm" style="margin:0;" id="modal-cat-title">Add Meal to Daily Log</h4>
         <button class="icon-btn" onclick="closeCategoryPickerModal()">✕</button>
       </div>
@@ -1822,8 +1822,9 @@
     </div>
   </div>
 
-  <!-- Load Central Master Food Database & app JS -->
+  <!-- Load Central Master Food Database, Diet DB & app JS -->
   <script src="central-food-db.js"></script>
+  <script src="diet-db.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

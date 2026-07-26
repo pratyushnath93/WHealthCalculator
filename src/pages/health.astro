@@ -10148,18 +10148,13 @@ import MetricCard from '../components/MetricCard.astro';
         return;
       }
       
-      citySelect.disabled = false;
-      const defaultOpt = document.createElement('option');
-      defaultOpt.value = '';
-      defaultOpt.disabled = true;
-      defaultOpt.selected = true;
-      defaultOpt.textContent = 'Select City';
-      citySelect.appendChild(defaultOpt);
-      
-      citiesMap[country].forEach(city => {
+      citiesMap[country].forEach((city, idx) => {
         const opt = document.createElement('option');
         opt.value = city.id;
         opt.textContent = `${city.name} (${city.tz})`;
+        if (idx === 0) {
+          opt.selected = true;
+        }
         citySelect.appendChild(opt);
       });
     }
@@ -10643,6 +10638,7 @@ import MetricCard from '../components/MetricCard.astro';
     compileFoodsDirectory();
 
     // Initial run
+    populateCities();
     calculate();
   }
 
