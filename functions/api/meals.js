@@ -20,7 +20,7 @@ export async function onRequestGet(context) {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
-          'Cache-Control': 'public, max-age=3600'
+          'Cache-Control': 'no-cache, no-store, must-revalidate'
         }
       });
     }
@@ -74,7 +74,7 @@ export async function onRequestGet(context) {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 'public, max-age=3600'
+        'Cache-Control': 'no-cache, no-store, must-revalidate'
       }
     });
   } catch (err) {

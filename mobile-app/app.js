@@ -1394,7 +1394,7 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
         ? '/api/meals'
         : 'https://whealth-calculator.pages.dev/api/meals';
       try {
-        var res = await fetch(apiBase + '?country=' + encodeURIComponent(country) + '&city=' + encodeURIComponent(city) + '&diet=' + encodeURIComponent(diet));
+        var res = await fetch(apiBase + '?country=' + encodeURIComponent(country) + '&city=' + encodeURIComponent(city) + '&diet=' + encodeURIComponent(diet) + '&_t=' + Date.now());
         if (res.ok) {
           var json = await res.json();
           if (json.success && Array.isArray(json.data) && json.data.length > 0) {
@@ -3585,7 +3585,7 @@ async function fetchLiveD1FoodsMobile() {
     ? '/api/foods'
     : 'https://whealth-calculator.pages.dev/api/foods';
   try {
-    var res = await fetch(apiBase);
+    var res = await fetch(apiBase + '?_t=' + Date.now());
     if (res.ok) {
       var json = await res.json();
       if (json.success && Array.isArray(json.data) && json.data.length > 0) {

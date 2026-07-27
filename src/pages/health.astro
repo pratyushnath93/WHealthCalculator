@@ -909,7 +909,7 @@ import MetricCard from '../components/MetricCard.astro';
 
     async function syncCentralFoodsHealth() {
       try {
-        const res = await fetch('/api/foods');
+        const res = await fetch(`/api/foods?_t=${Date.now()}`);
         if (res.ok) {
           const json = await res.json();
           if (json.success && Array.isArray(json.data) && json.data.length > 0) {
@@ -9581,7 +9581,7 @@ import MetricCard from '../components/MetricCard.astro';
       if (!country) country = 'IN';
       const cacheKey = `whealth_d1_meals_${country}_${city}_${diet}`;
       try {
-        const res = await fetch(`/api/meals?country=${encodeURIComponent(country)}&city=${encodeURIComponent(city)}&diet=${encodeURIComponent(diet)}`);
+        const res = await fetch(`/api/meals?country=${encodeURIComponent(country)}&city=${encodeURIComponent(city)}&diet=${encodeURIComponent(diet)}&_t=${Date.now()}`);
         if (res.ok) {
           const json = await res.json();
           if (json.success && Array.isArray(json.data) && json.data.length > 0) {

@@ -305,7 +305,7 @@ import foodsData from '../../../public/data/foods.json';
   // Asynchronously fetch latest central food database and sync cache
   async function fetchCentralFoodDatabase() {
     try {
-      const res = await fetch('/api/foods');
+      const res = await fetch(`/api/foods?_t=${Date.now()}`);
       if (res.ok) {
         const json = await res.json();
         if (json.success && Array.isArray(json.data) && json.data.length > 0) {
