@@ -2640,16 +2640,6 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
       };
       ageNumInput?.addEventListener('blur', clampAgeInput);
 
-      // Wrapper tap-to-focus helper for touch mobile devices
-      document.querySelectorAll('.number-input-wrapper').forEach(wrapper => {
-        wrapper.addEventListener('click', (e) => {
-          const input = wrapper.querySelector('input');
-          if (input && e.target !== input) {
-            input.focus();
-          }
-        });
-      });
-
       calculateBtn?.addEventListener('click', () => {
         const maleBtn = document.getElementById('health-gender-male');
         const femaleBtn = document.getElementById('health-gender-female');

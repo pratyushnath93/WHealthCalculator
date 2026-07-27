@@ -739,7 +739,7 @@
           <div class="input-labels">
             <span class="input-title">Age</span>
             <div class="number-input-wrapper">
-              <input type="number" id="health-age" value="28" placeholder="28" min="15" max="80" inputmode="numeric">
+              <input type="text" id="health-age" value="28" placeholder="28" inputmode="numeric" pattern="[0-9]*" class="number-input-field">
               <span class="currency-suffix">Yr</span>
             </div>
           </div>
@@ -760,7 +760,7 @@
           <!-- Height cm -->
           <div id="height-metric-container" class="mt-2">
             <div class="number-input-wrapper">
-              <input type="number" id="health-height-cm" value="175" placeholder="175" min="100" max="250" inputmode="decimal">
+              <input type="text" id="health-height-cm" value="175" placeholder="175" inputmode="decimal" pattern="[0-9.]*" class="number-input-field">
               <span class="currency-suffix">cm</span>
             </div>
           </div>
@@ -769,13 +769,13 @@
           <div id="height-imperial-container" class="input-row hidden mt-2">
             <div class="input-group half">
               <div class="number-input-wrapper">
-                <input type="number" id="health-height-ft" value="5" min="3" max="8" placeholder="5" inputmode="decimal">
+                <input type="text" id="health-height-ft" value="5" placeholder="5" inputmode="numeric" pattern="[0-9]*" class="number-input-field">
                 <span class="currency-suffix">ft</span>
               </div>
             </div>
             <div class="input-group half">
               <div class="number-input-wrapper">
-                <input type="number" id="health-height-in" value="9" min="0" max="11" placeholder="9" inputmode="decimal">
+                <input type="text" id="health-height-in" value="9" placeholder="9" inputmode="numeric" pattern="[0-9]*" class="number-input-field">
                 <span class="currency-suffix">in</span>
               </div>
             </div>
@@ -792,7 +792,7 @@
             </select>
           </div>
           <div class="number-input-wrapper mt-2">
-            <input type="number" id="health-weight" value="70" placeholder="70" min="30" max="250" inputmode="decimal">
+            <input type="text" id="health-weight" value="70" placeholder="70" inputmode="decimal" pattern="[0-9.]*" class="number-input-field">
             <span id="health-weight-unit-label" class="currency-suffix">kg</span>
           </div>
         </div>
