@@ -2428,25 +2428,24 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
       countrySelect.addEventListener('change', () => {
         populateCities();
         if (citySelect && citySelect.options.length > 1) citySelect.selectedIndex = 1;
-        calculate();
+        // Wait for Calculate & Generate Plan button click
       });
 
       citySelect.addEventListener('change', () => {
-        calculate();
+        // Wait for Calculate & Generate Plan button click
       });
 
       goalSelect.addEventListener('change', () => {
-        if (goalSelect) resetSwaps(goalSelect.value);
-        calculate();
+        // Wait for Calculate & Generate Plan button click
       });
 
       dietaryPreferenceSelect.addEventListener('change', () => {
-        calculate();
+        // Wait for Calculate & Generate Plan button click
       });
 
       if (healthConditionSelect) {
         healthConditionSelect.addEventListener('change', () => {
-          calculate();
+          // Wait for Calculate & Generate Plan button click
         });
       }
 
@@ -2959,7 +2958,7 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
       // Populate suggestions directory
       compileFoodsDirectory();
 
-      // Initial run - populate cities and generate complete health & diet plan immediately
+      // Initial run - populate cities and wait for Calculate & Generate Plan button click
       if (countrySelect && !countrySelect.value) countrySelect.value = 'IN';
       populateCities();
       if (citySelect && !citySelect.value && citySelect.options.length > 1) {
@@ -2967,8 +2966,6 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
       }
       if (dietaryPreferenceSelect && !dietaryPreferenceSelect.value) dietaryPreferenceSelect.value = 'non-veg';
       if (healthConditionSelect && !healthConditionSelect.value) healthConditionSelect.value = 'none';
-
-      calculate();
     }
 
     // Handle page load safely

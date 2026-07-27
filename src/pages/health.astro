@@ -10452,24 +10452,23 @@ import MetricCard from '../components/MetricCard.astro';
     countrySelect.addEventListener('change', () => {
       populateCities();
       if (citySelect.options.length > 1) citySelect.selectedIndex = 1;
-      calculate();
+      // Wait for Calculate & Generate Plan button click
     });
     
     citySelect.addEventListener('change', () => {
-      calculate();
+      // Wait for Calculate & Generate Plan button click
     });
 
     goalSelect.addEventListener('change', () => {
-      resetSwaps(goalSelect.value);
-      calculate();
+      // Wait for Calculate & Generate Plan button click
     });
 
     dietaryPreferenceSelect.addEventListener('change', () => {
-      calculate();
+      // Wait for Calculate & Generate Plan button click
     });
 
     healthConditionSelect.addEventListener('change', () => {
-      calculate();
+      // Wait for Calculate & Generate Plan button click
     });
 
     focusLocationBtn.addEventListener('click', () => {
@@ -10864,7 +10863,7 @@ import MetricCard from '../components/MetricCard.astro';
     // Populate suggestions directory
     compileFoodsDirectory();
 
-    // Initial run - populate cities and generate complete health & diet plan immediately
+    // Initial run - populate cities and wait for Calculate & Generate Plan button click
     if (!countrySelect.value) countrySelect.value = 'IN';
     populateCities();
     if (!citySelect.value && citySelect.options.length > 1) {
@@ -10872,8 +10871,6 @@ import MetricCard from '../components/MetricCard.astro';
     }
     if (!dietaryPreferenceSelect.value) dietaryPreferenceSelect.value = 'non-veg';
     if (!healthConditionSelect.value) healthConditionSelect.value = 'none';
-
-    calculate();
   }
 
   // Handle page load
