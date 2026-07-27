@@ -2084,20 +2084,81 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
         });
       }
 
-      const summaryBiochemicalsList = document.getElementById('summary-biochemicals-list');
-      if (summaryBiochemicalsList) {
-        const biochemicals = [
-          { name: "Dietary Cholesterol", val: Math.round(actualP * 2.8 + (actualF > 10 ? 45 : 0)) + " mg" },
-          { name: "Purine Level", val: Math.round(actualP * 2.2 + actualCal * 0.05) + " mg" }
-        ];
-        summaryBiochemicalsList.innerHTML = biochemicals.map(b => `
-          <div class="estimate-item-card">
-            <span>${b.name}</span>
-            <strong>${b.val}</strong>
-          </div>
-        `).join('');
+    function calculateMedicalBiochemicals(gender, age, dietaryPref, healthCondition) {
+      const isVeg = dietaryPref === 'veg';
+
+      // 1. Dietary Cholesterol Limit / Target (AHA / ACC guidelines)
+      // Plant foods contain 0 mg cholesterol. Non-veg baseline limit: <300 mg/day.
+      // Hyperlipidemia / Heart Disease / Fatty Liver limit: <150 mg/day (strict)
+      // Pre-Diabetes / Diabetes limit: <200 mg/day
+      let cholesterolLimit = 300;
+      let cholesterolLabel = "Dietary Cholesterol Limit";
+
+      if (isVeg) {
+        cholesterolLimit = 0;
+        cholesterolLabel = "Dietary Cholesterol Target";
+      } else if (healthCondition === 'high-cholesterol' || healthCondition === 'heart-disease' || healthCondition === 'fatty-liver') {
+        cholesterolLimit = 150;
+      } else if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'high-bp') {
+        cholesterolLimit = 200;
       }
-    }
+
+      // 2. Purine Level Limit (Gout & Nephrology guidelines)
+      // Normal non-veg baseline: <350 mg/day. Vegetarian: <180 mg/day.
+      // High Uric Acid / Gout: STRICTLY <140 mg/day (Low-Purine Protocol)
+      // CKD: <150 mg/day
+      let purineLimit = isVeg ? 180 : 350;
+      let purineLabel = "Purine Level Limit";
+
+      if (healthCondition === 'high-uric-acid') {
+        purineLimit = 140; // Low-Purine Protocol for Gout
+      } else if (healthCondition === 'kidney-disease') {
+        purineLimit = 150;
+      }
+
+      return [
+        {
+          name: cholesterolLabel,
+          key: "Cholesterol",
+          limitVal: cholesterolLimit,
+          unit: "mg",
+          val: isVeg ? "0 mg (Plant-Based)" : `< ${cholesterolLimit} mg/day`
+        },
+        const recBiochemicals = calculateMedicalBiochemicals(gender, age, dietaryPref, healthCondition);
+
+        let deliveredCholesterol = 0;
+        if (!isVeg) {
+          if (healthCondition === 'high-cholesterol' || healthCondition === 'heart-disease' || healthCondition === 'fatty-liver') {
+            deliveredCholesterol = Math.min(135, Math.round(actualP * 1.1 + 35));
+          } else if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'high-bp') {
+            deliveredCholesterol = Math.min(180, Math.round(actualP * 1.5 + 40));
+          } else {
+            deliveredCholesterol = Math.round(actualP * 2.1 + 45);
+          }
+        }
+
+        let deliveredPurine = 0;
+        if (isVeg) {
+          deliveredPurine = Math.round(actualP * 0.9 + 40);
+        } else if (healthCondition === 'high-uric-acid') {
+          deliveredPurine = Math.min(130, Math.round(actualP * 1.0 + 35));
+        } else if (healthCondition === 'kidney-disease') {
+          deliveredPurine = Math.min(145, Math.round(actualP * 1.2 + 40));
+        } else {
+          deliveredPurine = Math.round(actualP * 2.1 + actualCal * 0.025);
+        }
+
+        summaryBiochemicalsList.innerHTML = `
+          <div class="estimate-item-card">
+            <span>Dietary Cholesterol</span>
+            <strong>${deliveredCholesterol} mg <span style="font-size:9px; color:var(--color-mute); font-weight:normal;">(Target: ${recBiochemicals[0].val})</span></strong>
+          </div>
+          <div class="estimate-item-card">
+            <span>Purine Level</span>
+            <strong>${deliveredPurine} mg <span style="font-size:9px; color:var(--color-mute); font-weight:normal;">(Target: ${recBiochemicals[1].val})</span></strong>
+          </div>
+        `;
+      }
 
     function populateCities() {
       const country = countrySelect ? countrySelect.value : '';
@@ -2616,23 +2677,17 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
           `).join('');
         }
 
-        // Render Bio-Chemical Estimates Grid
+        // Render Bio-Chemical Estimates Grid (Medical Recommended Limits & Guidelines)
         const healthBiochemicalsGrid = document.getElementById('health-app-biochemicals-grid');
         if (healthBiochemicalsGrid) {
-          let cholVal = Math.round(proteinG * 2.8 + 45);
-          let purineVal = Math.round(proteinG * 2.2 + targetCalories * 0.05);
+          const dietPrefSelect = document.getElementById('health-dietary');
+          const dietaryPref = dietPrefSelect ? dietPrefSelect.value : 'non-veg';
+          const femaleBtn = document.getElementById('health-gender-female');
+          const gender = (femaleBtn && femaleBtn.classList.contains('active')) ? 'female' : 'male';
+          const rawAge = parseInt(ageNumInput?.value || '') || parseInt(ageInput?.value || '') || 28;
+          const age = Math.max(15, Math.min(80, rawAge));
 
-          if (healthCondition === 'high-cholesterol' || healthCondition === 'heart-disease') {
-            cholVal = Math.min(135, cholVal);
-          }
-          if (healthCondition === 'high-uric-acid') {
-            purineVal = Math.min(130, purineVal);
-          }
-
-          const biochemicals = [
-            { name: "Dietary Cholesterol Target", val: cholVal + " mg" },
-            { name: "Purine Level Estimate", val: purineVal + " mg" }
-          ];
+          const biochemicals = calculateMedicalBiochemicals(gender, age, dietaryPref, healthCondition);
           healthBiochemicalsGrid.innerHTML = biochemicals.map(b => `
             <div class="estimate-item-card">
               <span>${b.name}</span>
