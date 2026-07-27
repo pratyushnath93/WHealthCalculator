@@ -305,12 +305,12 @@ import foodsData from '../../../public/data/foods.json';
   // Asynchronously fetch latest central food database and sync cache
   async function fetchCentralFoodDatabase() {
     try {
-      const res = await fetch('/data/foods.json');
+      const res = await fetch('/api/foods');
       if (res.ok) {
-        const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-          WEB_FOOD_DB = data;
-          localStorage.setItem('whealth_central_foods', JSON.stringify(data));
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          WEB_FOOD_DB = json.data;
+          localStorage.setItem('whealth_central_foods', JSON.stringify(json.data));
           localStorage.setItem('whealth_db_version', CURRENT_DB_VERSION);
         }
       }

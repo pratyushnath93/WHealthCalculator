@@ -3578,7 +3578,58 @@ function cleanSearchTermMobile(str) {
     .trim();
 }
 
+var liveD1FoodsList = [];
+
+async function fetchLiveD1FoodsMobile() {
+  var apiBase = (typeof window !== 'undefined' && window.location && window.location.hostname.includes('pages.dev'))
+    ? '/api/foods'
+    : 'https://whealth-calculator.pages.dev/api/foods';
+  try {
+    var res = await fetch(apiBase);
+    if (res.ok) {
+      var json = await res.json();
+      if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+        liveD1FoodsList = json.data.map(function(f) {
+          return {
+            name: f.name,
+            cal: f.cal || 0,
+            prot: f.prot || 0,
+            carb: f.carb || 0,
+            fat: f.fat || 0,
+            unit: f.unit || 'g',
+            baseQty: 100
+          };
+        });
+        try { localStorage.setItem('whealth_central_foods', JSON.stringify(liveD1FoodsList)); } catch(e) {}
+        return liveD1FoodsList;
+      }
+    }
+  } catch(e) {}
+  return liveD1FoodsList;
+}
+if (typeof window !== 'undefined') fetchLiveD1FoodsMobile();
+
 function getMasterMobileFoodList() {
+  try {
+    var cachedCentral = localStorage.getItem('whealth_central_foods');
+    if (cachedCentral) {
+      var parsed = JSON.parse(cachedCentral);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed.map(function(item) {
+          return {
+            name: item.name,
+            cal: item.cal || 0,
+            prot: item.prot !== undefined ? item.prot : (item.p || 0),
+            carb: item.carb !== undefined ? item.carb : (item.c || 0),
+            fat: item.fat !== undefined ? item.fat : (item.f || 0),
+            unit: item.unit || 'g',
+            baseQty: 100
+          };
+        });
+      }
+    }
+  } catch(e) {}
+
   try {
     if (typeof compileFoodsDirectory === 'function') {
       compileFoodsDirectory();

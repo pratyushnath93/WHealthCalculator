@@ -884,24 +884,23 @@ import MetricCard from '../components/MetricCard.astro';
         });
       }
 
-      // Merge Central Database foods
+      // Master Central Database foods (Cloudflare D1 live/cache)
       try {
         const cachedCentral = JSON.parse(localStorage.getItem('whealth_central_foods') || 'null');
-        if (Array.isArray(cachedCentral)) {
+        if (Array.isArray(cachedCentral) && cachedCentral.length > 0) {
+          compiledDirectory = {};
           cachedCentral.forEach((item: any) => {
             if (item && item.name) {
               const k = item.name.toLowerCase().trim();
-              if (!compiledDirectory[k]) {
-                compiledDirectory[k] = {
-                  baseQty: 100,
-                  unit: item.unit || 'g',
-                  cal: item.cal || 0,
-                  p: item.prot || 0,
-                  c: item.carb || 0,
-                  f: item.fat || 0,
-                  micros: {}
-                };
-              }
+              compiledDirectory[k] = {
+                baseQty: 100,
+                unit: item.unit || 'g',
+                cal: item.cal || 0,
+                p: item.prot || 0,
+                c: item.carb || 0,
+                f: item.fat || 0,
+                micros: {}
+              };
             }
           });
         }
@@ -910,11 +909,11 @@ import MetricCard from '../components/MetricCard.astro';
 
     async function syncCentralFoodsHealth() {
       try {
-        const res = await fetch('/data/foods.json');
+        const res = await fetch('/api/foods');
         if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data) && data.length > 0) {
-            localStorage.setItem('whealth_central_foods', JSON.stringify(data));
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+            localStorage.setItem('whealth_central_foods', JSON.stringify(json.data));
             compileFoodsDirectory();
           }
         }
