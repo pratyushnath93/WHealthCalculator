@@ -1959,30 +1959,130 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
         nutritionalMatchBadge.innerHTML = '<span>!</span> Daily requirements customized';
       }
 
-      // Ensure all 10 Micronutrient compounds are present in actualMicros
-      actualMicros['Calcium (mg)'] = Math.round(actualP * 14 + 150);
-      actualMicros['Iron (mg)'] = Math.round(actualP * 0.15 + 2);
-      actualMicros['Potassium (mg)'] = Math.round(actualCal * 0.9);
-      actualMicros['Sodium (mg)'] = Math.round(actualCal * 0.8);
-      actualMicros['Magnesium (mg)'] = Math.round(actualP * 3.5 + 80);
-      actualMicros['Zinc (mg)'] = Math.round(actualP * 0.12 + 1.5);
-      actualMicros['Selenium (mcg)'] = Math.round(actualP * 0.7 + (actualCal > 0 ? 15 : 0));
-      actualMicros['Vitamin A (mcg)'] = Math.round(actualP * 6.0 + 350);
-      actualMicros['Vitamin C (mg)'] = Math.round(actualC * 0.4 + 25);
-      actualMicros['Vitamin D (mcg)'] = Math.round(actualCal * 0.005 + 5);
+    function calculateMedicalMicronutrients(gender, age, healthCondition) {
+      const isFemale = gender === 'female';
+      
+      // 1. Calcium (RDA: 1000 mg for adults, 1200 mg for women > 50 / men > 70 / thyroid)
+      let calcium = isFemale ? (age > 50 ? 1200 : 1000) : (age > 70 ? 1200 : 1000);
+      if (healthCondition === 'thyroid') calcium = 1200;
+
+      // 2. Iron (RDA: 18 mg for pre-menopausal females, 8 mg for males & post-menopausal females)
+      let iron = isFemale ? (age > 50 ? 8 : 18) : 8;
+      if (healthCondition === 'high-uric-acid') iron = Math.min(iron, 10);
+
+      // 3. Potassium (RDA: 2600-3400 mg; DASH protocol for High BP: 3800 mg; CKD limit: 2000 mg)
+      let potassium = isFemale ? 2600 : 3400;
+      let potassiumLabel = "Potassium Target";
+      if (healthCondition === 'high-bp' || healthCondition === 'heart-disease') {
+        potassium = 3800; // Elevated for DASH protocol to reduce arterial blood pressure
+      } else if (healthCondition === 'low-bp') {
+        potassium = 2800;
+      } else if (healthCondition === 'kidney-disease') {
+        potassium = 2000;
+        potassiumLabel = "Potassium Limit";
+      }
+
+      // 4. Sodium (AHA/WHO limit: 2000 mg; DASH protocol for High BP/Heart/Kidney: 1350 mg; Low BP: 2600 mg)
+      let sodium = 2000;
+      let sodiumLabel = "Sodium Limit";
+      if (healthCondition === 'high-bp' || healthCondition === 'heart-disease' || healthCondition === 'kidney-disease') {
+        sodium = 1350; // Strict restriction
+      } else if (healthCondition === 'low-bp') {
+        sodium = 2600; // Adjusted for hypotension
+        sodiumLabel = "Sodium Target";
+      } else if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'fatty-liver') {
+        sodium = 1800;
+      }
+
+      // 5. Magnesium (RDA: 400-420 mg males, 310-320 mg females; High BP/Diabetes: 380-420 mg)
+      let magnesium = isFemale ? (age > 30 ? 320 : 310) : (age > 30 ? 420 : 400);
+      if (healthCondition === 'high-bp' || healthCondition === 'diabetes' || healthCondition === 'high-sugar') {
+        magnesium = Math.max(magnesium, 380);
+      }
+
+      // 6. Zinc (RDA: 11 mg males, 8 mg females; Thyroid/Diabetes: 14 mg)
+      let zinc = isFemale ? 8 : 11;
+      if (healthCondition === 'thyroid' || healthCondition === 'diabetes') {
+        zinc = 14;
+      }
+
+      // 7. Selenium (RDA: 55 mcg; Thyroid: 150 mcg for thyroid hormone synthesis)
+      let selenium = 55;
+      if (healthCondition === 'thyroid') {
+        selenium = 150;
+      }
+
+      // 8. Vitamin A (RDA: 900 mcg RAE males, 700 mcg RAE females)
+      let vitA = isFemale ? 700 : 900;
+
+      // 9. Vitamin C (RDA: 90 mg males, 75 mg females; Diabetes/Fatty Liver: 110 mg)
+      let vitC = isFemale ? 75 : 90;
+      if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'fatty-liver') {
+        vitC = 110;
+      }
+
+      // 10. Vitamin D (RDA: 15 mcg / 600 IU for adults, 20 mcg / 800 IU > 70; Thyroid/CKD/Diabetes: 25 mcg / 1000 IU)
+      let vitD = age > 70 ? 20 : 15;
+      if (healthCondition === 'thyroid' || healthCondition === 'diabetes' || healthCondition === 'kidney-disease') {
+        vitD = 25;
+      }
+
+      return [
+        { name: "Calcium Target", key: "Calcium", valNum: calcium, unit: "mg", val: `${calcium} mg` },
+        { name: "Iron Target", key: "Iron", valNum: iron, unit: "mg", val: `${iron} mg` },
+        { name: potassiumLabel, key: "Potassium", valNum: potassium, unit: "mg", val: `${potassium} mg` },
+        { name: sodiumLabel, key: "Sodium", valNum: sodium, unit: "mg", val: `${sodium} mg` },
+        { name: "Magnesium Target", key: "Magnesium", valNum: magnesium, unit: "mg", val: `${magnesium} mg` },
+        { name: "Zinc Target", key: "Zinc", valNum: zinc, unit: "mg", val: `${zinc} mg` },
+        { name: "Selenium Target", key: "Selenium", valNum: selenium, unit: "mcg", val: `${selenium} mcg` },
+        { name: "Vitamin A Target", key: "Vitamin A", valNum: vitA, unit: "mcg", val: `${vitA} mcg` },
+        { name: "Vitamin C Target", key: "Vitamin C", valNum: vitC, unit: "mg", val: `${vitC} mg` },
+        { name: "Vitamin D Target", key: "Vitamin D", valNum: vitD, unit: "mcg", val: `${vitD} mcg` }
+      ];
+    }
 
       // Render total micros list
-      summaryMicrosList.innerHTML = '';
-      Object.entries(actualMicros).forEach(([name, val]) => {
-        const cleanName = name.replace(' (mg)','').replace(' (mcg)','').replace(' (g)','');
-        if (cleanName === 'Fluoride' || cleanName === 'Vitamin E') return; // Filter out Fluoride & Vitamin E
+      if (summaryMicrosList) {
+        summaryMicrosList.innerHTML = '';
 
-        const div = document.createElement('div');
-        div.className = 'estimate-item-card';
-        const unit = name.includes('mg') ? 'mg' : name.includes('mcg') ? 'mcg' : 'g';
-        div.innerHTML = `<span>${cleanName}</span><strong>${Math.round(val * 10) / 10} ${unit}</strong>`;
-        summaryMicrosList.appendChild(div);
-      });
+        const femaleBtn = document.getElementById('health-gender-female');
+        const gender = (femaleBtn && femaleBtn.classList.contains('active')) ? 'female' : 'male';
+        const rawAge = parseInt(ageNumInput?.value || '') || parseInt(ageInput?.value || '') || 28;
+        const age = Math.max(15, Math.min(80, rawAge));
+        const conditionSelect = document.getElementById('health-condition');
+        const healthCondition = conditionSelect ? conditionSelect.value : 'none';
+
+        const recommendedMicros = calculateMedicalMicronutrients(gender, age, healthCondition);
+
+        const deliveredMicrosMap = {
+          'Calcium': Math.round(actualP * 11.5 + 180),
+          'Iron': Math.round(actualP * 0.14 + (actualC > 200 ? 3 : 1)),
+          'Potassium': Math.round(actualCal * 0.95),
+          'Sodium': Math.round(actualCal * 0.72),
+          'Magnesium': Math.round(actualP * 3.2 + 90),
+          'Zinc': Math.round(actualP * 0.11 + 1.2),
+          'Selenium': Math.round(actualP * 0.65 + 12),
+          'Vitamin A': Math.round(actualP * 5.5 + 320),
+          'Vitamin C': Math.round(actualC * 0.35 + 30),
+          'Vitamin D': Math.round(actualCal * 0.006 + 4)
+        };
+
+        Object.entries(actualMicros).forEach(([name, val]) => {
+          const cleanName = name.replace(' (mg)','').replace(' (mcg)','').replace(' (g)','');
+          if (cleanName === 'Fluoride' || cleanName === 'Vitamin E') return;
+          if (deliveredMicrosMap[cleanName] !== undefined) {
+            deliveredMicrosMap[cleanName] = Math.max(deliveredMicrosMap[cleanName], Math.round(val));
+          }
+        });
+
+        recommendedMicros.forEach(m => {
+          const deliveredVal = deliveredMicrosMap[m.key] || 0;
+          const div = document.createElement('div');
+          div.className = 'estimate-item-card';
+          div.innerHTML = `<span>${m.key}</span><strong>${deliveredVal} ${m.unit} <span style="font-size:9px; color:var(--color-mute); font-weight:normal;">(RDA: ${m.val})</span></strong>`;
+          summaryMicrosList.appendChild(div);
+        });
+      }
 
       const summaryBiochemicalsList = document.getElementById('summary-biochemicals-list');
       if (summaryBiochemicalsList) {
@@ -2499,21 +2599,15 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
         const fiberGLbl = document.getElementById('fiber-g');
         if (fiberGLbl) fiberGLbl.textContent = `${estFiberG} g`;
 
-        // Render Micronutrient Estimates Grid
+        // Render Micronutrient Estimates Grid (Medical Recommended RDA Targets)
         const healthMicrosGrid = document.getElementById('health-app-micros-grid');
         if (healthMicrosGrid) {
-          const micros = [
-            { name: "Calcium Target", val: Math.round(proteinG * 14 + 150) + " mg" },
-            { name: "Iron Target", val: Math.round(proteinG * 0.15 + 2) + " mg" },
-            { name: "Potassium Target", val: Math.round(targetCalories * 0.9) + " mg" },
-            { name: "Sodium Limit", val: Math.round(targetCalories * 0.8) + " mg" },
-            { name: "Magnesium Target", val: Math.round(proteinG * 3.5 + 80) + " mg" },
-            { name: "Zinc Target", val: Math.round(proteinG * 0.12 + 1.5) + " mg" },
-            { name: "Selenium Target", val: Math.round(proteinG * 0.7 + 15) + " mcg" },
-            { name: "Vitamin A Target", val: Math.round(proteinG * 6.0 + 350) + " mcg" },
-            { name: "Vitamin C Target", val: Math.round(carbsG * 0.4 + 25) + " mg" },
-            { name: "Vitamin D Target", val: Math.round(targetCalories * 0.005 + 5) + " mcg" }
-          ];
+          const femaleBtn = document.getElementById('health-gender-female');
+          const gender = (femaleBtn && femaleBtn.classList.contains('active')) ? 'female' : 'male';
+          const rawAge = parseInt(ageNumInput?.value || '') || parseInt(ageInput?.value || '') || 28;
+          const age = Math.max(15, Math.min(80, rawAge));
+
+          const micros = calculateMedicalMicronutrients(gender, age, healthCondition);
           healthMicrosGrid.innerHTML = micros.map(m => `
             <div class="estimate-item-card">
               <span>${m.name}</span>
