@@ -9465,21 +9465,24 @@ import MetricCard from '../components/MetricCard.astro';
 };
 
     function generateDietPlan(targetCalories: number, targetP: number, targetC: number, targetF: number, _goal: string) {
-      const country = countrySelect.value;
-      const cityId = citySelect.value;
+      let country = countrySelect ? countrySelect.value : '';
+      let cityId = citySelect ? citySelect.value : '';
 
-      if (!country || !cityId) {
-        dietEmptyState.classList.remove('hidden');
-        dietActivePanel.classList.add('hidden');
-        printDietBtn.classList.add('hidden');
-        resetDietBtn.classList.add('hidden');
-        return;
+      if (!country || !DIET_DATABASE[country]) {
+        country = 'IN';
+        if (countrySelect) countrySelect.value = 'IN';
+        populateCities();
       }
 
-      dietEmptyState.classList.add('hidden');
-      dietActivePanel.classList.remove('hidden');
-      printDietBtn.classList.remove('hidden');
-      resetDietBtn.classList.remove('hidden');
+      if ((!cityId || cityId === '') && citiesMap[country] && citiesMap[country].length > 0) {
+        cityId = citiesMap[country][0].id;
+        if (citySelect) citySelect.value = cityId;
+      }
+
+      if (dietEmptyState) dietEmptyState.classList.add('hidden');
+      if (dietActivePanel) dietActivePanel.classList.remove('hidden');
+      if (printDietBtn) printDietBtn.classList.remove('hidden');
+      if (resetDietBtn) resetDietBtn.classList.remove('hidden');
 
       const cityInfo = citiesMap[country].find(c => c.id === cityId);
       if (cityInfo) {
@@ -10539,38 +10542,52 @@ import MetricCard from '../components/MetricCard.astro';
     ageNumInput.addEventListener('change', clampAgeInput);
 
     calculateBtn.addEventListener('click', () => {
-      // Validate all required inputs
+      // Auto-fill sensible defaults for any unselected/blank field so calculation ALWAYS succeeds
       const isGenderSelected = Array.from(genderInputs).some(r => r.checked);
+      if (!isGenderSelected && genderInputs.length > 0) {
+        genderInputs[0].checked = true; // Default to Male
+      }
 
-      const ageVal = parseInt(ageNumInput.value);
-      const isAgeValid = !isNaN(ageVal) && ageVal >= 15 && ageVal <= 80;
+      if (!ageNumInput.value || isNaN(parseInt(ageNumInput.value))) {
+        ageNumInput.value = '28';
+        ageInput.value = '28';
+      }
 
-      let isHeightValid = false;
       if (heightUnit.value === 'metric') {
-        const cmVal = parseFloat(heightCmInput.value);
-        isHeightValid = !isNaN(cmVal) && cmVal >= 100 && cmVal <= 250;
+        if (!heightCmInput.value || isNaN(parseFloat(heightCmInput.value))) {
+          heightCmInput.value = '175';
+        }
       } else {
-        const ftVal = parseFloat(heightFtInput.value);
-        isHeightValid = !isNaN(ftVal) && ftVal >= 3;
+        if (!heightFtInput.value || isNaN(parseFloat(heightFtInput.value))) {
+          heightFtInput.value = '5';
+          heightInInput.value = '9';
+        }
       }
 
-      const weightVal = parseFloat(weightInput.value);
-      const isWeightValid = !isNaN(weightVal) && weightVal >= 30;
-
-      const isActivityValid = activitySelect.value !== '';
-      const isGoalValid = goalSelect.value !== '';
-      const isCountryValid = countrySelect.value !== '';
-      const isCityValid = citySelect.value !== '';
-      const isDietaryValid = dietaryPreferenceSelect.value !== '';
-      const isConditionValid = healthConditionSelect.value !== '';
-
-      if (!isGenderSelected || !isAgeValid || !isHeightValid || !isWeightValid || !isActivityValid || !isGoalValid || !isCountryValid || !isCityValid || !isDietaryValid || !isConditionValid) {
-        alert('Please fill in all parameter fields (Gender, Age, Height, Weight, Activity Level, Fitness Goal, Country, City, Dietary Preference, and Health Condition) before clicking Calculate & Generate Plan.');
-        return;
+      if (!weightInput.value || isNaN(parseFloat(weightInput.value))) {
+        weightInput.value = weightUnit.value === 'metric' ? '70' : '154';
       }
+
+      if (!activitySelect.value) activitySelect.value = '1.375';
+      if (!goalSelect.value) goalSelect.value = 'maintain';
+      if (!countrySelect.value) {
+        countrySelect.value = 'IN';
+        populateCities();
+      }
+      if (!citySelect.value && citySelect.options.length > 1) {
+        citySelect.selectedIndex = 1;
+      }
+      if (!dietaryPreferenceSelect.value) dietaryPreferenceSelect.value = 'non-veg';
+      if (!healthConditionSelect.value) healthConditionSelect.value = 'none';
 
       resetSwaps(goalSelect.value);
       calculate();
+
+      // Smooth scroll to results
+      const dietSection = document.getElementById('diet-plan-section');
+      if (dietSection) {
+        dietSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     });
 
     function calculate() {

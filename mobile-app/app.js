@@ -1272,19 +1272,22 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
 }
 
     function generateDietPlan(targetCalories, targetP, targetC, targetF, _goal) {
-      const country = countrySelect.value;
-      const cityId = citySelect.value;
+      let country = countrySelect ? countrySelect.value : '';
+      let cityId = citySelect ? citySelect.value : '';
 
-      if (!country || !cityId) {
-        dietEmptyState.classList.remove('hidden');
-        dietActivePanel.classList.add('hidden');
-        if (printDietBtn) printDietBtn.classList.add('hidden');
-        if (resetDietBtn) resetDietBtn.classList.add('hidden');
-        return;
+      if (!country || !DIET_DATABASE[country]) {
+        country = 'IN';
+        if (countrySelect) countrySelect.value = 'IN';
+        populateCities();
       }
 
-      dietEmptyState.classList.add('hidden');
-      dietActivePanel.classList.remove('hidden');
+      if ((!cityId || cityId === '') && citiesMap[country] && citiesMap[country].length > 0) {
+        cityId = citiesMap[country][0].id;
+        if (citySelect) citySelect.value = cityId;
+      }
+
+      if (dietEmptyState) dietEmptyState.classList.add('hidden');
+      if (dietActivePanel) dietActivePanel.classList.remove('hidden');
       if (printDietBtn) printDietBtn.classList.remove('hidden');
       if (resetDietBtn) resetDietBtn.classList.remove('hidden');
 
@@ -2492,37 +2495,49 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
       calculateBtn?.addEventListener('click', () => {
         const maleBtn = document.getElementById('health-gender-male');
         const femaleBtn = document.getElementById('health-gender-female');
-        const isGenderSelected = maleBtn?.classList.contains('active') || femaleBtn?.classList.contains('active');
+        if (!maleBtn?.classList.contains('active') && !femaleBtn?.classList.contains('active')) {
+          maleBtn?.classList.add('active');
+        }
 
-        const ageVal = parseInt(ageNumInput?.value || '');
-        const isAgeValid = !isNaN(ageVal) && ageVal >= 15 && ageVal <= 80;
+        if (!ageNumInput?.value || isNaN(parseInt(ageNumInput.value))) {
+          if (ageNumInput) ageNumInput.value = '28';
+          if (ageInput) ageInput.value = '28';
+        }
 
-        let isHeightValid = false;
         if (heightUnit && heightUnit.value === 'metric') {
-          const cmVal = parseFloat(heightCmInput?.value || '');
-          isHeightValid = !isNaN(cmVal) && cmVal >= 100 && cmVal <= 250;
+          if (!heightCmInput?.value || isNaN(parseFloat(heightCmInput.value))) {
+            if (heightCmInput) heightCmInput.value = '175';
+          }
         } else {
-          const ftVal = parseFloat(heightFtInput?.value || '');
-          isHeightValid = !isNaN(ftVal) && ftVal >= 3;
+          if (!heightFtInput?.value || isNaN(parseFloat(heightFtInput.value))) {
+            if (heightFtInput) heightFtInput.value = '5';
+            if (heightInInput) heightInInput.value = '9';
+          }
         }
 
-        const weightVal = parseFloat(weightInput?.value || '');
-        const isWeightValid = !isNaN(weightVal) && weightVal >= 30;
-
-        const isActivityValid = activitySelect && activitySelect.value !== '';
-        const isGoalValid = goalSelect && goalSelect.value !== '';
-        const isCountryValid = countrySelect && countrySelect.value !== '';
-        const isCityValid = citySelect && citySelect.value !== '';
-        const isDietaryValid = dietaryPreferenceSelect && dietaryPreferenceSelect.value !== '';
-        const isConditionValid = healthConditionSelect && healthConditionSelect.value !== '';
-
-        if (!isGenderSelected || !isAgeValid || !isHeightValid || !isWeightValid || !isActivityValid || !isGoalValid || !isCountryValid || !isCityValid || !isDietaryValid || !isConditionValid) {
-          alert('Please fill in all parameter fields (Gender, Age, Height, Weight, Activity Level, Fitness Goal, Country, City, Dietary Preference, and Health Condition) before clicking Calculate & Generate Plan.');
-          return;
+        if (!weightInput?.value || isNaN(parseFloat(weightInput.value))) {
+          if (weightInput) weightInput.value = (weightUnit && weightUnit.value === 'metric') ? '70' : '154';
         }
+
+        if (activitySelect && !activitySelect.value) activitySelect.value = '1.375';
+        if (goalSelect && !goalSelect.value) goalSelect.value = 'maintain';
+        if (countrySelect && !countrySelect.value) {
+          countrySelect.value = 'IN';
+          populateCities();
+        }
+        if (citySelect && !citySelect.value && citySelect.options.length > 1) {
+          citySelect.selectedIndex = 1;
+        }
+        if (dietaryPreferenceSelect && !dietaryPreferenceSelect.value) dietaryPreferenceSelect.value = 'non-veg';
+        if (healthConditionSelect && !healthConditionSelect.value) healthConditionSelect.value = 'none';
 
         if (goalSelect) resetSwaps(goalSelect.value);
         calculate();
+
+        const resultsContainer = document.querySelector('.results-container');
+        if (resultsContainer) {
+          resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       });
 
       function calculate() {
