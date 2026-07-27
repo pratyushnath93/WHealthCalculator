@@ -984,6 +984,7 @@ function drawLoanPieChart(principal, interest) {
     const countrySelect = document.getElementById('health-country') ;
     const citySelect = document.getElementById('health-city') ;
     const dietaryPreferenceSelect = document.getElementById('health-dietary') ;
+    const healthConditionSelect = document.getElementById('health-condition') ;
     
     // Diet display containers
     const dietEmptyState = document.getElementById('diet-empty-state') ;
