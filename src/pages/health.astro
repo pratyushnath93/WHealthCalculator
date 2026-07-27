@@ -10275,7 +10275,7 @@ import MetricCard from '../components/MetricCard.astro';
 
       const summaryBiochemicalsList = document.getElementById('summary-biochemicals-list');
       if (summaryBiochemicalsList) {
-        const dietaryPref = dietaryPrefSelect ? dietaryPrefSelect.value : 'non-veg';
+        const dietaryPref = dietaryPreferenceSelect ? dietaryPreferenceSelect.value : 'non-veg';
         const isVeg = dietaryPref === 'veg';
         let gender = 'male';
         genderInputs.forEach(radio => {
@@ -10794,7 +10794,7 @@ import MetricCard from '../components/MetricCard.astro';
       // Render Bio-Chemical Targets (Medical Recommended Limits & Guidelines)
       const healthBiochemicalsGrid = document.getElementById('health-page-biochemicals-grid');
       if (healthBiochemicalsGrid) {
-        const dietaryPref = dietaryPrefSelect ? dietaryPrefSelect.value : 'non-veg';
+        const dietaryPref = dietaryPreferenceSelect ? dietaryPreferenceSelect.value : 'non-veg';
         let gender = 'male';
         genderInputs.forEach(radio => {
           if (radio.checked) gender = radio.value;

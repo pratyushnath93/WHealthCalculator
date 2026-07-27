@@ -2490,6 +2490,37 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
       ageNumInput?.addEventListener('change', clampAgeInput);
 
       calculateBtn?.addEventListener('click', () => {
+        const maleBtn = document.getElementById('health-gender-male');
+        const femaleBtn = document.getElementById('health-gender-female');
+        const isGenderSelected = maleBtn?.classList.contains('active') || femaleBtn?.classList.contains('active');
+
+        const ageVal = parseInt(ageNumInput?.value || '');
+        const isAgeValid = !isNaN(ageVal) && ageVal >= 15 && ageVal <= 80;
+
+        let isHeightValid = false;
+        if (heightUnit && heightUnit.value === 'metric') {
+          const cmVal = parseFloat(heightCmInput?.value || '');
+          isHeightValid = !isNaN(cmVal) && cmVal >= 100 && cmVal <= 250;
+        } else {
+          const ftVal = parseFloat(heightFtInput?.value || '');
+          isHeightValid = !isNaN(ftVal) && ftVal >= 3;
+        }
+
+        const weightVal = parseFloat(weightInput?.value || '');
+        const isWeightValid = !isNaN(weightVal) && weightVal >= 30;
+
+        const isActivityValid = activitySelect && activitySelect.value !== '';
+        const isGoalValid = goalSelect && goalSelect.value !== '';
+        const isCountryValid = countrySelect && countrySelect.value !== '';
+        const isCityValid = citySelect && citySelect.value !== '';
+        const isDietaryValid = dietaryPreferenceSelect && dietaryPreferenceSelect.value !== '';
+        const isConditionValid = healthConditionSelect && healthConditionSelect.value !== '';
+
+        if (!isGenderSelected || !isAgeValid || !isHeightValid || !isWeightValid || !isActivityValid || !isGoalValid || !isCountryValid || !isCityValid || !isDietaryValid || !isConditionValid) {
+          alert('Please fill in all parameter fields (Gender, Age, Height, Weight, Activity Level, Fitness Goal, Country, City, Dietary Preference, and Health Condition) before clicking Calculate & Generate Plan.');
+          return;
+        }
+
         if (goalSelect) resetSwaps(goalSelect.value);
         calculate();
       });
