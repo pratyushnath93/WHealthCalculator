@@ -2088,9 +2088,6 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
       const isVeg = dietaryPref === 'veg';
 
       // 1. Dietary Cholesterol Limit / Target (AHA / ACC guidelines)
-      // Plant foods contain 0 mg cholesterol. Non-veg baseline limit: <300 mg/day.
-      // Hyperlipidemia / Heart Disease / Fatty Liver limit: <150 mg/day (strict)
-      // Pre-Diabetes / Diabetes limit: <200 mg/day
       let cholesterolLimit = 300;
       let cholesterolLabel = "Dietary Cholesterol Limit";
 
@@ -2104,14 +2101,11 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
       }
 
       // 2. Purine Level Limit (Gout & Nephrology guidelines)
-      // Normal non-veg baseline: <350 mg/day. Vegetarian: <180 mg/day.
-      // High Uric Acid / Gout: STRICTLY <140 mg/day (Low-Purine Protocol)
-      // CKD: <150 mg/day
       let purineLimit = isVeg ? 180 : 350;
       let purineLabel = "Purine Level Limit";
 
       if (healthCondition === 'high-uric-acid') {
-        purineLimit = 140; // Low-Purine Protocol for Gout
+        purineLimit = 140;
       } else if (healthCondition === 'kidney-disease') {
         purineLimit = 150;
       }
@@ -2124,6 +2118,28 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
           unit: "mg",
           val: isVeg ? "0 mg (Plant-Based)" : `< ${cholesterolLimit} mg/day`
         },
+        {
+          name: purineLabel,
+          key: "Purine",
+          limitVal: purineLimit,
+          unit: "mg",
+          val: `< ${purineLimit} mg/day`
+        }
+      ];
+    }
+
+      const summaryBiochemicalsList = document.getElementById('summary-biochemicals-list');
+      if (summaryBiochemicalsList) {
+        const dietPrefSelect = document.getElementById('health-dietary');
+        const dietaryPref = dietPrefSelect ? dietPrefSelect.value : 'non-veg';
+        const isVeg = dietaryPref === 'veg';
+        const femaleBtn = document.getElementById('health-gender-female');
+        const gender = (femaleBtn && femaleBtn.classList.contains('active')) ? 'female' : 'male';
+        const rawAge = parseInt(ageNumInput?.value || '') || parseInt(ageInput?.value || '') || 28;
+        const age = Math.max(15, Math.min(80, rawAge));
+        const conditionSelect = document.getElementById('health-condition');
+        const healthCondition = conditionSelect ? conditionSelect.value : 'none';
+
         const recBiochemicals = calculateMedicalBiochemicals(gender, age, dietaryPref, healthCondition);
 
         let deliveredCholesterol = 0;
@@ -2159,6 +2175,7 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
           </div>
         `;
       }
+    }
 
     function populateCities() {
       const country = countrySelect ? countrySelect.value : '';
