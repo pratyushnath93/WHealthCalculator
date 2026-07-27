@@ -1385,11 +1385,72 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
   DIET_DATABASE = window.DIET_DATABASE;
 }
 
+    var liveDietDatabase = {};
+
+    async function fetchLiveD1Meals(country, city, diet) {
+      if (!country) country = 'IN';
+      var cacheKey = 'whealth_d1_meals_' + country + '_' + city + '_' + diet;
+      var apiBase = (typeof window !== 'undefined' && window.location && window.location.hostname.includes('pages.dev'))
+        ? '/api/meals'
+        : 'https://whealth-calculator.pages.dev/api/meals';
+      try {
+        var res = await fetch(apiBase + '?country=' + encodeURIComponent(country) + '&city=' + encodeURIComponent(city) + '&diet=' + encodeURIComponent(diet));
+        if (res.ok) {
+          var json = await res.json();
+          if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+            var mealsObj = {
+              breakfast: { name: "Breakfast", time: "08:30 AM", options: [] },
+              snack1: { name: "Morning Snack", time: "11:00 AM", options: [] },
+              lunch: { name: "Lunch", time: "01:30 PM", options: [] },
+              snack2: { name: "Evening Snack", time: "05:30 PM", options: [] },
+              dinner: { name: "Dinner", time: "09:00 PM", options: [] },
+              bedtime: { name: "Bedtime Snack", time: "10:30 PM", options: [] }
+            };
+            json.data.forEach(function(m) {
+              var slot = m.meal_slot || 'breakfast';
+              if (!mealsObj[slot]) {
+                mealsObj[slot] = { name: slot, time: m.meal_time || "12:00 PM", options: [] };
+              }
+              mealsObj[slot].options.push({
+                name: m.name,
+                profile: m.profile || 'balanced',
+                type: m.diet_type || 'veg',
+                cities: m.city ? m.city.split(',') : ['all'],
+                ingredients: (m.ingredients || []).map(function(ing) {
+                  return {
+                    name: ing.ingredient_name,
+                    baseQty: ing.base_qty,
+                    unit: ing.unit,
+                    cal: ing.cal,
+                    p: ing.protein,
+                    c: ing.carbs,
+                    f: ing.fat,
+                    micros: ing.micros ? Object.keys(ing.micros).map(function(k) { return k + ': ' + ing.micros[k]; }).join(', ') : ''
+                  };
+                })
+              });
+            });
+            liveDietDatabase[country] = { name: country, meals: mealsObj };
+            try { localStorage.setItem(cacheKey, JSON.stringify(liveDietDatabase[country])); } catch(e) {}
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('D1 mobile live fetch warning:', err);
+      }
+      try {
+        var cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          liveDietDatabase[country] = JSON.parse(cached);
+        }
+      } catch(e) {}
+    }
+
     function generateDietPlan(targetCalories, targetP, targetC, targetF, _goal) {
       let country = countrySelect ? countrySelect.value : '';
       let cityId = citySelect ? citySelect.value : '';
 
-      if (!country || !DIET_DATABASE[country]) {
+      if (!country || (!liveDietDatabase[country] && !DIET_DATABASE[country])) {
         country = 'IN';
         if (countrySelect) countrySelect.value = 'IN';
         populateCities();
@@ -1421,7 +1482,7 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
       const mealWeights = { breakfast: 0.25, snack1: 0.10, lunch: 0.30, snack2: 0.10, dinner: 0.25 };
       const mealsKeys = ['breakfast', 'snack1', 'lunch', 'snack2', 'dinner'];
 
-      const countryData = DIET_DATABASE[country];
+      const countryData = liveDietDatabase[country] || DIET_DATABASE[country];
       activeDietPlan = [];
 
       mealsKeys.forEach(mealKey => {
@@ -2640,7 +2701,7 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
       };
       ageNumInput?.addEventListener('blur', clampAgeInput);
 
-      calculateBtn?.addEventListener('click', () => {
+      calculateBtn?.addEventListener('click', async () => {
         const maleBtn = document.getElementById('health-gender-male');
         const femaleBtn = document.getElementById('health-gender-female');
         if (!maleBtn?.classList.contains('active') && !femaleBtn?.classList.contains('active')) {
@@ -2680,6 +2741,7 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
         if (healthConditionSelect && !healthConditionSelect.value) healthConditionSelect.value = 'none';
 
         if (goalSelect) resetSwaps(goalSelect.value);
+        await fetchLiveD1Meals(countrySelect ? countrySelect.value : 'IN', citySelect ? citySelect.value : '', dietaryPreferenceSelect ? dietaryPreferenceSelect.value : 'veg');
         calculate();
 
         const resultsContainer = document.querySelector('.results-container');

@@ -9576,12 +9576,67 @@ import MetricCard from '../components/MetricCard.astro';
     }
   }
 };
+    const liveDietDatabase: Record<string, any> = {};
+
+    async function fetchLiveD1Meals(country: string, city: string, diet: string) {
+      if (!country) country = 'IN';
+      const cacheKey = `whealth_d1_meals_${country}_${city}_${diet}`;
+      try {
+        const res = await fetch(`/api/meals?country=${encodeURIComponent(country)}&city=${encodeURIComponent(city)}&diet=${encodeURIComponent(diet)}`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+            const mealsObj: Record<string, any> = {
+              breakfast: { name: "Breakfast", time: "08:30 AM", options: [] },
+              snack1: { name: "Morning Snack", time: "11:00 AM", options: [] },
+              lunch: { name: "Lunch", time: "01:30 PM", options: [] },
+              snack2: { name: "Evening Snack", time: "05:30 PM", options: [] },
+              dinner: { name: "Dinner", time: "09:00 PM", options: [] },
+              bedtime: { name: "Bedtime Snack", time: "10:30 PM", options: [] }
+            };
+            json.data.forEach((m: any) => {
+              const slot = m.meal_slot || 'breakfast';
+              if (!mealsObj[slot]) {
+                mealsObj[slot] = { name: slot, time: m.meal_time || "12:00 PM", options: [] };
+              }
+              mealsObj[slot].options.push({
+                name: m.name,
+                profile: m.profile || 'balanced',
+                type: m.diet_type || 'veg',
+                cities: m.city ? m.city.split(',') : ['all'],
+                ingredients: (m.ingredients || []).map((ing: any) => ({
+                  name: ing.ingredient_name,
+                  baseQty: ing.base_qty,
+                  unit: ing.unit,
+                  cal: ing.cal,
+                  p: ing.protein,
+                  c: ing.carbs,
+                  f: ing.fat,
+                  micros: ing.micros ? Object.entries(ing.micros).map(([k, v]) => `${k}: ${v}`).join(', ') : ''
+                }))
+              });
+            });
+            liveDietDatabase[country] = { name: country, meals: mealsObj };
+            try { localStorage.setItem(cacheKey, JSON.stringify(liveDietDatabase[country])); } catch(e) {}
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('D1 live fetch warning:', err);
+      }
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          liveDietDatabase[country] = JSON.parse(cached);
+        }
+      } catch(e) {}
+    }
 
     function generateDietPlan(targetCalories: number, targetP: number, targetC: number, targetF: number, _goal: string) {
       let country = countrySelect ? countrySelect.value : '';
       let cityId = citySelect ? citySelect.value : '';
 
-      if (!country || !DIET_DATABASE[country]) {
+      if (!country || (!liveDietDatabase[country] && !DIET_DATABASE[country])) {
         country = 'IN';
         if (countrySelect) countrySelect.value = 'IN';
         populateCities();
@@ -9611,7 +9666,7 @@ import MetricCard from '../components/MetricCard.astro';
       const mealWeights: Record<string, number> = { breakfast: 0.25, snack1: 0.10, lunch: 0.30, snack2: 0.10, dinner: 0.25 };
       const mealsKeys = ['breakfast', 'snack1', 'lunch', 'snack2', 'dinner'];
 
-      const countryData = DIET_DATABASE[country];
+      const countryData = liveDietDatabase[country] || DIET_DATABASE[country];
       activeDietPlan = [];
 
       mealsKeys.forEach(mealKey => {
@@ -10548,7 +10603,7 @@ import MetricCard from '../components/MetricCard.astro';
     };
     ageNumInput.addEventListener('blur', clampAgeInput);
 
-    calculateBtn.addEventListener('click', () => {
+    calculateBtn.addEventListener('click', async () => {
       // Auto-fill sensible defaults for any unselected/blank field so calculation ALWAYS succeeds
       const isGenderSelected = Array.from(genderInputs).some(r => r.checked);
       if (!isGenderSelected && genderInputs.length > 0) {
@@ -10588,6 +10643,7 @@ import MetricCard from '../components/MetricCard.astro';
       if (!healthConditionSelect.value) healthConditionSelect.value = 'none';
 
       resetSwaps(goalSelect.value);
+      await fetchLiveD1Meals(countrySelect.value, citySelect.value, dietaryPreferenceSelect.value);
       calculate();
 
       // Smooth scroll to results
