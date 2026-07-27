@@ -1901,9 +1901,10 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
 
           const cleanQuery = cleanSearchTermMobile(nameVal);
           const tokens = cleanQuery.split(' ').filter(t => t.length > 0);
+          const masterList = getMasterMobileFoodList();
 
-          const matches = Object.keys(compiledDirectory).filter(key => {
-            const cleanKey = cleanSearchTermMobile(key);
+          const matches = masterList.filter(food => {
+            const cleanKey = cleanSearchTermMobile(food.name);
             if (cleanKey.includes(cleanQuery)) return true;
             return tokens.length > 0 && tokens.every(token => cleanKey.includes(token));
           }).slice(0, 10);
@@ -1914,29 +1915,25 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
           }
 
           dropdown.classList.remove('hidden');
-          matches.forEach(matchKey => {
+          matches.forEach(matchedFood => {
             const item = document.createElement('div');
             item.style.padding = '6px 10px';
             item.style.borderBottom = '1px solid var(--color-hairline)';
             item.style.cursor = 'pointer';
             item.style.textAlign = 'left';
             
-            const capitalized = matchKey.replace(/\b\w/g, c => c.toUpperCase());
-            item.textContent = capitalized;
+            item.textContent = matchedFood.name;
 
             item.addEventListener('click', () => {
-              nameInput.value = capitalized;
+              nameInput.value = matchedFood.name;
               dropdown.classList.add('hidden');
 
-              const matchedFood = compiledDirectory[matchKey];
-              if (matchedFood) {
-                unitInput.value = matchedFood.unit;
-                qtyInput2.value = matchedFood.baseQty.toString();
-                calInput.value = Math.round(matchedFood.cal).toString();
-                pInput.value = (Math.round(matchedFood.p * 10) / 10).toString();
-                cInput.value = (Math.round(matchedFood.c * 10) / 10).toString();
-                fInput.value = (Math.round(matchedFood.f * 10) / 10).toString();
-              }
+              unitInput.value = matchedFood.unit || 'g';
+              qtyInput2.value = (matchedFood.baseQty || 100).toString();
+              calInput.value = Math.round(matchedFood.cal || 0).toString();
+              pInput.value = (Math.round((matchedFood.prot !== undefined ? matchedFood.prot : (matchedFood.p || 0)) * 10) / 10).toString();
+              cInput.value = (Math.round((matchedFood.carb !== undefined ? matchedFood.carb : (matchedFood.c || 0)) * 10) / 10).toString();
+              fInput.value = (Math.round((matchedFood.fat !== undefined ? matchedFood.fat : (matchedFood.f || 0)) * 10) / 10).toString();
             });
             dropdown.appendChild(item);
           });
@@ -1944,27 +1941,33 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
 
         nameInput.addEventListener('change', () => {
           const nameVal = nameInput.value.trim().toLowerCase();
-          const matchedFood = compiledDirectory[nameVal];
+          const masterList = getMasterMobileFoodList();
+          const matchedFood = masterList.find(f => f.name.toLowerCase().trim() === nameVal);
           if (matchedFood) {
-            unitInput.value = matchedFood.unit;
-            qtyInput2.value = matchedFood.baseQty.toString();
-            calInput.value = Math.round(matchedFood.cal).toString();
-            pInput.value = (Math.round(matchedFood.p * 10) / 10).toString();
-            cInput.value = (Math.round(matchedFood.c * 10) / 10).toString();
-            fInput.value = (Math.round(matchedFood.f * 10) / 10).toString();
+            unitInput.value = matchedFood.unit || 'g';
+            qtyInput2.value = (matchedFood.baseQty || 100).toString();
+            calInput.value = Math.round(matchedFood.cal || 0).toString();
+            pInput.value = (Math.round((matchedFood.prot !== undefined ? matchedFood.prot : (matchedFood.p || 0)) * 10) / 10).toString();
+            cInput.value = (Math.round((matchedFood.carb !== undefined ? matchedFood.carb : (matchedFood.c || 0)) * 10) / 10).toString();
+            fInput.value = (Math.round((matchedFood.fat !== undefined ? matchedFood.fat : (matchedFood.f || 0)) * 10) / 10).toString();
           }
         });
 
         qtyInput2.addEventListener('input', () => {
           const nameVal = nameInput.value.trim().toLowerCase();
-          const matchedFood = compiledDirectory[nameVal];
+          const masterList = getMasterMobileFoodList();
+          const matchedFood = masterList.find(f => f.name.toLowerCase().trim() === nameVal);
           const newQty = parseFloat(qtyInput2.value) || 0;
           if (matchedFood && newQty > 0) {
-            const ratio = newQty / matchedFood.baseQty;
-            calInput.value = Math.round(matchedFood.cal * ratio).toString();
-            pInput.value = (Math.round(matchedFood.p * ratio * 10) / 10).toString();
-            cInput.value = (Math.round(matchedFood.c * ratio * 10) / 10).toString();
-            fInput.value = (Math.round(matchedFood.f * ratio * 10) / 10).toString();
+            const base = matchedFood.baseQty || 100;
+            const ratio = newQty / base;
+            calInput.value = Math.round((matchedFood.cal || 0) * ratio).toString();
+            const p = matchedFood.prot !== undefined ? matchedFood.prot : (matchedFood.p || 0);
+            const c = matchedFood.carb !== undefined ? matchedFood.carb : (matchedFood.c || 0);
+            const f = matchedFood.fat !== undefined ? matchedFood.fat : (matchedFood.f || 0);
+            pInput.value = (Math.round(p * ratio * 10) / 10).toString();
+            cInput.value = (Math.round(c * ratio * 10) / 10).toString();
+            fInput.value = (Math.round(f * ratio * 10) / 10).toString();
           }
         });
 
