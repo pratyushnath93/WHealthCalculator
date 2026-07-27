@@ -214,11 +214,12 @@ import Layout from '../layouts/Layout.astro';
   <div id="meal-form-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-canvas border border-hairline p-6 rounded-xl max-w-lg w-full shadow-vercel-md space-y-4">
       <div class="flex justify-between items-center border-b border-hairline pb-3">
-        <h3 class="font-sans font-semibold text-base text-ink">Add New City Meal Option</h3>
+        <h3 id="meal-modal-title" class="font-sans font-semibold text-base text-ink">Add New City Meal Option</h3>
         <button class="close-modal-btn text-mute hover:text-ink text-sm font-mono">✕</button>
       </div>
 
       <form id="meal-form" class="space-y-3 text-xs font-sans">
+        <input type="hidden" id="meal-id">
         <div>
           <label class="block text-mute font-mono text-[11px] mb-1">Meal Option Title *</label>
           <input type="text" id="meal-name" required placeholder="e.g. Kolkata Fish Curry & Rice" class="w-full px-3 py-2 bg-canvas-soft border border-hairline rounded-lg text-ink outline-none focus:border-link">
@@ -391,6 +392,7 @@ import Layout from '../layouts/Layout.astro';
           <td class="p-3 text-mute">${f.unit || 'g'}</td>
           <td class="p-3"><span class="px-1.5 py-0.5 bg-hairline rounded text-[10px] text-ink font-semibold">${f.country || 'IN'}</span></td>
           <td class="p-3 text-right">
+            <button onclick="editFood(${f.id})" class="px-2 py-1 bg-link/10 text-link hover:bg-link/20 rounded transition-colors text-[10px] mr-1">Edit</button>
             <button onclick="deleteFood(${f.id})" class="px-2 py-1 bg-error/10 text-error hover:bg-error/20 rounded transition-colors text-[10px]">Delete</button>
           </td>
         `;
@@ -448,8 +450,25 @@ import Layout from '../layouts/Layout.astro';
       });
     });
 
+    window.editFood = function(id) {
+      const food = allFoods.find(f => f.id === id);
+      if (!food) return;
+      document.getElementById('food-id').value = food.id;
+      document.getElementById('food-name').value = food.name || '';
+      document.getElementById('food-cal').value = food.cal !== undefined ? food.cal : '';
+      document.getElementById('food-prot').value = food.prot !== undefined ? food.prot : '';
+      document.getElementById('food-carb').value = food.carb !== undefined ? food.carb : '';
+      document.getElementById('food-fat').value = food.fat !== undefined ? food.fat : '';
+      document.getElementById('food-unit').value = food.unit || 'g';
+      document.getElementById('food-country').value = food.country || 'IN';
+      document.getElementById('food-modal-title').textContent = 'Edit Food Item';
+      foodModal.classList.remove('hidden');
+      foodModal.classList.add('flex');
+    };
+
     document.getElementById('food-form').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const foodId = document.getElementById('food-id').value;
       const foodData = {
         name: document.getElementById('food-name').value.trim(),
         cal: parseFloat(document.getElementById('food-cal').value),
@@ -460,17 +479,23 @@ import Layout from '../layouts/Layout.astro';
         country: document.getElementById('food-country').value.trim() || 'IN'
       };
 
+      const isEdit = Boolean(foodId);
+      const method = isEdit ? 'PUT' : 'POST';
+      const bodyPayload = isEdit
+        ? { type: 'food', id: parseInt(foodId), data: foodData }
+        : { type: 'food', data: foodData };
+
       try {
         const res = await fetch('/api/admin', {
-          method: 'POST',
+          method: method,
           headers: { 'Authorization': `Bearer ${adminToken}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'food', data: foodData })
+          body: JSON.stringify(bodyPayload)
         });
         const json = await res.json();
         if (json.success) {
           foodModal.classList.add('hidden');
           foodModal.classList.remove('flex');
-          showToast('✓ New food item saved live to D1!');
+          showToast(isEdit ? '✓ Food item updated live in D1!' : '✓ New food item saved live to D1!');
           loadFoods();
         }
       } catch (e) {
@@ -517,7 +542,10 @@ import Layout from '../layouts/Layout.astro';
           </div>
           <div class="flex justify-between items-center border-t border-hairline pt-2 mt-2">
             <span class="text-[10px] font-mono text-mute">🕒 ${m.meal_time || '08:00 AM'}</span>
-            <button onclick="deleteMeal(${m.id})" class="px-2 py-1 bg-error/10 text-error hover:bg-error/20 rounded transition-colors text-[10px] font-mono">Delete Meal</button>
+            <div>
+              <button onclick="editMeal(${m.id})" class="px-2 py-1 bg-link/10 text-link hover:bg-link/20 rounded transition-colors text-[10px] font-mono mr-1">Edit</button>
+              <button onclick="deleteMeal(${m.id})" class="px-2 py-1 bg-error/10 text-error hover:bg-error/20 rounded transition-colors text-[10px] font-mono">Delete</button>
+            </div>
           </div>
         `;
         container.appendChild(card);
@@ -563,12 +591,30 @@ import Layout from '../layouts/Layout.astro';
     const mealModal = document.getElementById('meal-form-modal');
     document.getElementById('add-meal-btn').addEventListener('click', () => {
       document.getElementById('meal-form').reset();
+      document.getElementById('meal-id').value = '';
+      document.getElementById('meal-modal-title').textContent = 'Add New City Meal Option';
       mealModal.classList.remove('hidden');
       mealModal.classList.add('flex');
     });
 
+    window.editMeal = function(id) {
+      const meal = allMeals.find(m => m.id === id);
+      if (!meal) return;
+      document.getElementById('meal-id').value = meal.id;
+      document.getElementById('meal-name').value = meal.name || '';
+      document.getElementById('meal-slot').value = meal.meal_slot || 'breakfast';
+      document.getElementById('meal-time').value = meal.meal_time || '';
+      document.getElementById('meal-diet').value = meal.diet_type || 'veg';
+      document.getElementById('meal-profile').value = meal.profile || 'balanced';
+      document.getElementById('meal-city').value = meal.city || 'all';
+      document.getElementById('meal-modal-title').textContent = 'Edit City Meal Option';
+      mealModal.classList.remove('hidden');
+      mealModal.classList.add('flex');
+    };
+
     document.getElementById('meal-form').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const mealId = document.getElementById('meal-id').value;
       const mealData = {
         name: document.getElementById('meal-name').value.trim(),
         meal_slot: document.getElementById('meal-slot').value,
@@ -579,17 +625,23 @@ import Layout from '../layouts/Layout.astro';
         city: document.getElementById('meal-city').value.trim() || 'all'
       };
 
+      const isEdit = Boolean(mealId);
+      const method = isEdit ? 'PUT' : 'POST';
+      const bodyPayload = isEdit
+        ? { type: 'meal', id: parseInt(mealId), data: mealData }
+        : { type: 'meal', data: mealData };
+
       try {
         const res = await fetch('/api/admin', {
-          method: 'POST',
+          method: method,
           headers: { 'Authorization': `Bearer ${adminToken}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'meal', data: mealData })
+          body: JSON.stringify(bodyPayload)
         });
         const json = await res.json();
         if (json.success) {
           mealModal.classList.add('hidden');
           mealModal.classList.remove('flex');
-          showToast('✓ New meal option saved live to D1!');
+          showToast(isEdit ? '✓ Meal option updated live in D1!' : '✓ New meal option saved live to D1!');
           loadMeals();
         }
       } catch (e) {
