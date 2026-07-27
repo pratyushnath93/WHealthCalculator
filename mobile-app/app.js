@@ -2405,9 +2405,9 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
             // 3. City representation match
             if (opt.cities) {
               if (opt.cities.includes(cityId)) {
-                score += 30; // Highly preferred for this city!
+                score += 100; // Strongly prefer local delicacy for this city!
               } else {
-                score -= 5;  // De-prioritize for other cities if it's tagged for a specific city
+                score -= 15;  // De-prioritize for other cities if tagged for a specific city
               }
             }
             
@@ -2587,7 +2587,7 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
           heightMetricContainer?.classList.add('hidden');
           heightImperialContainer?.classList.remove('hidden');
         }
-        calculate();
+        // Wait for Calculate & Generate Plan button click
       });
 
       weightUnit?.addEventListener('change', () => {
@@ -2606,7 +2606,7 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
             weightInput.value = Math.round(currentVal / 0.45359237).toString();
           }
         }
-        calculate();
+        // Wait for Calculate & Generate Plan button click
       });
 
       // Gender buttons segment controls toggle
@@ -2614,7 +2614,7 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
         btn.addEventListener('click', () => {
           genderInputs.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
-          calculate();
+          // Wait for Calculate & Generate Plan button click
         });
       });
 

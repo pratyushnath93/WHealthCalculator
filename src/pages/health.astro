@@ -10413,9 +10413,9 @@ import MetricCard from '../components/MetricCard.astro';
             // 3. City representation match
             if (opt.cities) {
               if (opt.cities.includes(cityId)) {
-                score += 30; // Highly preferred for this city!
+                score += 100; // Strongly prefer local delicacy for this city!
               } else {
-                score -= 5;  // De-prioritize for other cities if it's tagged for a specific city
+                score -= 15;  // De-prioritize for other cities if tagged for a specific city
               }
             }
             
