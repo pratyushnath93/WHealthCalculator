@@ -10532,22 +10532,21 @@ import MetricCard from '../components/MetricCard.astro';
     });
 
     ageNumInput.addEventListener('input', () => {
-      if (!ageNumInput.value) return;
-      let val = parseInt(ageNumInput.value) || 0;
-      ageInput.value = Math.max(15, Math.min(80, val)).toString();
+      const val = parseInt(ageNumInput.value);
+      if (!isNaN(val) && val >= 15 && val <= 80) {
+        ageInput.value = val.toString();
+      }
     });
 
     const clampAgeInput = () => {
-      if (!ageNumInput || !ageNumInput.value) return;
+      if (!ageNumInput) return;
       let val = parseInt(ageNumInput.value);
-      if (isNaN(val)) return;
-      if (val < 15) val = 15;
+      if (isNaN(val) || val < 15) val = 15;
       if (val > 80) val = 80;
       ageNumInput.value = val.toString();
       ageInput.value = val.toString();
     };
     ageNumInput.addEventListener('blur', clampAgeInput);
-    ageNumInput.addEventListener('change', clampAgeInput);
 
     calculateBtn.addEventListener('click', () => {
       // Auto-fill sensible defaults for any unselected/blank field so calculation ALWAYS succeeds

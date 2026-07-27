@@ -2624,20 +2624,21 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
       });
 
       ageNumInput?.addEventListener('input', () => {
-        let val = parseInt(ageNumInput.value) || 0;
-        if (ageInput) ageInput.value = Math.max(15, Math.min(80, val)).toString();
+        const val = parseInt(ageNumInput.value);
+        if (!isNaN(val) && val >= 15 && val <= 80 && ageInput) {
+          ageInput.value = val.toString();
+        }
       });
 
       const clampAgeInput = () => {
         if (!ageNumInput) return;
-        let val = parseInt(ageNumInput.value) || 28;
-        if (val < 15) val = 15;
+        let val = parseInt(ageNumInput.value);
+        if (isNaN(val) || val < 15) val = 15;
         if (val > 80) val = 80;
         ageNumInput.value = val.toString();
         if (ageInput) ageInput.value = val.toString();
       };
       ageNumInput?.addEventListener('blur', clampAgeInput);
-      ageNumInput?.addEventListener('change', clampAgeInput);
 
       calculateBtn?.addEventListener('click', () => {
         const maleBtn = document.getElementById('health-gender-male');
