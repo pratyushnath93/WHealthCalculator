@@ -7,6 +7,119 @@ function getTodayDateString() {
   return `${year}-${month}-${day}`;
 }
 
+function calculateMedicalMicronutrients(gender, age, healthCondition) {
+  const isFemale = gender === 'female';
+  
+  let calcium = isFemale ? (age > 50 ? 1200 : 1000) : (age > 70 ? 1200 : 1000);
+  if (healthCondition === 'thyroid') calcium = 1200;
+
+  let iron = isFemale ? (age > 50 ? 8 : 18) : 8;
+  if (healthCondition === 'high-uric-acid') iron = Math.min(iron, 10);
+
+  let potassium = isFemale ? 2600 : 3400;
+  let potassiumLabel = "Potassium Target";
+  if (healthCondition === 'high-bp' || healthCondition === 'heart-disease') {
+    potassium = 3800;
+  } else if (healthCondition === 'low-bp') {
+    potassium = 2800;
+  } else if (healthCondition === 'kidney-disease') {
+    potassium = 2000;
+    potassiumLabel = "Potassium Limit";
+  }
+
+  let sodium = 2000;
+  let sodiumLabel = "Sodium Limit";
+  if (healthCondition === 'high-bp' || healthCondition === 'heart-disease' || healthCondition === 'kidney-disease') {
+    sodium = 1350;
+  } else if (healthCondition === 'low-bp') {
+    sodium = 2600;
+    sodiumLabel = "Sodium Target";
+  } else if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'fatty-liver') {
+    sodium = 1800;
+  }
+
+  let magnesium = isFemale ? (age > 30 ? 320 : 310) : (age > 30 ? 420 : 400);
+  if (healthCondition === 'high-bp' || healthCondition === 'diabetes' || healthCondition === 'high-sugar') {
+    magnesium = Math.max(magnesium, 380);
+  }
+
+  let zinc = isFemale ? 8 : 11;
+  if (healthCondition === 'thyroid' || healthCondition === 'diabetes') {
+    zinc = 14;
+  }
+
+  let selenium = 55;
+  if (healthCondition === 'thyroid') {
+    selenium = 150;
+  }
+
+  let vitA = isFemale ? 700 : 900;
+  let vitC = isFemale ? 75 : 90;
+  if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'fatty-liver') {
+    vitC = 110;
+  }
+
+  let vitD = age > 70 ? 20 : 15;
+  if (healthCondition === 'thyroid' || healthCondition === 'diabetes' || healthCondition === 'kidney-disease') {
+    vitD = 25;
+  }
+
+  return [
+    { name: "Calcium Target", key: "Calcium", valNum: calcium, unit: "mg", val: `${calcium} mg` },
+    { name: "Iron Target", key: "Iron", valNum: iron, unit: "mg", val: `${iron} mg` },
+    { name: potassiumLabel, key: "Potassium", valNum: potassium, unit: "mg", val: `${potassium} mg` },
+    { name: sodiumLabel, key: "Sodium", valNum: sodium, unit: "mg", val: `${sodium} mg` },
+    { name: "Magnesium Target", key: "Magnesium", valNum: magnesium, unit: "mg", val: `${magnesium} mg` },
+    { name: "Zinc Target", key: "Zinc", valNum: zinc, unit: "mg", val: `${zinc} mg` },
+    { name: "Selenium Target", key: "Selenium", valNum: selenium, unit: "mcg", val: `${selenium} mcg` },
+    { name: "Vitamin A Target", key: "Vitamin A", valNum: vitA, unit: "mcg", val: `${vitA} mcg` },
+    { name: "Vitamin C Target", key: "Vitamin C", valNum: vitC, unit: "mg", val: `${vitC} mg` },
+    { name: "Vitamin D Target", key: "Vitamin D", valNum: vitD, unit: "mcg", val: `${vitD} mcg` }
+  ];
+}
+
+function calculateMedicalBiochemicals(gender, age, dietaryPref, healthCondition) {
+  const isVeg = dietaryPref === 'veg';
+
+  let cholesterolLimit = 300;
+  let cholesterolLabel = "Dietary Cholesterol Limit";
+
+  if (isVeg) {
+    cholesterolLimit = 0;
+    cholesterolLabel = "Dietary Cholesterol Target";
+  } else if (healthCondition === 'high-cholesterol' || healthCondition === 'heart-disease' || healthCondition === 'fatty-liver') {
+    cholesterolLimit = 150;
+  } else if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'high-bp') {
+    cholesterolLimit = 200;
+  }
+
+  let purineLimit = isVeg ? 180 : 350;
+  let purineLabel = "Purine Level Limit";
+
+  if (healthCondition === 'high-uric-acid') {
+    purineLimit = 140;
+  } else if (healthCondition === 'kidney-disease') {
+    purineLimit = 150;
+  }
+
+  return [
+    {
+      name: cholesterolLabel,
+      key: "Cholesterol",
+      limitVal: cholesterolLimit,
+      unit: "mg",
+      val: isVeg ? "0 mg (Plant-Based)" : `< ${cholesterolLimit} mg/day`
+    },
+    {
+      name: purineLabel,
+      key: "Purine",
+      limitVal: purineLimit,
+      unit: "mg",
+      val: `< ${purineLimit} mg/day`
+    }
+  ];
+}
+
 // Global State Variables (Declared with var at top to prevent TDZ errors)
 var compiledDirectory = {};
 var tfLoggedItemsByDate = {};

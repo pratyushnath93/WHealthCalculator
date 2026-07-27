@@ -534,6 +534,119 @@ import MetricCard from '../components/MetricCard.astro';
 
 
 <script>
+    function calculateMedicalMicronutrients(gender: string, age: number, healthCondition: string) {
+      const isFemale = gender === 'female';
+      
+      let calcium = isFemale ? (age > 50 ? 1200 : 1000) : (age > 70 ? 1200 : 1000);
+      if (healthCondition === 'thyroid') calcium = 1200;
+
+      let iron = isFemale ? (age > 50 ? 8 : 18) : 8;
+      if (healthCondition === 'high-uric-acid') iron = Math.min(iron, 10);
+
+      let potassium = isFemale ? 2600 : 3400;
+      let potassiumLabel = "Potassium Target";
+      if (healthCondition === 'high-bp' || healthCondition === 'heart-disease') {
+        potassium = 3800;
+      } else if (healthCondition === 'low-bp') {
+        potassium = 2800;
+      } else if (healthCondition === 'kidney-disease') {
+        potassium = 2000;
+        potassiumLabel = "Potassium Limit";
+      }
+
+      let sodium = 2000;
+      let sodiumLabel = "Sodium Limit";
+      if (healthCondition === 'high-bp' || healthCondition === 'heart-disease' || healthCondition === 'kidney-disease') {
+        sodium = 1350;
+      } else if (healthCondition === 'low-bp') {
+        sodium = 2600;
+        sodiumLabel = "Sodium Target";
+      } else if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'fatty-liver') {
+        sodium = 1800;
+      }
+
+      let magnesium = isFemale ? (age > 30 ? 320 : 310) : (age > 30 ? 420 : 400);
+      if (healthCondition === 'high-bp' || healthCondition === 'diabetes' || healthCondition === 'high-sugar') {
+        magnesium = Math.max(magnesium, 380);
+      }
+
+      let zinc = isFemale ? 8 : 11;
+      if (healthCondition === 'thyroid' || healthCondition === 'diabetes') {
+        zinc = 14;
+      }
+
+      let selenium = 55;
+      if (healthCondition === 'thyroid') {
+        selenium = 150;
+      }
+
+      let vitA = isFemale ? 700 : 900;
+      let vitC = isFemale ? 75 : 90;
+      if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'fatty-liver') {
+        vitC = 110;
+      }
+
+      let vitD = age > 70 ? 20 : 15;
+      if (healthCondition === 'thyroid' || healthCondition === 'diabetes' || healthCondition === 'kidney-disease') {
+        vitD = 25;
+      }
+
+      return [
+        { name: "Calcium Target", key: "Calcium", valNum: calcium, unit: "mg", val: `${calcium} mg` },
+        { name: "Iron Target", key: "Iron", valNum: iron, unit: "mg", val: `${iron} mg` },
+        { name: potassiumLabel, key: "Potassium", valNum: potassium, unit: "mg", val: `${potassium} mg` },
+        { name: sodiumLabel, key: "Sodium", valNum: sodium, unit: "mg", val: `${sodium} mg` },
+        { name: "Magnesium Target", key: "Magnesium", valNum: magnesium, unit: "mg", val: `${magnesium} mg` },
+        { name: "Zinc Target", key: "Zinc", valNum: zinc, unit: "mg", val: `${zinc} mg` },
+        { name: "Selenium Target", key: "Selenium", valNum: selenium, unit: "mcg", val: `${selenium} mcg` },
+        { name: "Vitamin A Target", key: "Vitamin A", valNum: vitA, unit: "mcg", val: `${vitA} mcg` },
+        { name: "Vitamin C Target", key: "Vitamin C", valNum: vitC, unit: "mg", val: `${vitC} mg` },
+        { name: "Vitamin D Target", key: "Vitamin D", valNum: vitD, unit: "mcg", val: `${vitD} mcg` }
+      ];
+    }
+
+    function calculateMedicalBiochemicals(gender: string, age: number, dietaryPref: string, healthCondition: string) {
+      const isVeg = dietaryPref === 'veg';
+
+      let cholesterolLimit = 300;
+      let cholesterolLabel = "Dietary Cholesterol Limit";
+
+      if (isVeg) {
+        cholesterolLimit = 0;
+        cholesterolLabel = "Dietary Cholesterol Target";
+      } else if (healthCondition === 'high-cholesterol' || healthCondition === 'heart-disease' || healthCondition === 'fatty-liver') {
+        cholesterolLimit = 150;
+      } else if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'high-bp') {
+        cholesterolLimit = 200;
+      }
+
+      let purineLimit = isVeg ? 180 : 350;
+      let purineLabel = "Purine Level Limit";
+
+      if (healthCondition === 'high-uric-acid') {
+        purineLimit = 140;
+      } else if (healthCondition === 'kidney-disease') {
+        purineLimit = 150;
+      }
+
+      return [
+        {
+          name: cholesterolLabel,
+          key: "Cholesterol",
+          limitVal: cholesterolLimit,
+          unit: "mg",
+          val: isVeg ? "0 mg (Plant-Based)" : `< ${cholesterolLimit} mg/day`
+        },
+        {
+          name: purineLabel,
+          key: "Purine",
+          limitVal: purineLimit,
+          unit: "mg",
+          val: `< ${purineLimit} mg/day`
+        }
+      ];
+    }
+
   function setupHealthCalculator() {
     // Inputs elements
     const genderInputs = document.getElementsByName('gender') as NodeListOf<HTMLInputElement>;
@@ -10101,88 +10214,6 @@ import MetricCard from '../components/MetricCard.astro';
         nutritionalMatchBadge.innerHTML = '<span>!</span> Daily requirements customized';
       }
 
-    function calculateMedicalMicronutrients(gender: string, age: number, healthCondition: string) {
-      const isFemale = gender === 'female';
-      
-      // 1. Calcium (RDA: 1000 mg for adults, 1200 mg for women > 50 / men > 70 / thyroid)
-      let calcium = isFemale ? (age > 50 ? 1200 : 1000) : (age > 70 ? 1200 : 1000);
-      if (healthCondition === 'thyroid') calcium = 1200;
-
-      // 2. Iron (RDA: 18 mg for pre-menopausal females, 8 mg for males & post-menopausal females)
-      let iron = isFemale ? (age > 50 ? 8 : 18) : 8;
-      if (healthCondition === 'high-uric-acid') iron = Math.min(iron, 10);
-
-      // 3. Potassium (RDA: 2600-3400 mg; DASH protocol for High BP: 3800 mg; CKD limit: 2000 mg)
-      let potassium = isFemale ? 2600 : 3400;
-      let potassiumLabel = "Potassium Target";
-      if (healthCondition === 'high-bp' || healthCondition === 'heart-disease') {
-        potassium = 3800; // Elevated for DASH protocol to reduce arterial blood pressure
-      } else if (healthCondition === 'low-bp') {
-        potassium = 2800;
-      } else if (healthCondition === 'kidney-disease') {
-        potassium = 2000;
-        potassiumLabel = "Potassium Limit";
-      }
-
-      // 4. Sodium (AHA/WHO limit: 2000 mg; DASH protocol for High BP/Heart/Kidney: 1350 mg; Low BP: 2600 mg)
-      let sodium = 2000;
-      let sodiumLabel = "Sodium Limit";
-      if (healthCondition === 'high-bp' || healthCondition === 'heart-disease' || healthCondition === 'kidney-disease') {
-        sodium = 1350; // Strict restriction
-      } else if (healthCondition === 'low-bp') {
-        sodium = 2600; // Adjusted for hypotension
-        sodiumLabel = "Sodium Target";
-      } else if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'fatty-liver') {
-        sodium = 1800;
-      }
-
-      // 5. Magnesium (RDA: 400-420 mg males, 310-320 mg females; High BP/Diabetes: 380-420 mg)
-      let magnesium = isFemale ? (age > 30 ? 320 : 310) : (age > 30 ? 420 : 400);
-      if (healthCondition === 'high-bp' || healthCondition === 'diabetes' || healthCondition === 'high-sugar') {
-        magnesium = Math.max(magnesium, 380);
-      }
-
-      // 6. Zinc (RDA: 11 mg males, 8 mg females; Thyroid/Diabetes: 14 mg)
-      let zinc = isFemale ? 8 : 11;
-      if (healthCondition === 'thyroid' || healthCondition === 'diabetes') {
-        zinc = 14;
-      }
-
-      // 7. Selenium (RDA: 55 mcg; Thyroid: 150 mcg for thyroid hormone synthesis)
-      let selenium = 55;
-      if (healthCondition === 'thyroid') {
-        selenium = 150;
-      }
-
-      // 8. Vitamin A (RDA: 900 mcg RAE males, 700 mcg RAE females)
-      let vitA = isFemale ? 700 : 900;
-
-      // 9. Vitamin C (RDA: 90 mg males, 75 mg females; Diabetes/Fatty Liver: 110 mg)
-      let vitC = isFemale ? 75 : 90;
-      if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'fatty-liver') {
-        vitC = 110;
-      }
-
-      // 10. Vitamin D (RDA: 15 mcg / 600 IU for adults, 20 mcg / 800 IU > 70; Thyroid/CKD/Diabetes: 25 mcg / 1000 IU)
-      let vitD = age > 70 ? 20 : 15;
-      if (healthCondition === 'thyroid' || healthCondition === 'diabetes' || healthCondition === 'kidney-disease') {
-        vitD = 25;
-      }
-
-      return [
-        { name: "Calcium Target", key: "Calcium", valNum: calcium, unit: "mg", val: `${calcium} mg` },
-        { name: "Iron Target", key: "Iron", valNum: iron, unit: "mg", val: `${iron} mg` },
-        { name: potassiumLabel, key: "Potassium", valNum: potassium, unit: "mg", val: `${potassium} mg` },
-        { name: sodiumLabel, key: "Sodium", valNum: sodium, unit: "mg", val: `${sodium} mg` },
-        { name: "Magnesium Target", key: "Magnesium", valNum: magnesium, unit: "mg", val: `${magnesium} mg` },
-        { name: "Zinc Target", key: "Zinc", valNum: zinc, unit: "mg", val: `${zinc} mg` },
-        { name: "Selenium Target", key: "Selenium", valNum: selenium, unit: "mcg", val: `${selenium} mcg` },
-        { name: "Vitamin A Target", key: "Vitamin A", valNum: vitA, unit: "mcg", val: `${vitA} mcg` },
-        { name: "Vitamin C Target", key: "Vitamin C", valNum: vitC, unit: "mg", val: `${vitC} mg` },
-        { name: "Vitamin D Target", key: "Vitamin D", valNum: vitD, unit: "mcg", val: `${vitD} mcg` }
-      ];
-    }
-
       // Render total micros list
       if (summaryMicrosList) {
         summaryMicrosList.innerHTML = '';
@@ -10225,56 +10256,6 @@ import MetricCard from '../components/MetricCard.astro';
           summaryMicrosList.appendChild(div);
         });
       }
-
-    function calculateMedicalBiochemicals(gender: string, age: number, dietaryPref: string, healthCondition: string) {
-      const isVeg = dietaryPref === 'veg';
-
-      // 1. Dietary Cholesterol Limit / Target (AHA / ACC guidelines)
-      // Plant foods contain 0 mg cholesterol. Non-veg baseline limit: <300 mg/day.
-      // Hyperlipidemia / Heart Disease / Fatty Liver limit: <150 mg/day (strict)
-      // Pre-Diabetes / Diabetes limit: <200 mg/day
-      let cholesterolLimit = 300;
-      let cholesterolLabel = "Dietary Cholesterol Limit";
-
-      if (isVeg) {
-        cholesterolLimit = 0;
-        cholesterolLabel = "Dietary Cholesterol Target";
-      } else if (healthCondition === 'high-cholesterol' || healthCondition === 'heart-disease' || healthCondition === 'fatty-liver') {
-        cholesterolLimit = 150;
-      } else if (healthCondition === 'diabetes' || healthCondition === 'high-sugar' || healthCondition === 'high-bp') {
-        cholesterolLimit = 200;
-      }
-
-      // 2. Purine Level Limit (Gout & Nephrology guidelines)
-      // Normal non-veg baseline: <350 mg/day. Vegetarian: <180 mg/day.
-      // High Uric Acid / Gout: STRICTLY <140 mg/day (Low-Purine Protocol)
-      // CKD: <150 mg/day
-      let purineLimit = isVeg ? 180 : 350;
-      let purineLabel = "Purine Level Limit";
-
-      if (healthCondition === 'high-uric-acid') {
-        purineLimit = 140; // Low-Purine Protocol for Gout
-      } else if (healthCondition === 'kidney-disease') {
-        purineLimit = 150;
-      }
-
-      return [
-        {
-          name: cholesterolLabel,
-          key: "Cholesterol",
-          limitVal: cholesterolLimit,
-          unit: "mg",
-          val: isVeg ? "0 mg (Plant-Based)" : `< ${cholesterolLimit} mg/day`
-        },
-        {
-          name: purineLabel,
-          key: "Purine",
-          limitVal: purineLimit,
-          unit: "mg",
-          val: `< ${purineLimit} mg/day`
-        }
-      ];
-    }
 
       const summaryBiochemicalsList = document.getElementById('summary-biochemicals-list');
       if (summaryBiochemicalsList) {
