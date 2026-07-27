@@ -729,7 +729,7 @@
         <div class="input-group">
           <span class="input-title">Gender</span>
           <div class="segmented-control">
-            <button id="health-gender-male" class="segment-btn active">Male</button>
+            <button id="health-gender-male" class="segment-btn">Male</button>
             <button id="health-gender-female" class="segment-btn">Female</button>
           </div>
         </div>
@@ -739,7 +739,7 @@
           <div class="input-labels">
             <span class="input-title">Age</span>
             <div class="number-input-wrapper">
-              <input type="number" id="health-age" value="28" min="15" max="80">
+              <input type="number" id="health-age" value="" placeholder="e.g. 28" min="15" max="80">
               <span class="currency-suffix">Yr</span>
             </div>
           </div>
@@ -760,7 +760,7 @@
           <!-- Height cm -->
           <div id="height-metric-container" class="mt-2">
             <div class="number-input-wrapper">
-              <input type="number" id="health-height-cm" value="175" min="100" max="250">
+              <input type="number" id="health-height-cm" value="" placeholder="e.g. 175" min="100" max="250">
               <span class="currency-suffix">cm</span>
             </div>
           </div>
@@ -768,10 +768,10 @@
           <!-- Height ft/in -->
           <div id="height-imperial-container" class="input-row hidden mt-2">
             <div class="input-group half">
-              <input type="number" id="health-height-ft" value="5" min="3" max="8" class="input-small-full" placeholder="ft">
+              <input type="number" id="health-height-ft" value="" min="3" max="8" class="input-small-full" placeholder="ft">
             </div>
             <div class="input-group half">
-              <input type="number" id="health-height-in" value="9" min="0" max="11" class="input-small-full" placeholder="in">
+              <input type="number" id="health-height-in" value="" min="0" max="11" class="input-small-full" placeholder="in">
             </div>
           </div>
         </div>
@@ -786,7 +786,7 @@
             </select>
           </div>
           <div class="number-input-wrapper mt-2">
-            <input type="number" id="health-weight" value="70" min="30" max="250">
+            <input type="number" id="health-weight" value="" placeholder="e.g. 70" min="30" max="250">
             <span id="health-weight-unit-label" class="currency-suffix">kg</span>
           </div>
         </div>
@@ -795,7 +795,8 @@
         <div class="input-group">
           <span class="input-title">Activity Level</span>
           <select id="health-activity" class="app-select">
-            <option value="1.2" selected>Sedentary (Little to no exercise)</option>
+            <option value="" disabled selected>Select Activity Level</option>
+            <option value="1.2">Sedentary (Little to no exercise)</option>
             <option value="1.375">Lightly Active (1-3 days/week)</option>
             <option value="1.55">Moderately Active (3-5 days/week)</option>
             <option value="1.725">Very Active (6-7 days/week)</option>
@@ -807,7 +808,8 @@
         <div class="input-group">
           <span class="input-title">Fitness Goal</span>
           <select id="health-goal" class="app-select">
-            <option value="maintain" selected>Maintain Healthy Lifestyle</option>
+            <option value="" disabled selected>Select Fitness Goal</option>
+            <option value="maintain">Maintain Healthy Lifestyle</option>
             <option value="loss">Weight Loss</option>
             <option value="fat-loss">Fat Loss (High Protein Deficit)</option>
             <option value="gain">Weight Gain</option>
@@ -820,8 +822,8 @@
         <div class="input-group">
           <span class="input-title">Country</span>
           <select id="health-country" class="app-select">
-            <option value="" disabled>Select Country</option>
-            <option value="IN" selected>India</option>
+            <option value="" disabled selected>Select Country</option>
+            <option value="IN">India</option>
             <option value="US">United States</option>
             <option value="UK">United Kingdom</option>
             <option value="AU">Australia</option>
@@ -836,8 +838,8 @@
         <!-- City Selection -->
         <div class="input-group">
           <span class="input-title">City</span>
-          <select id="health-city" class="app-select">
-            <option value="" disabled>Select City</option>
+          <select id="health-city" class="app-select" disabled>
+            <option value="" disabled selected>Select City</option>
           </select>
         </div>
 
@@ -845,8 +847,9 @@
         <div class="input-group">
           <span class="input-title">Dietary Preference</span>
           <select id="health-dietary" class="app-select">
+            <option value="" disabled selected>Select Dietary Preference</option>
             <option value="veg">Vegetarian</option>
-            <option value="non-veg" selected>Non-Vegetarian</option>
+            <option value="non-veg">Non-Vegetarian</option>
           </select>
         </div>
 
@@ -854,7 +857,8 @@
         <div class="input-group">
           <span class="input-title">Health Condition / Medical Profile</span>
           <select id="health-condition" class="app-select">
-            <option value="none" selected>None (Healthy Baseline)</option>
+            <option value="" disabled selected>Select Health Condition</option>
+            <option value="none">None (Healthy Baseline)</option>
             <option value="high-bp">High BP (Hypertension)</option>
             <option value="high-sugar">High Sugar / Pre-Diabetes</option>
             <option value="low-bp">Low BP (Hypotension)</option>

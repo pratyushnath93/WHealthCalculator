@@ -11,7 +11,8 @@ Write-Host "==========================================" -ForegroundColor Green
 
 # 1. Start the emulator in a separate process so it remains running
 $emulatorExe = "C:\Users\praty\AppData\Local\Android\Sdk\emulator\emulator.exe"
-Start-Process -FilePath $emulatorExe -ArgumentList "-avd", "medium_phone"
+Start-Process -FilePath $emulatorExe -ArgumentList "-avd", "medium_phone", "-no-snapshot-load"
+
 
 # 2. Wait for ADB to detect the emulator and wait for boot completion
 Write-Host "Waiting for virtual phone to boot up..." -ForegroundColor Yellow

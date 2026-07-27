@@ -33,7 +33,7 @@ import MetricCard from '../components/MetricCard.astro';
         <label class="block font-mono text-xs uppercase tracking-wider text-body mb-2">Gender</label>
         <div class="grid grid-cols-2 gap-3">
           <label class="flex items-center justify-center h-10 border border-hairline rounded-sm cursor-pointer select-none text-sm hover:bg-canvas-soft-2 transition-all has-[:checked]:bg-primary has-[:checked]:text-on-primary has-[:checked]:border-primary">
-            <input type="radio" name="gender" value="male" checked class="sr-only" />
+            <input type="radio" name="gender" value="male" class="sr-only" />
             Male
           </label>
           <label class="flex items-center justify-center h-10 border border-hairline rounded-sm cursor-pointer select-none text-sm hover:bg-canvas-soft-2 transition-all has-[:checked]:bg-primary has-[:checked]:text-on-primary has-[:checked]:border-primary">
@@ -47,7 +47,7 @@ import MetricCard from '../components/MetricCard.astro';
       <div>
         <div class="flex justify-between items-center mb-1">
           <label for="age" class="font-mono text-xs uppercase tracking-wider text-body">Age</label>
-          <input type="number" id="age-num" min="15" max="80" value="28" class="w-16 h-7 border border-hairline bg-canvas text-ink rounded-sm px-2 text-xs font-mono text-right focus:border-hairline-strong outline-none" />
+          <input type="number" id="age-num" min="15" max="80" value="" placeholder="e.g. 28" class="w-16 h-7 border border-hairline bg-canvas text-ink rounded-sm px-2 text-xs font-mono text-right focus:border-hairline-strong outline-none" />
         </div>
         <input type="range" id="age" min="15" max="80" value="28" class="w-full mt-1" />
       </div>
@@ -65,7 +65,7 @@ import MetricCard from '../components/MetricCard.astro';
         <!-- Height in cm (Metric) -->
         <div id="height-metric-container" class="mt-1">
           <div class="flex gap-2 items-center">
-            <input type="number" id="height-cm" value="175" min="100" max="250" class="w-full h-10 border border-hairline rounded-sm px-3 text-sm focus:border-hairline-strong outline-none" />
+            <input type="number" id="height-cm" value="" placeholder="e.g. 175" min="100" max="250" class="w-full h-10 border border-hairline rounded-sm px-3 text-sm focus:border-hairline-strong outline-none" />
             <span class="font-mono text-xs text-mute w-8">cm</span>
           </div>
         </div>
@@ -73,11 +73,11 @@ import MetricCard from '../components/MetricCard.astro';
         <!-- Height in ft/in (Imperial) -->
         <div id="height-imperial-container" class="mt-1 hidden grid grid-cols-2 gap-2">
           <div class="flex gap-2 items-center">
-            <input type="number" id="height-ft" value="5" min="3" max="8" class="w-full h-10 border border-hairline rounded-sm px-3 text-sm focus:border-hairline-strong outline-none" />
+            <input type="number" id="height-ft" value="" placeholder="ft" min="3" max="8" class="w-full h-10 border border-hairline rounded-sm px-3 text-sm focus:border-hairline-strong outline-none" />
             <span class="font-mono text-xs text-mute">ft</span>
           </div>
           <div class="flex gap-2 items-center">
-            <input type="number" id="height-in" value="9" min="0" max="11" class="w-full h-10 border border-hairline rounded-sm px-3 text-sm focus:border-hairline-strong outline-none" />
+            <input type="number" id="height-in" value="" placeholder="in" min="0" max="11" class="w-full h-10 border border-hairline rounded-sm px-3 text-sm focus:border-hairline-strong outline-none" />
             <span class="font-mono text-xs text-mute">in</span>
           </div>
         </div>
@@ -93,7 +93,7 @@ import MetricCard from '../components/MetricCard.astro';
           </select>
         </div>
         <div class="flex gap-2 items-center">
-          <input type="number" id="weight" value="70" min="30" max="200" class="w-full h-10 border border-hairline rounded-sm px-3 text-sm focus:border-hairline-strong outline-none" />
+          <input type="number" id="weight" value="" placeholder="e.g. 70" min="30" max="200" class="w-full h-10 border border-hairline rounded-sm px-3 text-sm focus:border-hairline-strong outline-none" />
           <span id="weight-unit-label" class="font-mono text-xs text-mute w-8">kg</span>
         </div>
       </div>
@@ -102,6 +102,7 @@ import MetricCard from '../components/MetricCard.astro';
       <div>
         <label for="activity" class="block font-mono text-xs uppercase tracking-wider text-body mb-2">Activity Level</label>
         <select id="activity" class="w-full h-10 bg-canvas border border-hairline rounded-sm px-3 text-sm outline-none focus:border-hairline-strong transition-colors">
+          <option value="" disabled selected>Select Activity Level</option>
           <option value="1.2">Sedentary (little to no exercise)</option>
           <option value="1.375">Lightly Active (exercise 1-3 days/week)</option>
           <option value="1.55">Moderately Active (exercise 3-5 days/week)</option>
@@ -114,6 +115,7 @@ import MetricCard from '../components/MetricCard.astro';
       <div>
         <label for="goal" class="block font-mono text-xs uppercase tracking-wider text-body mb-2">Fitness Goal</label>
         <select id="goal" class="w-full h-10 bg-canvas border border-hairline rounded-sm px-3 text-sm outline-none focus:border-hairline-strong transition-colors">
+          <option value="" disabled selected>Select Fitness Goal</option>
           <option value="maintain">Maintain Healthy Lifestyle</option>
           <option value="loss">Weight Loss</option>
           <option value="fat-loss">Fat Loss (High Protein Deficit)</option>
@@ -152,8 +154,9 @@ import MetricCard from '../components/MetricCard.astro';
       <div>
         <label for="dietary-preference" class="block font-mono text-xs uppercase tracking-wider text-body mb-2">Dietary Preference</label>
         <select id="dietary-preference" class="w-full h-10 bg-canvas border border-hairline rounded-sm px-3 text-sm outline-none focus:border-hairline-strong transition-colors">
+          <option value="" disabled selected>Select Dietary Preference</option>
           <option value="veg">Vegetarian</option>
-          <option value="non-veg" selected>Non-Vegetarian</option>
+          <option value="non-veg">Non-Vegetarian</option>
         </select>
       </div>
 
@@ -161,7 +164,8 @@ import MetricCard from '../components/MetricCard.astro';
       <div>
         <label for="health-condition" class="block font-mono text-xs uppercase tracking-wider text-body mb-2">Health Condition / Medical Profile</label>
         <select id="health-condition" class="w-full h-10 bg-canvas border border-hairline rounded-sm px-3 text-sm outline-none focus:border-hairline-strong transition-colors">
-          <option value="none" selected>None (Healthy Baseline)</option>
+          <option value="" disabled selected>Select Health Condition</option>
+          <option value="none">None (Healthy Baseline)</option>
           <option value="high-bp">High BP (Hypertension)</option>
           <option value="high-sugar">High Sugar / Pre-Diabetes</option>
           <option value="low-bp">Low BP (Hypotension)</option>
@@ -10148,13 +10152,19 @@ import MetricCard from '../components/MetricCard.astro';
         return;
       }
       
-      citiesMap[country].forEach((city, idx) => {
+      citySelect.disabled = false;
+
+      const defaultOpt = document.createElement('option');
+      defaultOpt.value = '';
+      defaultOpt.disabled = true;
+      defaultOpt.selected = true;
+      defaultOpt.textContent = 'Select City';
+      citySelect.appendChild(defaultOpt);
+
+      citiesMap[country].forEach((city) => {
         const opt = document.createElement('option');
         opt.value = city.id;
         opt.textContent = `${city.name} (${city.tz})`;
-        if (idx === 0) {
-          opt.selected = true;
-        }
         citySelect.appendChild(opt);
       });
     }
@@ -10295,7 +10305,6 @@ import MetricCard from '../components/MetricCard.astro';
 
     // Toggle unit containers
     heightUnit.addEventListener('change', () => {
-
       if (heightUnit.value === 'metric') {
         heightMetricContainer.classList.remove('hidden');
         heightImperialContainer.classList.add('hidden');
@@ -10303,7 +10312,6 @@ import MetricCard from '../components/MetricCard.astro';
         heightMetricContainer.classList.add('hidden');
         heightImperialContainer.classList.remove('hidden');
       }
-      calculate();
     });
 
     weightUnit.addEventListener('change', () => {
@@ -10322,7 +10330,6 @@ import MetricCard from '../components/MetricCard.astro';
           weightInput.value = Math.round(currentVal / 0.45359237).toString();
         }
       }
-      calculate();
     });
 
     // Event listeners
@@ -10331,12 +10338,15 @@ import MetricCard from '../components/MetricCard.astro';
     });
 
     ageNumInput.addEventListener('input', () => {
+      if (!ageNumInput.value) return;
       let val = parseInt(ageNumInput.value) || 0;
       ageInput.value = Math.max(15, Math.min(80, val)).toString();
     });
 
     const clampAgeInput = () => {
-      let val = parseInt(ageNumInput.value) || 28;
+      if (!ageNumInput || !ageNumInput.value) return;
+      let val = parseInt(ageNumInput.value);
+      if (isNaN(val)) return;
       if (val < 15) val = 15;
       if (val > 80) val = 80;
       ageNumInput.value = val.toString();
@@ -10346,6 +10356,36 @@ import MetricCard from '../components/MetricCard.astro';
     ageNumInput.addEventListener('change', clampAgeInput);
 
     calculateBtn.addEventListener('click', () => {
+      // Validate all required inputs
+      const isGenderSelected = Array.from(genderInputs).some(r => r.checked);
+
+      const ageVal = parseInt(ageNumInput.value);
+      const isAgeValid = !isNaN(ageVal) && ageVal >= 15 && ageVal <= 80;
+
+      let isHeightValid = false;
+      if (heightUnit.value === 'metric') {
+        const cmVal = parseFloat(heightCmInput.value);
+        isHeightValid = !isNaN(cmVal) && cmVal >= 100 && cmVal <= 250;
+      } else {
+        const ftVal = parseFloat(heightFtInput.value);
+        isHeightValid = !isNaN(ftVal) && ftVal >= 3;
+      }
+
+      const weightVal = parseFloat(weightInput.value);
+      const isWeightValid = !isNaN(weightVal) && weightVal >= 30;
+
+      const isActivityValid = activitySelect.value !== '';
+      const isGoalValid = goalSelect.value !== '';
+      const isCountryValid = countrySelect.value !== '';
+      const isCityValid = citySelect.value !== '';
+      const isDietaryValid = dietaryPreferenceSelect.value !== '';
+      const isConditionValid = healthConditionSelect.value !== '';
+
+      if (!isGenderSelected || !isAgeValid || !isHeightValid || !isWeightValid || !isActivityValid || !isGoalValid || !isCountryValid || !isCityValid || !isDietaryValid || !isConditionValid) {
+        alert('Please fill in all parameter fields (Gender, Age, Height, Weight, Activity Level, Fitness Goal, Country, City, Dietary Preference, and Health Condition) before clicking Calculate & Generate Plan.');
+        return;
+      }
+
       resetSwaps(goalSelect.value);
       calculate();
     });
@@ -10637,9 +10677,8 @@ import MetricCard from '../components/MetricCard.astro';
     // Populate suggestions directory
     compileFoodsDirectory();
 
-    // Initial run
+    // Initial run - do NOT calculate automatically on load
     populateCities();
-    calculate();
   }
 
   // Handle page load

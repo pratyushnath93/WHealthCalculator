@@ -2011,20 +2011,24 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
         opt.value = '';
         opt.disabled = true;
         opt.selected = true;
-        opt.textContent = 'Select a country first';
+        opt.textContent = 'Select Country first';
         citySelect.appendChild(opt);
         return;
       }
       
       citySelect.disabled = false;
       
-      citiesMap[country].forEach((city, idx) => {
+      const defaultOpt = document.createElement('option');
+      defaultOpt.value = '';
+      defaultOpt.disabled = true;
+      defaultOpt.selected = true;
+      defaultOpt.textContent = 'Select City';
+      citySelect.appendChild(defaultOpt);
+
+      citiesMap[country].forEach((city) => {
         const opt = document.createElement('option');
         opt.value = city.id;
         opt.textContent = `${city.name} (${city.tz})`;
-        if (idx === 0) {
-          opt.selected = true;
-        }
         citySelect.appendChild(opt);
       });
     }
@@ -2103,11 +2107,10 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
 
       countrySelect.addEventListener('change', () => {
         populateCities();
-        calculate();
       });
 
       citySelect.addEventListener('change', () => {
-        calculate();
+        // Calculation triggers only when Calculate & Generate Plan button is clicked
       });
 
       goalSelect.addEventListener('change', () => {
@@ -2596,9 +2599,8 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
       // Populate suggestions directory
       compileFoodsDirectory();
 
-      // Initial run
+      // Initial run - do NOT calculate automatically on load
       populateCities();
-      calculate();
     }
 
     // Handle page load safely
