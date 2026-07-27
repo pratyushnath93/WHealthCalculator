@@ -1450,16 +1450,34 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
           time: mealTime,
           options: options,
           activeOptIdx: activeOptIdx,
-          ingredients: activeOption.ingredients.map(ing => ({
-            name: ing.name,
-            qty: ing.baseQty * scale,
-            unit: ing.unit,
-            cal: ing.cal * scale,
-            p: ing.p * scale,
-            c: ing.c * scale,
-            f: ing.f * scale,
-            micros: Object.entries(ing.micros).map(([n, v]) => `${n}: ${(v * scale).toFixed(1)}`).join(', ')
-          }))
+          ingredients: activeOption.ingredients.map(ing => {
+            const rawQty = ing.baseQty * scale;
+            let formattedQty = rawQty;
+            const unitLower = (ing.unit || '').toLowerCase();
+            if (['eggs', 'pcs', 'slices', 'scoop', 'plate', 'roti', 'toast', 'pc', 'egg'].some(u => unitLower.includes(u))) {
+              formattedQty = Math.max(1, Math.round(rawQty));
+            } else if (['g', 'ml'].some(u => unitLower === u)) {
+              formattedQty = Math.max(10, Math.round(rawQty / 5) * 5);
+            } else {
+              formattedQty = Math.round(rawQty * 10) / 10;
+            }
+            const factor = formattedQty / (ing.baseQty || 1);
+            return {
+              name: ing.name,
+              qty: formattedQty,
+              unit: ing.unit,
+              cal: Math.round(ing.cal * factor),
+              p: Math.round(ing.p * factor * 10) / 10,
+              c: Math.round(ing.c * factor * 10) / 10,
+              f: Math.round(ing.f * factor * 10) / 10,
+              origBaseQty: ing.baseQty,
+              origCal: ing.cal,
+              origP: ing.p,
+              origC: ing.c,
+              origF: ing.f,
+              micros: Object.entries(ing.micros || {}).map(([n, v]) => `${n}: ${((v ) * factor).toFixed(1)}`).join(', ')
+            };
+          })
         });
       });
 
@@ -1473,12 +1491,11 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
 
       activeDietPlan.forEach(meal => {
         meal.ingredients.forEach(ing => {
-          const baseFood = compiledDirectory[ing.name.toLowerCase().trim()];
-          const baseQty = baseFood ? baseFood.baseQty : ing.qty;
-          const baseCal = baseFood ? baseFood.cal : ing.cal;
-          const baseP = baseFood ? baseFood.p : ing.p;
-          const baseC = baseFood ? baseFood.c : ing.c;
-          const baseF = baseFood ? baseFood.f : ing.f;
+          const baseQty = ing.origBaseQty || ing.baseQty || 1;
+          const baseCal = ing.origCal || ing.cal || 1;
+          const baseP = ing.origP || ing.p || 0;
+          const baseC = ing.origC || ing.c || 0;
+          const baseF = ing.origF || ing.f || 0;
 
           const pCal = baseP * 4;
           const cCal = baseC * 4;
@@ -1507,7 +1524,7 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
       let scaleC = 1.0;
       let scaleF = 1.0;
 
-      for (let iter = 0; iter < 20; iter++) {
+      for (let iter = 0; iter < 10; iter++) {
         let currentP = 0;
         let currentC = 0;
         let currentF = 0;
@@ -1530,7 +1547,7 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
         if (sumBaseP_P > 0) {
           const errorP = targetP - currentP;
           scaleP += errorP / sumBaseP_P;
-          scaleP = Math.max(0.3, Math.min(3.0, scaleP));
+          scaleP = Math.max(0.6, Math.min(2.0, scaleP));
         }
 
         currentP = 0; currentC = 0; currentF = 0;
@@ -1551,7 +1568,7 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
         if (sumBaseC_C > 0) {
           const errorC = targetC - currentC;
           scaleC += errorC / sumBaseC_C;
-          scaleC = Math.max(0.3, Math.min(3.0, scaleC));
+          scaleC = Math.max(0.6, Math.min(2.0, scaleC));
         }
 
         currentP = 0; currentC = 0; currentF = 0;
@@ -1572,7 +1589,7 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
         if (sumBaseF_F > 0) {
           const errorF = targetF - currentF;
           scaleF += errorF / sumBaseF_F;
-          scaleF = Math.max(0.3, Math.min(3.0, scaleF));
+          scaleF = Math.max(0.6, Math.min(2.0, scaleF));
         }
       }
 
@@ -1582,15 +1599,23 @@ if (typeof window !== 'undefined' && window.DIET_DATABASE) {
         else if (item.category === 'c') s = scaleC;
         else if (item.category === 'f') s = scaleF;
 
-        item.ing.qty = item.baseQty * s;
-        item.ing.cal = item.baseCal * s;
-        item.ing.p = item.baseP * s;
-        item.ing.c = item.baseC * s;
-        item.ing.f = item.baseF * s;
+        const rawQty = item.baseQty * s;
+        let formattedQty = rawQty;
+        const unitLower = (item.ing.unit || '').toLowerCase();
+        if (['eggs', 'pcs', 'slices', 'scoop', 'plate', 'roti', 'toast', 'pc', 'egg'].some(u => unitLower.includes(u))) {
+          formattedQty = Math.max(1, Math.round(rawQty));
+        } else if (['g', 'ml'].some(u => unitLower === u)) {
+          formattedQty = Math.max(10, Math.round(rawQty / 5) * 5);
+        } else {
+          formattedQty = Math.round(rawQty * 10) / 10;
+        }
 
-        const bFood = compiledDirectory[item.ing.name.toLowerCase().trim()];
-        const baseMicros = bFood && bFood.micros ? bFood.micros : {};
-        item.ing.micros = Object.entries(baseMicros).map(([n, v]) => `${n}: ${((v ) * s).toFixed(1)}`).join(', ');
+        const factor = formattedQty / (item.baseQty || 1);
+        item.ing.qty = formattedQty;
+        item.ing.cal = Math.round(item.baseCal * factor);
+        item.ing.p = Math.round(item.baseP * factor * 10) / 10;
+        item.ing.c = Math.round(item.baseC * factor * 10) / 10;
+        item.ing.f = Math.round(item.baseF * factor * 10) / 10;
       });
     }
 
